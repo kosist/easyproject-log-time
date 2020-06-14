@@ -5,6 +5,13 @@ namespace EPProvider
 {
     public class RestEPProvider : IEPProvider
     {
+        private ICredentialsProvider _credentialsProvider;
+
+        public RestEPProvider(ICredentialsProvider credentialsProvider)
+        {
+            _credentialsProvider = credentialsProvider;
+        }
+
         public List<Project> GetProjectsList()
         {
             throw new System.NotImplementedException();
