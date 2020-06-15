@@ -2,9 +2,12 @@
 {
     public class MainViewModel : ViewModelBase
     {
-        public MainViewModel()
+
+        public ITimeEntryViewModel TimeEntryViewModel { get; }
+
+        public MainViewModel(ITimeEntryViewModel timeEntryViewModel)
         {
-            
+            TimeEntryViewModel = timeEntryViewModel;
         }
     }
 }

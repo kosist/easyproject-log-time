@@ -17,9 +17,11 @@ namespace UI.Startup
 
             builder.RegisterType<EventAggregator>().As<IEventAggregator>().SingleInstance();
             builder.RegisterType<EnvironnmentCredentialsProvider>().As<ICredentialsProvider>().SingleInstance();
+            builder.RegisterType<RestEPProvider>().As<IEPProvider>();
 
             builder.RegisterType<MainWindow>().AsSelf();
             builder.RegisterType<MainViewModel>().AsSelf();
+            builder.RegisterType<TimeEntryViewModel>().As<ITimeEntryViewModel>();
 
             return builder.Build();
         }
