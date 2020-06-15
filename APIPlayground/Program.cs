@@ -11,22 +11,21 @@ namespace APIPlayground
     {
         static void Main(string[] args)
         {
-            //var client = new RestClient("https://anv.easyproject.cz");
+            var client = new RestClient("https://anv.easyproject.cz");
 
-            //var request = new RestRequest("time_entries.xml", Method.GET, DataFormat.Xml);
-            //request.AddHeader("content-type", "application/xml");
-            //request.AddParameter("key", "a6531eb52dfbb0076075887bea7aa7bbd94c507b");
-            //request.AddParameter("project_id", "240");
+            var request = new RestRequest("time_entries.xml", Method.GET, DataFormat.Xml);
+            request.AddHeader("content-type", "application/xml");
+            request.AddParameter("key", "a6531eb52dfbb0076075887bea7aa7bbd94c507b");
+            request.AddParameter("project_id", "240");
 
-            ////var response = client.Get(request);
-            //var response = client.Execute<List<TimeEntryXML>>(request);
-            //foreach (var timeEntryXml in response.Data)
-            //{
-            //    Console.WriteLine($"Issue ID: {timeEntryXml.Issue.Id}");
-            //}
+            var response = client.Execute<List<TimeEntryXML>>(request);
+            foreach (var timeEntryXml in response.Data)
+            {
+                Console.WriteLine($"Issue ID: {timeEntryXml.Issue.Id}");
+            }
 
-            string easyProjectAPIKey = Environment.GetEnvironmentVariable("EasyProjectAPIKey", EnvironmentVariableTarget.User);
-            Console.WriteLine(easyProjectAPIKey);
+            //string easyProjectAPIKey = Environment.GetEnvironmentVariable("EasyProjectAPIKey", EnvironmentVariableTarget.User);
+            //Console.WriteLine(easyProjectAPIKey);
         }
     }
 
