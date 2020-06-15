@@ -15,5 +15,6 @@
             <RowDefinition/>
         </Grid.RowDefinitions>
         <ComboBox Margin="20" DataContext="{Binding TimeEntryViewModel}" ItemsSource="{Binding Projects}" DisplayMemberPath="Name"/>
+        <ComboBox Grid.Row="1" Margin="20" DataContext="{Binding TimeEntryViewModel}" ItemsSource="{Binding Issues}" DisplayMemberPath="Name"/>
     </Grid>
 </Window>

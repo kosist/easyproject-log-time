@@ -9,13 +9,16 @@ namespace UI.ViewModel
     {
         private IEPProvider _provider;
 
-        public ObservableCollection<Project> Projects { get; set; }
+        public ObservableCollection<Project> Projects { get; private set; }
+        public ObservableCollection<Issue> Issues { get; private set; }
 
         public TimeEntryViewModel(IEPProvider provider)
         {
             _provider = provider;
             Projects = new ObservableCollection<Project>();
+            Issues = new ObservableCollection<Issue>();
             LoadProjects();
+            LoadIssues(240);
         }
 
         public void LoadProjects()
@@ -25,6 +28,16 @@ namespace UI.ViewModel
             foreach (var project in projects)
             {
                 Projects.Add(project);
+            }
+        }
+
+        public void LoadIssues(int projectId)
+        {
+            Issues.Clear();
+            var issues = _provider.GetIssuesListForProject(projectId);
+            foreach (var issue in issues)
+            {
+                Issues.Add(issue);
             }
         }
     }
