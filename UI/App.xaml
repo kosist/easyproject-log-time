@@ -5,6 +5,11 @@
              Startup="Application_Startup"
              DispatcherUnhandledException="App_OnDispatcherUnhandledException">
     <Application.Resources>
-         
+         <ResourceDictionary>
+             <ResourceDictionary.MergedDictionaries>
+                 <ResourceDictionary Source="Resource/BootstrapButton.xaml"/>
+                 <ResourceDictionary Source="Resource/Combobox.xaml"/>
+             </ResourceDictionary.MergedDictionaries>
+         </ResourceDictionary>
     </Application.Resources>
 </Application>
