@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:UI"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="MainWindow" Height="450" Width="500">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition/>
@@ -13,9 +13,38 @@
             <RowDefinition/>
             <RowDefinition/>
             <RowDefinition/>
+            <RowDefinition/>
         </Grid.RowDefinitions>
-        <ComboBox Style="{StaticResource {x:Type ComboBox}}" Margin="20" DataContext="{Binding TimeEntryViewModel}" ItemsSource="{Binding Projects}" DisplayMemberPath="Name"/>
-        <ComboBox Grid.Row="1" Margin="20" DataContext="{Binding TimeEntryViewModel}" ItemsSource="{Binding Issues}" DisplayMemberPath="Name"/>
-        <Label Grid.Row="2" Content="Test text" FontFamily="Resource/Ubuntu-Regular.ttf" FontSize="26"/>
+        <StackPanel>
+            <Label Content="Project name:" Margin="10 10 10 0"/>
+            <ComboBox Style="{StaticResource {x:Type ComboBox}}" Margin="10 0" DataContext="{Binding TimeEntryViewModel}" ItemsSource="{Binding Projects}" DisplayMemberPath="Name"/>
+        </StackPanel>
+        <StackPanel Grid.Row="1">
+            <Label Content="Task name:" Margin="10 10 10 0"/>
+            <ComboBox Grid.Row="1" Margin="10 0" DataContext="{Binding TimeEntryViewModel}" ItemsSource="{Binding Issues}" DisplayMemberPath="Name"/>
+        </StackPanel>
+        <StackPanel Grid.Row="2">
+            <Label Content="Spent hours:" Margin="10 10 10 0"/>
+            <TextBox Width="120" HorizontalAlignment="Left" Margin="10 0"/>
+        </StackPanel>
+        <StackPanel Grid.Row="3">
+            <Label Content="Comment:" Margin="10 10 10 0"/>
+            <TextBox Margin="10 0"/>
+        </StackPanel>
+        <StackPanel Grid.Row="4">
+            <Label Content="Spent on:" Margin="10 10 10 0"/>
+            <DatePicker Margin="10 0" Width="120" HorizontalAlignment="Left" />
+        </StackPanel>
+        <Grid Grid.Row="5">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+
+            <Button Style="{StaticResource btn-success}" Grid.Column="1" Margin="15" Content="Save"/>
+            <Button Style="{StaticResource btn-danger}" Grid.Column="2" Margin="15" Content="Cancel"/>
+        </Grid>
     </Grid>
 </Window>
