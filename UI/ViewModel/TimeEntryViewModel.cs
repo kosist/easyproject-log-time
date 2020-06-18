@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Threading.Tasks;
 using BaseLayer.Model;
 using EPProvider;
 
@@ -17,34 +18,33 @@ namespace UI.ViewModel
             _provider = provider;
             Projects = new ObservableCollection<Project>();
             Issues = new ObservableCollection<Issue>();
-            DisplayProjects();
-            DisplayIssuesList(240);
+            DisplayProjectsAsync();
         }
 
-        public List<Project> LoadProjects()
+        public async Task<List<Project>> LoadProjects()
         {
-            return _provider.GetProjectsList();
+            return await _provider.GetProjectsListAsync();
         }
 
-        private void DisplayProjects()
+        private async Task DisplayProjectsAsync()
         {
             Projects.Clear();
-            var projects = LoadProjects();
+            var projects = await LoadProjects();
             foreach (var project in projects)
             {
                 Projects.Add(project);
             }
         }
 
-        public List<Issue> LoadIssues(int projectId)
+        public async Task<List<Issue>> LoadIssues(int projectId)
         {
-            return _provider.GetIssuesListForProject(projectId);
+            return await _provider.GetIssuesListForProjectAsync(projectId);
         }
 
-        private void DisplayIssuesList(int projectId)
+        private async Task DisplayIssuesList(int projectId)
         {
             Issues.Clear();
-            var issues = LoadIssues(projectId);
+            var issues = await LoadIssues(projectId);
             foreach (var issue in issues)
             {
                 Issues.Add(issue);
