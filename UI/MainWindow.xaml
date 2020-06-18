@@ -21,7 +21,7 @@
         </StackPanel>
         <StackPanel Grid.Row="1">
             <Label Content="Task name:" Margin="10 10 10 0"/>
-            <ComboBox Grid.Row="1" Margin="10 0"  ItemsSource="{Binding Issues}" DisplayMemberPath="Name"/>
+            <ComboBox Grid.Row="1" Margin="10 0"  ItemsSource="{Binding Issues}" DisplayMemberPath="Name" SelectedItem="{Binding SelectedIssue, Mode=TwoWay}"/>
         </StackPanel>
         <StackPanel Grid.Row="2">
             <Label Content="Spent hours:" Margin="10 10 10 0"/>

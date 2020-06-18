@@ -65,12 +65,28 @@ namespace UI.ViewModel
                 {
                     _selectedProject = value;
                     OnPropertyChanged();
+                    SelectedIssue = null;
                     DisplayIssuesList(_selectedProject.Id);
                     SpentTime = 0;
                     Comment = "";
                 }
             }
         }
+
+        private Issue _selectedIssue;
+
+        public Issue SelectedIssue
+        {
+            get { return _selectedIssue; }
+            set
+            {
+                _selectedIssue = value;
+                OnPropertyChanged();
+                SpentTime = 0;
+                Comment = "";
+            }
+        }
+
 
         private float _spentTime;
 
