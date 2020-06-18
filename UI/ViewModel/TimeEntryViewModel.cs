@@ -17,24 +17,34 @@ namespace UI.ViewModel
             _provider = provider;
             Projects = new ObservableCollection<Project>();
             Issues = new ObservableCollection<Issue>();
-            LoadProjects();
-            LoadIssues(240);
+            DisplayProjects();
+            DisplayIssuesList(240);
         }
 
-        public void LoadProjects()
+        public List<Project> LoadProjects()
+        {
+            return _provider.GetProjectsList();
+        }
+
+        private void DisplayProjects()
         {
             Projects.Clear();
-            var projects = _provider.GetProjectsList();
+            var projects = LoadProjects();
             foreach (var project in projects)
             {
                 Projects.Add(project);
             }
         }
 
-        public void LoadIssues(int projectId)
+        public List<Issue> LoadIssues(int projectId)
+        {
+            return _provider.GetIssuesListForProject(projectId);
+        }
+
+        private void DisplayIssuesList(int projectId)
         {
             Issues.Clear();
-            var issues = _provider.GetIssuesListForProject(projectId);
+            var issues = LoadIssues(projectId);
             foreach (var issue in issues)
             {
                 Issues.Add(issue);

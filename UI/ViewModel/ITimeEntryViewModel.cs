@@ -6,7 +6,7 @@ namespace UI.ViewModel
 {
     public interface ITimeEntryViewModel
     {
-        void LoadProjects();
-        void LoadIssues(int projectId);
+        List<Project> LoadProjects();
+        List<Issue> LoadIssues(int projectId);
     }
 }
