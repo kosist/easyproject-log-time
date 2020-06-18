@@ -67,6 +67,18 @@ namespace UI.ViewModel
             }
         }
 
+        private float _spentTime;
+
+        public float SpentTime
+        {
+            get { return _spentTime; }
+            set
+            {
+                _spentTime = ((value >= 0) && (value <= 24)) ? value :  0;
+            }
+        }
+
+
 
     }
 }

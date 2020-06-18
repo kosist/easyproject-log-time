@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:UI"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="500">
-    <Grid>
+    <Grid DataContext="{Binding TimeEntryViewModel}">
         <Grid.RowDefinitions>
             <RowDefinition/>
             <RowDefinition/>
@@ -17,15 +17,15 @@
         </Grid.RowDefinitions>
         <StackPanel>
             <Label Content="Project name:" Margin="10 10 10 0"/>
-            <ComboBox Style="{StaticResource {x:Type ComboBox}}" Margin="10 0" DataContext="{Binding TimeEntryViewModel}" ItemsSource="{Binding Projects}" DisplayMemberPath="Name" SelectedItem="{Binding SelectedProject, Mode=TwoWay}"/>
+            <ComboBox Style="{StaticResource {x:Type ComboBox}}" Margin="10 0" ItemsSource="{Binding Projects}" DisplayMemberPath="Name" SelectedItem="{Binding SelectedProject, Mode=TwoWay}"/>
         </StackPanel>
         <StackPanel Grid.Row="1">
             <Label Content="Task name:" Margin="10 10 10 0"/>
-            <ComboBox Grid.Row="1" Margin="10 0" DataContext="{Binding TimeEntryViewModel}" ItemsSource="{Binding Issues}" DisplayMemberPath="Name"/>
+            <ComboBox Grid.Row="1" Margin="10 0"  ItemsSource="{Binding Issues}" DisplayMemberPath="Name"/>
         </StackPanel>
         <StackPanel Grid.Row="2">
             <Label Content="Spent hours:" Margin="10 10 10 0"/>
-            <TextBox Width="120" HorizontalAlignment="Left" Margin="10 0"/>
+            <TextBox Width="120" HorizontalAlignment="Left" Margin="10 0" Text="{Binding SpentTime, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
         </StackPanel>
         <StackPanel Grid.Row="3">
             <Label Content="Comment:" Margin="10 10 10 0"/>
