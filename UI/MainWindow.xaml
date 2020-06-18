@@ -29,11 +29,11 @@
         </StackPanel>
         <StackPanel Grid.Row="3">
             <Label Content="Comment:" Margin="10 10 10 0"/>
-            <TextBox Margin="10 0"/>
+            <TextBox Margin="10 0" Text="{Binding Comment, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
         </StackPanel>
         <StackPanel Grid.Row="4">
             <Label Content="Spent on:" Margin="10 10 10 0"/>
-            <DatePicker Margin="10 0" Width="120" HorizontalAlignment="Left" />
+            <DatePicker Margin="10 0" Width="120" HorizontalAlignment="Left" SelectedDate="{Binding SpentOnDate, Mode=TwoWay}" SelectedDateFormat="Short" Focusable="False"/>
         </StackPanel>
         <Grid Grid.Row="5">
             <Grid.ColumnDefinitions>

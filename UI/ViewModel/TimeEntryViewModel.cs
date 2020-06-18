@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using BaseLayer.Model;
@@ -12,12 +13,14 @@ namespace UI.ViewModel
 
         public ObservableCollection<Project> Projects { get; private set; }
         public ObservableCollection<Issue> Issues { get; private set; }
+        public DateTime SpentOnDate { get; set; }
 
         public TimeEntryViewModel(IEPProvider provider)
         {
             _provider = provider;
             Projects = new ObservableCollection<Project>();
             Issues = new ObservableCollection<Issue>();
+            SpentOnDate = DateTime.Today;
             DisplayProjectsAsync();
         }
 
@@ -63,6 +66,8 @@ namespace UI.ViewModel
                     _selectedProject = value;
                     OnPropertyChanged();
                     DisplayIssuesList(_selectedProject.Id);
+                    SpentTime = 0;
+                    Comment = "";
                 }
             }
         }
@@ -75,10 +80,20 @@ namespace UI.ViewModel
             set
             {
                 _spentTime = ((value >= 0) && (value <= 24)) ? value :  0;
+                OnPropertyChanged();
             }
         }
 
+        private string _comment;
 
-
+        public string Comment
+        {
+            get { return _comment; }
+            set
+            {
+                _comment = value;
+                OnPropertyChanged();
+            }
+        }
     }
 }
