@@ -50,5 +50,23 @@ namespace UI.ViewModel
                 Issues.Add(issue);
             }
         }
+
+        private Project _selectedProject;
+
+        public Project SelectedProject
+        {
+            get { return _selectedProject; }
+            set
+            {
+                if (value != null)
+                {
+                    _selectedProject = value;
+                    OnPropertyChanged();
+                    DisplayIssuesList(_selectedProject.Id);
+                }
+            }
+        }
+
+
     }
 }

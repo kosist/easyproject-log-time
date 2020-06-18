@@ -17,7 +17,7 @@
         </Grid.RowDefinitions>
         <StackPanel>
             <Label Content="Project name:" Margin="10 10 10 0"/>
-            <ComboBox Style="{StaticResource {x:Type ComboBox}}" Margin="10 0" DataContext="{Binding TimeEntryViewModel}" ItemsSource="{Binding Projects}" DisplayMemberPath="Name"/>
+            <ComboBox Style="{StaticResource {x:Type ComboBox}}" Margin="10 0" DataContext="{Binding TimeEntryViewModel}" ItemsSource="{Binding Projects}" DisplayMemberPath="Name" SelectedItem="{Binding SelectedProject, Mode=TwoWay}"/>
         </StackPanel>
         <StackPanel Grid.Row="1">
             <Label Content="Task name:" Margin="10 10 10 0"/>
