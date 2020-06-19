@@ -4,20 +4,24 @@ using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using BaseLayer.Model;
 using EPProvider;
+using Prism.Events;
+using UI.Event;
 
 namespace UI.ViewModel
 {
     public class TimeEntryViewModel : ViewModelBase, ITimeEntryViewModel
     {
         private IEPProvider _provider;
+        private IEventAggregator _eventAggregator;
 
         public ObservableCollection<Project> Projects { get; private set; }
         public ObservableCollection<Issue> Issues { get; private set; }
         public DateTime SpentOnDate { get; set; }
 
-        public TimeEntryViewModel(IEPProvider provider)
+        public TimeEntryViewModel(IEPProvider provider, IEventAggregator eventAggregator)
         {
             _provider = provider;
+            _eventAggregator = eventAggregator;
             Projects = new ObservableCollection<Project>();
             Issues = new ObservableCollection<Issue>();
             SpentOnDate = DateTime.Today;
@@ -66,9 +70,9 @@ namespace UI.ViewModel
                     _selectedProject = value;
                     OnPropertyChanged();
                     SelectedIssue = null;
-                    DisplayIssuesList(_selectedProject.Id);
                     SpentTime = 0;
                     Comment = "";
+                    DisplayIssuesList(_selectedProject.Id);
                 }
             }
         }
@@ -82,8 +86,6 @@ namespace UI.ViewModel
             {
                 _selectedIssue = value;
                 OnPropertyChanged();
-                SpentTime = 0;
-                Comment = "";
             }
         }
 
