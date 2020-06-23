@@ -16,24 +16,24 @@
             <RowDefinition/>
         </Grid.RowDefinitions>
         <StackPanel>
-            <Label Content="Project name:" Margin="10 10 10 0"/>
+            <Label Content="Project name:" Margin="10 10 10 0" FontSize="14"/>
             <ComboBox Style="{StaticResource {x:Type ComboBox}}" Margin="10 0" ItemsSource="{Binding Projects}" DisplayMemberPath="Name" SelectedItem="{Binding SelectedProject, Mode=TwoWay}"/>
         </StackPanel>
         <StackPanel Grid.Row="1">
-            <Label Content="Task name:" Margin="10 10 10 0"/>
+            <Label Content="Task name:" Margin="10 10 10 0" FontSize="14"/>
             <ComboBox Grid.Row="1" Margin="10 0"  ItemsSource="{Binding Issues}" DisplayMemberPath="Name" SelectedItem="{Binding SelectedIssue, Mode=TwoWay}"/>
         </StackPanel>
         <StackPanel Grid.Row="2">
-            <Label Content="Spent hours:" Margin="10 10 10 0"/>
-            <TextBox Width="120" HorizontalAlignment="Left" Margin="10 0" Text="{Binding SpentTime, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+            <Label Content="Spent hours:" Margin="10 10 10 0" FontSize="14"/>
+            <TextBox Width="120" HorizontalAlignment="Left" Margin="10 0" Text="{Binding SpentTime, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" FontSize="16"/>
         </StackPanel>
         <StackPanel Grid.Row="3">
-            <Label Content="Comment:" Margin="10 10 10 0"/>
-            <TextBox Margin="10 0" Text="{Binding Comment, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+            <Label Content="Comment:" Margin="10 10 10 0" FontSize="14"/>
+            <TextBox Margin="10 0" Text="{Binding Comment, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" FontSize="16"/>
         </StackPanel>
         <StackPanel Grid.Row="4">
-            <Label Content="Spent on:" Margin="10 10 10 0"/>
-            <DatePicker Margin="10 0" Width="120" HorizontalAlignment="Left" SelectedDate="{Binding SpentOnDate, Mode=TwoWay}" SelectedDateFormat="Short" Focusable="False"/>
+            <Label Content="Spent on:" Margin="10 10 10 0" FontSize="14"/>
+            <DatePicker Margin="10 0" Width="120" HorizontalAlignment="Left" SelectedDate="{Binding SpentOnDate, Mode=TwoWay}" SelectedDateFormat="Short" Focusable="False" FontSize="16" MinWidth="150"/>
         </StackPanel>
         <Grid Grid.Row="5">
             <Grid.ColumnDefinitions>
