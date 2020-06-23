@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:UI"
+        xmlns:validationrules="clr-namespace:UI.Rule"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="500">
     <Grid DataContext="{Binding TimeEntryViewModel}">
@@ -25,7 +26,15 @@
         </StackPanel>
         <StackPanel Grid.Row="2">
             <Label Content="Spent hours:" Margin="10 10 10 0" FontSize="14"/>
-            <TextBox Width="120" HorizontalAlignment="Left" Margin="10 0" Text="{Binding SpentTime, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" FontSize="16"/>
+            <TextBox Width="120" HorizontalAlignment="Left" Margin="10 0" FontSize="16">
+                <TextBox.Text>
+                    <Binding Path="SpentTime" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged">
+                        <Binding.ValidationRules>
+                            <validationrules:TimeFormatRule/>
+                        </Binding.ValidationRules>
+                    </Binding>
+                </TextBox.Text>
+            </TextBox>
         </StackPanel>
         <StackPanel Grid.Row="3">
             <Label Content="Comment:" Margin="10 10 10 0" FontSize="14"/>

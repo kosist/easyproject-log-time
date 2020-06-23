@@ -70,7 +70,6 @@ namespace UI.ViewModel
                     _selectedProject = value;
                     OnPropertyChanged();
                     SelectedIssue = null;
-                    SpentTime = 0;
                     Comment = "";
                     DisplayIssuesList(_selectedProject.Id);
                 }
@@ -90,14 +89,14 @@ namespace UI.ViewModel
         }
 
 
-        private float _spentTime;
+        private string _spentTime;
 
-        public float SpentTime
+        public string SpentTime
         {
             get { return _spentTime; }
             set
             {
-                _spentTime = ((value >= 0) && (value <= 24)) ? value :  0;
+                _spentTime = value;
                 OnPropertyChanged();
             }
         }
