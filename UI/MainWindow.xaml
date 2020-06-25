@@ -18,7 +18,15 @@
         </Grid.RowDefinitions>
         <StackPanel>
             <Label Content="Project name:" Margin="10 10 10 0" FontSize="14"/>
-            <ComboBox Style="{StaticResource {x:Type ComboBox}}" Margin="10 0" ItemsSource="{Binding Projects}" DisplayMemberPath="Name" SelectedItem="{Binding SelectedProject, Mode=TwoWay}"/>
+            <ComboBox Style="{StaticResource {x:Type ComboBox}}" Margin="10 0" ItemsSource="{Binding Projects}" DisplayMemberPath="Name">
+                <ComboBox.SelectedItem>
+                    <Binding Path="SelectedProject" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged">
+                        <!--<Binding.ValidationRules>
+                            <validationrules:ProjectRule/>
+                        </Binding.ValidationRules>-->
+                    </Binding>
+                </ComboBox.SelectedItem>
+            </ComboBox>
         </StackPanel>
         <StackPanel Grid.Row="1">
             <Label Content="Task name:" Margin="10 10 10 0" FontSize="14"/>

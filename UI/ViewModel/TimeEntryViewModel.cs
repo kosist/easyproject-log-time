@@ -6,6 +6,7 @@ using BaseLayer.Model;
 using EPProvider;
 using Prism.Events;
 using UI.Event;
+using UI.Wrapper;
 
 namespace UI.ViewModel
 {
@@ -13,6 +14,18 @@ namespace UI.ViewModel
     {
         private IEPProvider _provider;
         private IEventAggregator _eventAggregator;
+        private TimeEntryWrapper _timeEntry;
+
+        public TimeEntryWrapper TimeEntry
+        {
+            get { return _timeEntry; }
+            set
+            {
+                _timeEntry = value; 
+                OnPropertyChanged();
+            }
+        }
+
 
         public ObservableCollection<Project> Projects { get; private set; }
         public ObservableCollection<Issue> Issues { get; private set; }
@@ -24,6 +37,7 @@ namespace UI.ViewModel
             _eventAggregator = eventAggregator;
             Projects = new ObservableCollection<Project>();
             Issues = new ObservableCollection<Issue>();
+            TimeEntry = new TimeEntryWrapper(new TimeEntry());
             SpentOnDate = DateTime.Today;
             DisplayProjectsAsync();
         }
@@ -69,6 +83,7 @@ namespace UI.ViewModel
                 {
                     _selectedProject = value;
                     OnPropertyChanged();
+                    TimeEntry.ProjectId = _selectedProject.Id;
                     SelectedIssue = null;
                     Comment = "";
                     DisplayIssuesList(_selectedProject.Id);
