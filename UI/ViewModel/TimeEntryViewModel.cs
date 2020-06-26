@@ -37,7 +37,13 @@ namespace UI.ViewModel
             _eventAggregator = eventAggregator;
             Projects = new ObservableCollection<Project>();
             Issues = new ObservableCollection<Issue>();
-            TimeEntry = new TimeEntryWrapper(new TimeEntry());
+            TimeEntry = new TimeEntryWrapper(new TimeEntryItemViewModel 
+            {
+                SelectedProject = new Project
+                {
+                    Id = 0,
+                },
+            });
             SpentOnDate = DateTime.Today;
             DisplayProjectsAsync();
         }
@@ -83,7 +89,7 @@ namespace UI.ViewModel
                 {
                     _selectedProject = value;
                     OnPropertyChanged();
-                    TimeEntry.ProjectId = _selectedProject.Id;
+                    TimeEntry.SelectedProject = _selectedProject;
                     SelectedIssue = null;
                     Comment = "";
                     DisplayIssuesList(_selectedProject.Id);
@@ -112,6 +118,7 @@ namespace UI.ViewModel
             set
             {
                 _spentTime = value;
+                TimeEntry.SpentTime = _spentTime;
                 OnPropertyChanged();
             }
         }

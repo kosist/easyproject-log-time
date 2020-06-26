@@ -3,24 +3,25 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Text.RegularExpressions;
 using BaseLayer.Model;
+using UI.ViewModel;
 
 namespace UI.Wrapper
 {
-    public class TimeEntryWrapper : ModelWrapper<TimeEntry>
+    public class TimeEntryWrapper : ModelWrapper<TimeEntryItemViewModel>
     {
-        public TimeEntryWrapper(TimeEntry model) : base(model)
+        public TimeEntryWrapper(TimeEntryItemViewModel model) : base(model)
         {
         }
 
-        public int ProjectId
+        public Project SelectedProject
         {
-            get => GetValue<int>();
+            get => GetValue<Project>();
             set => SetValue(value);
         }
 
-        public int IssueId
+        public Issue SelectedIssue
         {
-            get => GetValue<int>();
+            get => GetValue<Issue>();
             set => SetValue(value);
         }
 
@@ -46,20 +47,20 @@ namespace UI.Wrapper
         {
             switch (propertyName)
             {
-                case nameof(ProjectId):
-                    if (ProjectId <= 0)
+                case nameof(SelectedProject):
+                    if (SelectedProject.Id <= 0)
                     {
                         yield return "Project is not selected";
                     }
                     break;
-                case nameof(IssueId):
-                    if (IssueId <= 0)
+                case nameof(SelectedIssue):
+                    if (SelectedIssue.Id <= 0)
                     {
                         yield return "Task is not selected";
                     }
                     break;
                 case nameof(SpentTime):
-                    if (ValidateSpentTime(SpentTime))
+                    if (!ValidateSpentTime(SpentTime))
                     {
                         yield return "Task is not selected";
                     }

@@ -20,7 +20,7 @@
             <Label Content="Project name:" Margin="10 10 10 0" FontSize="14"/>
             <ComboBox Style="{StaticResource {x:Type ComboBox}}" Margin="10 0" ItemsSource="{Binding Projects}" DisplayMemberPath="Name">
                 <ComboBox.SelectedItem>
-                    <Binding Path="SelectedProject" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged">
+                    <Binding Path="TimeEntry.SelectedProject" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged">
                         <!--<Binding.ValidationRules>
                             <validationrules:ProjectRule/>
                         </Binding.ValidationRules>-->
@@ -36,10 +36,10 @@
             <Label Content="Spent hours:" Margin="10 10 10 0" FontSize="14"/>
             <TextBox Width="120" HorizontalAlignment="Left" Margin="10 0" FontSize="16">
                 <TextBox.Text>
-                    <Binding Path="SpentTime" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged">
-                        <Binding.ValidationRules>
+                    <Binding Path="TimeEntry.SpentTime" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged">
+                        <!--<Binding.ValidationRules>
                             <validationrules:TimeFormatRule/>
-                        </Binding.ValidationRules>
+                        </Binding.ValidationRules>-->
                     </Binding>
                 </TextBox.Text>
             </TextBox>
