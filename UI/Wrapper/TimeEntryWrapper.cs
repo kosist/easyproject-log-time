@@ -11,6 +11,9 @@ namespace UI.Wrapper
     {
         public TimeEntryWrapper(TimeEntryItemViewModel model) : base(model)
         {
+            SelectedProject = null;
+            SelectedIssue = null;
+            SpentTime = "";
         }
 
         public Project SelectedProject
