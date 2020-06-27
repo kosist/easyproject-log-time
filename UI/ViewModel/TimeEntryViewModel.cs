@@ -81,7 +81,6 @@ namespace UI.ViewModel
 
                 if (e.PropertyName == "SelectedProject")
                 {
-                    //TimeEntry.SelectedIssue = null;
                     TimeEntry.SpentTime = "";
                     TimeEntry.Description = "";
                     DisplayIssuesList(TimeEntry.SelectedProject.Id);
@@ -105,60 +104,5 @@ namespace UI.ViewModel
                 Issues.Add(issue);
             }
         }
-
-        //private Project _selectedProject;
-
-        //public Project SelectedProject
-        //{
-        //    get { return _selectedProject; }
-        //    set
-        //    {
-        //        if (value != null)
-        //        {
-        //            _selectedProject = value;
-        //            OnPropertyChanged();
-        //            SelectedIssue = null;
-        //            Comment = "";
-        //            DisplayIssuesList(_selectedProject.Id);
-        //        }
-        //    }
-        //}
-
-        //private Issue _selectedIssue;
-
-        //public Issue SelectedIssue
-        //{
-        //    get { return _selectedIssue; }
-        //    set
-        //    {
-        //        _selectedIssue = value;
-        //        OnPropertyChanged();
-        //    }
-        //}
-
-
-        //private string _spentTime;
-
-        //public string SpentTime
-        //{
-        //    get { return _spentTime; }
-        //    set
-        //    {
-        //        _spentTime = value;
-        //        OnPropertyChanged();
-        //    }
-        //}
-
-        //private string _comment;
-
-        //public string Comment
-        //{
-        //    get { return _comment; }
-        //    set
-        //    {
-        //        _comment = value;
-        //        OnPropertyChanged();
-        //    }
-        //}
     }
 }
