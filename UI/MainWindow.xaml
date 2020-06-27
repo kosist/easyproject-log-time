@@ -26,15 +26,7 @@
         </StackPanel>
         <StackPanel Grid.Row="2">
             <Label Content="Spent hours:" Margin="10 10 10 0" FontSize="14"/>
-            <TextBox Width="120" HorizontalAlignment="Left" Margin="10 0" FontSize="16" x:Name="SpentTime">
-                <TextBox.Text>
-                    <Binding Path="TimeEntry.SpentTime" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged">
-                        <!--<Binding.ValidationRules>
-                            <validationrules:TimeFormatRule/>
-                        </Binding.ValidationRules>-->
-                    </Binding>
-                </TextBox.Text>
-            </TextBox>
+            <TextBox Width="120" HorizontalAlignment="Left" Margin="10 0" FontSize="16" Text="{Binding TimeEntry.SpentTime, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
         </StackPanel>
         <StackPanel Grid.Row="3">
             <Label Content="Comment:" Margin="10 10 10 0" FontSize="14"/>

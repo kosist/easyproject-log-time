@@ -63,9 +63,13 @@ namespace UI.Wrapper
                     }
                     break;
                 case nameof(SpentTime):
-                    if (!ValidateSpentTime(SpentTime))
+                    if (String.IsNullOrEmpty(SpentTime) || String.IsNullOrWhiteSpace(SpentTime))
                     {
-                        yield return "Task is not selected";
+                        yield return "Time entry is empty";
+                    }
+                    else if (!ValidateSpentTime(SpentTime))
+                    {
+                        yield return "Time entry has wrong format. Examples of valid formats: 1.5, 2:30, 05:45";
                     }
                     break;
             }
@@ -85,13 +89,11 @@ namespace UI.Wrapper
             Regex doubleFormatRegex = new Regex(doubleFormatPattern);
             bool doubleFormatRegexValid = doubleFormatRegex.IsMatch(text);
 
-            bool validFlag = false;
             string groupSeparator = cultureInfo.NumberFormat.NumberGroupSeparator;
             bool canConvert = double.TryParse(text, out result);
             bool foundGroupSeparator = text.Contains(groupSeparator);
-            validFlag = !foundGroupSeparator && ((canConvert && doubleFormatRegexValid) || timeFormatRegexValid);
+            var validFlag = !foundGroupSeparator && ((canConvert && doubleFormatRegexValid) || timeFormatRegexValid);
             return validFlag;
         }
-
     }
 }

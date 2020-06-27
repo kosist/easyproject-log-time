@@ -9,6 +9,7 @@
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="Resource/BootstrapButton.xaml"/>
                 <ResourceDictionary Source="Resource/Combobox.xaml"/>
+                <ResourceDictionary Source="Resource/TextBoxValidated.xaml"/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
 
