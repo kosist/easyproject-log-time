@@ -18,23 +18,15 @@
         </Grid.RowDefinitions>
         <StackPanel>
             <Label Content="Project name:" Margin="10 10 10 0" FontSize="14"/>
-            <ComboBox Style="{StaticResource {x:Type ComboBox}}" Margin="10 0" ItemsSource="{Binding Projects}" DisplayMemberPath="Name">
-                <ComboBox.SelectedItem>
-                    <Binding Path="TimeEntry.SelectedProject" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged">
-                        <!--<Binding.ValidationRules>
-                            <validationrules:ProjectRule/>
-                        </Binding.ValidationRules>-->
-                    </Binding>
-                </ComboBox.SelectedItem>
-            </ComboBox>
+            <ComboBox Margin="10 0" ItemsSource="{Binding Projects}" DisplayMemberPath="Name" SelectedItem="{Binding TimeEntry.SelectedProject, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
         </StackPanel>
         <StackPanel Grid.Row="1">
             <Label Content="Task name:" Margin="10 10 10 0" FontSize="14"/>
-            <ComboBox Grid.Row="1" Margin="10 0"  ItemsSource="{Binding Issues}" DisplayMemberPath="Name" SelectedItem="{Binding SelectedIssue, Mode=TwoWay}"/>
+            <ComboBox Grid.Row="1" Margin="10 0"  ItemsSource="{Binding Issues}" DisplayMemberPath="Name" SelectedItem="{Binding TimeEntry.SelectedIssue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
         </StackPanel>
         <StackPanel Grid.Row="2">
             <Label Content="Spent hours:" Margin="10 10 10 0" FontSize="14"/>
-            <TextBox Width="120" HorizontalAlignment="Left" Margin="10 0" FontSize="16">
+            <TextBox Width="120" HorizontalAlignment="Left" Margin="10 0" FontSize="16" x:Name="SpentTime">
                 <TextBox.Text>
                     <Binding Path="TimeEntry.SpentTime" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged">
                         <!--<Binding.ValidationRules>
@@ -60,7 +52,7 @@
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
 
-            <Button Style="{StaticResource btn-success}" Grid.Column="1" Margin="15" Content="Save"/>
+            <Button Style="{StaticResource btn-success}"  Grid.Column="1" Margin="15" Content="Save" Command="{Binding SaveCommand}"/>
             <Button Style="{StaticResource btn-danger}" Grid.Column="2" Margin="15" Content="Cancel"/>
         </Grid>
     </Grid>

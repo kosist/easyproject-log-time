@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
+using System.Windows.Input;
 using BaseLayer.Model;
 using EPProvider;
+using Prism.Commands;
 using Prism.Events;
 using UI.Event;
 using UI.Wrapper;
@@ -21,7 +23,7 @@ namespace UI.ViewModel
             get { return _timeEntry; }
             set
             {
-                _timeEntry = value; 
+                _timeEntry = value;
                 OnPropertyChanged();
             }
         }
@@ -31,21 +33,28 @@ namespace UI.ViewModel
         public ObservableCollection<Issue> Issues { get; private set; }
         public DateTime SpentOnDate { get; set; }
 
+        public ICommand SaveCommand { get; }
+
         public TimeEntryViewModel(IEPProvider provider, IEventAggregator eventAggregator)
         {
             _provider = provider;
             _eventAggregator = eventAggregator;
             Projects = new ObservableCollection<Project>();
             Issues = new ObservableCollection<Issue>();
-            TimeEntry = new TimeEntryWrapper(new TimeEntryItemViewModel 
-            {
-                SelectedProject = new Project
-                {
-                    Id = 0,
-                },
-            });
             SpentOnDate = DateTime.Today;
             DisplayProjectsAsync();
+
+            SaveCommand = new DelegateCommand(OnSaveExecute, OnSaveCanExecute);
+        }
+
+        private void OnSaveExecute()
+        {
+            throw new NotImplementedException();
+        }
+
+        private bool OnSaveCanExecute()
+        {
+            return TimeEntry != null && !TimeEntry.HasErrors;
         }
 
         public async Task<List<Project>> LoadProjects()
@@ -61,6 +70,25 @@ namespace UI.ViewModel
             {
                 Projects.Add(project);
             }
+
+            TimeEntry = new TimeEntryWrapper(new TimeEntryItemViewModel());
+            TimeEntry.PropertyChanged += (s, e) =>
+            {
+                if (e.PropertyName == nameof(TimeEntry.HasErrors))
+                {
+                    ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
+                }
+
+                if (e.PropertyName == "SelectedProject")
+                {
+                    //TimeEntry.SelectedIssue = null;
+                    TimeEntry.SpentTime = "";
+                    TimeEntry.Description = "";
+                    DisplayIssuesList(TimeEntry.SelectedProject.Id);
+                }
+
+            };
+            ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
         }
 
         public async Task<List<Issue>> LoadIssues(int projectId)
@@ -78,61 +106,59 @@ namespace UI.ViewModel
             }
         }
 
-        private Project _selectedProject;
+        //private Project _selectedProject;
 
-        public Project SelectedProject
-        {
-            get { return _selectedProject; }
-            set
-            {
-                if (value != null)
-                {
-                    _selectedProject = value;
-                    OnPropertyChanged();
-                    TimeEntry.SelectedProject = _selectedProject;
-                    SelectedIssue = null;
-                    Comment = "";
-                    DisplayIssuesList(_selectedProject.Id);
-                }
-            }
-        }
+        //public Project SelectedProject
+        //{
+        //    get { return _selectedProject; }
+        //    set
+        //    {
+        //        if (value != null)
+        //        {
+        //            _selectedProject = value;
+        //            OnPropertyChanged();
+        //            SelectedIssue = null;
+        //            Comment = "";
+        //            DisplayIssuesList(_selectedProject.Id);
+        //        }
+        //    }
+        //}
 
-        private Issue _selectedIssue;
+        //private Issue _selectedIssue;
 
-        public Issue SelectedIssue
-        {
-            get { return _selectedIssue; }
-            set
-            {
-                _selectedIssue = value;
-                OnPropertyChanged();
-            }
-        }
+        //public Issue SelectedIssue
+        //{
+        //    get { return _selectedIssue; }
+        //    set
+        //    {
+        //        _selectedIssue = value;
+        //        OnPropertyChanged();
+        //    }
+        //}
 
 
-        private string _spentTime;
+        //private string _spentTime;
 
-        public string SpentTime
-        {
-            get { return _spentTime; }
-            set
-            {
-                _spentTime = value;
-                TimeEntry.SpentTime = _spentTime;
-                OnPropertyChanged();
-            }
-        }
+        //public string SpentTime
+        //{
+        //    get { return _spentTime; }
+        //    set
+        //    {
+        //        _spentTime = value;
+        //        OnPropertyChanged();
+        //    }
+        //}
 
-        private string _comment;
+        //private string _comment;
 
-        public string Comment
-        {
-            get { return _comment; }
-            set
-            {
-                _comment = value;
-                OnPropertyChanged();
-            }
-        }
+        //public string Comment
+        //{
+        //    get { return _comment; }
+        //    set
+        //    {
+        //        _comment = value;
+        //        OnPropertyChanged();
+        //    }
+        //}
     }
 }

@@ -48,13 +48,13 @@ namespace UI.Wrapper
             switch (propertyName)
             {
                 case nameof(SelectedProject):
-                    if (SelectedProject.Id <= 0)
+                    if (SelectedProject == null)
                     {
                         yield return "Project is not selected";
                     }
                     break;
                 case nameof(SelectedIssue):
-                    if (SelectedIssue.Id <= 0)
+                    if (SelectedIssue == null)
                     {
                         yield return "Task is not selected";
                     }
