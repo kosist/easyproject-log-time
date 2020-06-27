@@ -16,18 +16,6 @@ namespace UI.ViewModel
     {
         private IEPProvider _provider;
         private IEventAggregator _eventAggregator;
-        private TimeEntryWrapper _timeEntry;
-
-        public TimeEntryWrapper TimeEntry
-        {
-            get { return _timeEntry; }
-            set
-            {
-                _timeEntry = value;
-                OnPropertyChanged();
-            }
-        }
-
 
         public ObservableCollection<Project> Projects { get; private set; }
         public ObservableCollection<Issue> Issues { get; private set; }
@@ -104,5 +92,22 @@ namespace UI.ViewModel
                 Issues.Add(issue);
             }
         }
+
+        #region fullProperties
+
+        private TimeEntryWrapper _timeEntry;
+
+        public TimeEntryWrapper TimeEntry
+        {
+            get { return _timeEntry; }
+            set
+            {
+                _timeEntry = value;
+                OnPropertyChanged();
+            }
+        }
+
+        #endregion
+
     }
 }
