@@ -1,7 +1,7 @@
 ﻿using System.Globalization;
 using System.Text.RegularExpressions;
 
-namespace UI.Helper
+namespace Support.Helper
 {
     public class SpentTimeValidation
     {

@@ -6,6 +6,7 @@ using AutoMapper;
 using BaseLayer.Model;
 using EPProvider.DTO;
 using RestSharp;
+using Support.Helper;
 
 namespace EPProvider
 {
@@ -48,12 +49,23 @@ namespace EPProvider
             throw new ArgumentOutOfRangeException("Project ID value is invalid!");
         }
 
-        public void AddTimeEntry(TimeEntry timeEntryData)
+        public bool AddTimeEntry(TimeEntry timeEntryData)
         {
+            if (timeEntryData.ProjectId <= 0)
+                throw new ArgumentOutOfRangeException("Project Id is not valid");
+            if (timeEntryData.IssueId <= 0)
+                throw new ArgumentOutOfRangeException("Issue Id is not valid");
+            if (!SpentTimeValidation.CheckTimeFormatPattern(timeEntryData.SpentTime)
+                || !SpentTimeValidation.CheckDoubleFormatPattern(timeEntryData.SpentTime)
+                || !SpentTimeValidation.CheckGroupSeparator(timeEntryData.SpentTime))
+                throw new ArgumentException("Spent time has invalid format");
+
             var timeEntry = _mapper.Map<TimeEntry, TimeEntryDTO>(timeEntryData);
             var request = new RestRequest($"time_entries.xml?key={_credentials}", Method.POST, DataFormat.Xml);
             request.AddXmlBody(timeEntry);
-            _client.Post<TimeEntryDTO>(request);
+            var response = _client.Post<TimeEntryDTO>(request);
+            var code = (int) response.StatusCode;
+            return (code == 201);
         }
     }
 }

@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Globalization;
-using System.Text.RegularExpressions;
 using BaseLayer.Model;
-using UI.Helper;
+using Support.Helper;
 using UI.ViewModel;
 
 namespace UI.Wrapper

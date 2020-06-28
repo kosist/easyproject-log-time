@@ -45,7 +45,7 @@ namespace UI.ViewModel
                 Description = TimeEntry.Description,
                 SpentTime = TimeEntry.SpentTime,
             };
-            //_provider.AddTimeEntry(TimeEntry);
+            _provider.AddTimeEntry(timeEntry);
         }
 
         private bool OnSaveCanExecute()

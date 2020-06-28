@@ -25,6 +25,7 @@
   <ItemGroup>
     <ProjectReference Include="..\BaseLayer\BaseLayer.csproj" />
     <ProjectReference Include="..\EPProvider\EPProvider.csproj" />
+    <ProjectReference Include="..\Support\Support.csproj" />
   </ItemGroup>
 
 </Project>

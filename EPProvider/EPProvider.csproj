@@ -11,6 +11,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\BaseLayer\BaseLayer.csproj" />
+    <ProjectReference Include="..\Support\Support.csproj" />
   </ItemGroup>
 
 </Project>
