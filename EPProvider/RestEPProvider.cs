@@ -43,9 +43,12 @@ namespace EPProvider
             return issues;
         }
 
-        public void AddTimeEntry(TimeEntry timeEntryData)
+        public async Task AddTimeEntry(TimeEntry timeEntryData)
         {
-            throw new System.NotImplementedException();
+            var timeEntry = _mapper.Map<TimeEntry, TimeEntryDTO>(timeEntryData);
+            var request = new RestRequest($"time_entries.xml?key={_credentials}", Method.POST, DataFormat.Xml);
+            request.AddXmlBody(timeEntry);
+            await _client.PostAsync<TimeEntryDTO>(request);
         }
     }
 }
