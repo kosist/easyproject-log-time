@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -33,14 +34,18 @@ namespace EPProvider
 
         public async Task<List<Issue>> GetIssuesListForProjectAsync(int projectId)
         {
-            var request = new RestRequest("issues.xml", Method.GET, DataFormat.Xml);
-            request.AddHeader("content-type", "application/xml");
-            request.AddParameter("key", _credentials);
-            request.AddParameter("limit", 1000);
-            request.AddParameter("project_id", projectId);
-            var requestResult = await _client.ExecuteAsync<List<IssueDTO>>(request);
-            var issues = requestResult.Data.Select(_mapper.Map<IssueDTO, Issue>).ToList();
-            return issues;
+            if (projectId > 0)
+            {
+                var request = new RestRequest("issues.xml", Method.GET, DataFormat.Xml);
+                request.AddHeader("content-type", "application/xml");
+                request.AddParameter("key", _credentials);
+                request.AddParameter("limit", 1000);
+                request.AddParameter("project_id", projectId);
+                var requestResult = await _client.ExecuteAsync<List<IssueDTO>>(request);
+                var issues = requestResult.Data.Select(_mapper.Map<IssueDTO, Issue>).ToList();
+                return issues;
+            }
+            throw new ArgumentOutOfRangeException("Project ID value is invalid!");
         }
 
         public async Task AddTimeEntry(TimeEntry timeEntryData)
