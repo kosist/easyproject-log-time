@@ -45,7 +45,27 @@ namespace UI.ViewModel
                 Description = TimeEntry.Description,
                 SpentTime = TimeEntry.SpentTime,
             };
-            _provider.AddTimeEntry(timeEntry);
+            //var result = _provider.AddTimeEntry(timeEntry);
+            //if (!result)
+            //    throw new Exception("Post method executed with error!");
+
+            TimeEntry = new TimeEntryWrapper(new TimeEntryItemViewModel());
+            TimeEntry.PropertyChanged += (s, e) =>
+            {
+                if (e.PropertyName == nameof(TimeEntry.HasErrors))
+                {
+                    ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
+                }
+
+                if (e.PropertyName == "SelectedProject")
+                {
+                    TimeEntry.SpentTime = "";
+                    TimeEntry.Description = "";
+                    DisplayIssuesList(TimeEntry.SelectedProject.Id);
+                }
+
+            };
+            ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
         }
 
         private bool OnSaveCanExecute()

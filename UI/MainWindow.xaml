@@ -30,11 +30,11 @@
         </StackPanel>
         <StackPanel Grid.Row="3">
             <Label Content="Comment:" Margin="10 10 10 0" FontSize="14"/>
-            <TextBox Margin="10 0" Text="{Binding Comment, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" FontSize="16"/>
+            <TextBox Margin="10 0" Text="{Binding TimeEntry.Description, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" FontSize="16"/>
         </StackPanel>
         <StackPanel Grid.Row="4">
             <Label Content="Spent on:" Margin="10 10 10 0" FontSize="14"/>
-            <DatePicker Margin="10 0" Width="120" HorizontalAlignment="Left" SelectedDate="{Binding SpentOnDate, Mode=TwoWay}" SelectedDateFormat="Short" Focusable="False" FontSize="16" MinWidth="150"/>
+            <DatePicker Margin="10 0" Width="120" HorizontalAlignment="Left" SelectedDate="{Binding TimeEntry.SpentOnDate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" SelectedDateFormat="Short" Focusable="False" FontSize="16" MinWidth="150"/>
         </StackPanel>
         <Grid Grid.Row="5">
             <Grid.ColumnDefinitions>

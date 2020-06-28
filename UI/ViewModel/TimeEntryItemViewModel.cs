@@ -16,5 +16,10 @@ namespace UI.ViewModel
 
         public DateTime SpentOnDate { get; set; }
 
+        public TimeEntryItemViewModel()
+        {
+            SpentOnDate = DateTime.Now;
+        }
+
     }
 }

@@ -55,9 +55,13 @@ namespace EPProvider
                 throw new ArgumentOutOfRangeException("Project Id is not valid");
             if (timeEntryData.IssueId <= 0)
                 throw new ArgumentOutOfRangeException("Issue Id is not valid");
-            if (!SpentTimeValidation.CheckTimeFormatPattern(timeEntryData.SpentTime)
-                || !SpentTimeValidation.CheckDoubleFormatPattern(timeEntryData.SpentTime)
-                || !SpentTimeValidation.CheckGroupSeparator(timeEntryData.SpentTime))
+
+            bool timeFormatRegexValid = SpentTimeValidation.CheckTimeFormatPattern(timeEntryData.SpentTime);
+            bool doubleFormatRegexValid = SpentTimeValidation.CheckDoubleFormatPattern(timeEntryData.SpentTime);
+            bool foundGroupSeparator = SpentTimeValidation.CheckGroupSeparator(timeEntryData.SpentTime);
+            var validFlag = !foundGroupSeparator && (doubleFormatRegexValid || timeFormatRegexValid);
+
+            if (!validFlag)
                 throw new ArgumentException("Spent time has invalid format");
 
             var timeEntry = _mapper.Map<TimeEntry, TimeEntryDTO>(timeEntryData);

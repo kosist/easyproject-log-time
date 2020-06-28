@@ -1,4 +1,4 @@
-﻿using UI.Helper;
+﻿using Support.Helper;
 using Xunit;
 
 namespace UnitTests
