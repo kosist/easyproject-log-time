@@ -81,7 +81,7 @@ namespace UI.Wrapper
             double result = 0.0;
             string text = spentTime;
 
-            var timeFormatPattern = @"^(?:0?[0-9]|1[0-9]|2[0-9]):[0-9][0-9]$";
+            var timeFormatPattern = @"^(?:0?[0-9]|1[0-9]|2[0-9]):[0-5][0-9]$";
             Regex timeFormatRegex = new Regex(timeFormatPattern);
             bool timeFormatRegexValid = timeFormatRegex.IsMatch(text);
 

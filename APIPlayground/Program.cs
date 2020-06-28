@@ -30,7 +30,7 @@ namespace APIPlayground
                 ProjectId = 240,
                 IssueId = 4770,
                 Description = "Test API",
-                SpentTime = 2.5,
+                SpentTime = "2.5",
                 SpentOnDate = "2020-06-28"
             };
 

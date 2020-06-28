@@ -8,6 +8,6 @@ namespace EPProvider
     {
         Task<List<Project>> GetProjectsListAsync();
         Task<List<Issue>> GetIssuesListForProjectAsync(int projectId);
-        Task AddTimeEntry(TimeEntry timeEntryData);
+        void AddTimeEntry(TimeEntry timeEntryData);
     }
 }

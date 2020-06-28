@@ -48,12 +48,12 @@ namespace EPProvider
             throw new ArgumentOutOfRangeException("Project ID value is invalid!");
         }
 
-        public async Task AddTimeEntry(TimeEntry timeEntryData)
+        public void AddTimeEntry(TimeEntry timeEntryData)
         {
             var timeEntry = _mapper.Map<TimeEntry, TimeEntryDTO>(timeEntryData);
             var request = new RestRequest($"time_entries.xml?key={_credentials}", Method.POST, DataFormat.Xml);
             request.AddXmlBody(timeEntry);
-            await _client.PostAsync<TimeEntryDTO>(request);
+            _client.Post<TimeEntryDTO>(request);
         }
     }
 }

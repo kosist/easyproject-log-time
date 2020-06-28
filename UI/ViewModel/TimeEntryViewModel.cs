@@ -35,7 +35,7 @@ namespace UI.ViewModel
             SaveCommand = new DelegateCommand(OnSaveExecute, OnSaveCanExecute);
         }
 
-        private async Task OnSaveExecute()
+        private void OnSaveExecute()
         {
             var timeEntry = new TimeEntry
             {
@@ -43,9 +43,9 @@ namespace UI.ViewModel
                 IssueId = TimeEntry.SelectedIssue.Id,
                 SpentOnDate = TimeEntry.SpentOnDate,
                 Description = TimeEntry.Description,
-                SpentTime = Convert.ToDouble(TimeEntry.SpentTime),
+                SpentTime = TimeEntry.SpentTime,
             };
-            //await _provider.AddTimeEntry(TimeEntry);
+            //_provider.AddTimeEntry(TimeEntry);
         }
 
         private bool OnSaveCanExecute()

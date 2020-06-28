@@ -12,7 +12,7 @@ namespace EPProvider.DTO
         public int IssueId { get; set; }
 
         [SerializeAs(Name ="hours")]
-        public double SpentTime { get; set; }
+        public string SpentTime { get; set; }
 
         [SerializeAs(Name ="comments")]
         public string Description { get; set; }
