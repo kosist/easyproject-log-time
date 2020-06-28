@@ -7,7 +7,7 @@ namespace UI.Helper
     {
         public static bool CheckTimeFormatPattern(string spentTime)
         {
-            var timeFormatPattern = @"^(?:0?[0-9]|1[0-9]|2[0-9]):[0-5][0-9]$";
+            var timeFormatPattern = @"^(?:0?[0-9]|[0-9][0-9]):[0-5][0-9]$";
             Regex timeFormatRegex = new Regex(timeFormatPattern);
             bool timeFormatRegexValid = timeFormatRegex.IsMatch(spentTime);
             return timeFormatRegexValid;

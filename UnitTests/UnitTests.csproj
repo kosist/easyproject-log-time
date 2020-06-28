@@ -18,6 +18,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\EPProvider\EPProvider.csproj" />
+    <ProjectReference Include="..\UI\UI.csproj" />
   </ItemGroup>
 
 </Project>

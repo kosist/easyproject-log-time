@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Text.RegularExpressions;
 using BaseLayer.Model;
+using UI.Helper;
 using UI.ViewModel;
 
 namespace UI.Wrapper
@@ -77,22 +78,10 @@ namespace UI.Wrapper
 
         private bool ValidateSpentTime(string spentTime)
         {
-            var cultureInfo = CultureInfo.CurrentCulture;
-            double result = 0.0;
-            string text = spentTime;
-
-            var timeFormatPattern = @"^(?:0?[0-9]|1[0-9]|2[0-9]):[0-5][0-9]$";
-            Regex timeFormatRegex = new Regex(timeFormatPattern);
-            bool timeFormatRegexValid = timeFormatRegex.IsMatch(text);
-
-            var doubleFormatPattern = $@"^(\d+\{cultureInfo.NumberFormat.NumberDecimalSeparator}?\d{{0,2}}$)[\d.]{{0,2}}$";
-            Regex doubleFormatRegex = new Regex(doubleFormatPattern);
-            bool doubleFormatRegexValid = doubleFormatRegex.IsMatch(text);
-
-            string groupSeparator = cultureInfo.NumberFormat.NumberGroupSeparator;
-            bool canConvert = double.TryParse(text, out result);
-            bool foundGroupSeparator = text.Contains(groupSeparator);
-            var validFlag = !foundGroupSeparator && ((canConvert && doubleFormatRegexValid) || timeFormatRegexValid);
+            bool timeFormatRegexValid = SpentTimeValidation.CheckTimeFormatPattern(spentTime);
+            bool doubleFormatRegexValid = SpentTimeValidation.CheckDoubleFormatPattern(spentTime);
+            bool foundGroupSeparator = SpentTimeValidation.CheckGroupSeparator(spentTime);
+            var validFlag = !foundGroupSeparator && (doubleFormatRegexValid || timeFormatRegexValid);
             return validFlag;
         }
     }
