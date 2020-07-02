@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using BaseLayer.Model;
@@ -19,6 +20,7 @@ namespace UI.ViewModel
 
         public ObservableCollection<Project> Projects { get; private set; }
         public ObservableCollection<Issue> Issues { get; private set; }
+        public ObservableCollection<Node> Nodes { get; private set; }
         public DateTime SpentOnDate { get; set; }
 
         public ICommand SaveCommand { get; }
@@ -29,6 +31,7 @@ namespace UI.ViewModel
             _eventAggregator = eventAggregator;
             Projects = new ObservableCollection<Project>();
             Issues = new ObservableCollection<Issue>();
+            Nodes = new ObservableCollection<Node>();
             SpentOnDate = DateTime.Today;
             DisplayProjectsAsync();
 
@@ -119,6 +122,8 @@ namespace UI.ViewModel
             {
                 Issues.Add(issue);
             }
+            Nodes.Clear();
+            Nodes = (ObservableCollection<Node>)BuildTreeAndGetRoots(Issues);
         }
 
         #region fullProperties
@@ -137,5 +142,34 @@ namespace UI.ViewModel
 
         #endregion
 
+        public class Node
+        {
+            public List<Node> Children = new List<Node>();
+            public Node Parent { get; set; }
+            public Issue AssociatedObject { get; set; }
+            public string Name { get; set; }
+        }
+
+        public IEnumerable<Node> BuildTreeAndGetRoots(ObservableCollection<Issue> actualObjects)
+        {
+            Dictionary<int, Node> lookup = new Dictionary<int, Node>();
+
+            foreach (var issue in actualObjects)
+            {
+                lookup.Add(issue.Id, new Node { AssociatedObject = issue, Name = issue.Name });
+            }
+
+            //actualObjects.ForEach(x => lookup.Add(x.Id, new Node { AssociatedObject = x }));
+            foreach (var item in lookup.Values)
+            {
+                Node proposedParent;
+                if (lookup.TryGetValue(item.AssociatedObject.ParentId, out proposedParent))
+                {
+                    item.Parent = proposedParent;
+                    proposedParent.Children.Add(item);
+                }
+            }
+            return lookup.Values.Where(x => x.Parent != null);
+        }
     }
 }
