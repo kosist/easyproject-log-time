@@ -21,18 +21,24 @@
             <ColumnDefinition/>
             <ColumnDefinition Width="300"/>
         </Grid.ColumnDefinitions>
-        <TreeView Grid.Column="1" Grid.RowSpan="6" ItemsSource="{Binding Nodes}" DisplayMemberPath="{Binding Name}">
+        <TreeView Grid.Column="1" Grid.RowSpan="6" ItemsSource="{Binding Nodes}">
             <TreeView.ItemContainerStyle>
                 <Style TargetType="{x:Type TreeViewItem}">
                     <Setter Property="IsExpanded" Value="True"/>
                 </Style>
             </TreeView.ItemContainerStyle>
-            <!--<TreeView.Resources>
-                <HierarchicalDataTemplate DataType="{x:Type viewModel:TimeEntryViewModel}" ItemsSource="{Binding Nodes}">
-                    <TextBlock Margin="3" VerticalAlignment="Center" Text="{Binding Name}" />
-                </HierarchicalDataTemplate>
-            </TreeView.Resources>-->
+            <TreeView.Items>
+                <TreeViewItem Header="{Binding Name}" ItemsSource="{Binding Children}">
+                    <HierarchicalDataTemplate DataType="{x:Type viewModel:IssueItemViewModel}" ItemsSource="{Binding Children}">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Margin="3" VerticalAlignment="Center" Text="{Binding Name}" />
+                        </StackPanel>
+                    </HierarchicalDataTemplate>
+                </TreeViewItem>
+
+            </TreeView.Items>
         </TreeView>
+        <!--<ComboBox Grid.Column="1" Margin="10 0" ItemsSource="{Binding Nodes}" DisplayMemberPath="Name"/>-->
         <StackPanel>
             <Label Content="Project name:" Margin="10 10 10 0" FontSize="14"/>
             <ComboBox Margin="10 0" ItemsSource="{Binding Projects}" DisplayMemberPath="Name" SelectedItem="{Binding TimeEntry.SelectedProject, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>

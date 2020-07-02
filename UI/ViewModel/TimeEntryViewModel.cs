@@ -20,7 +20,7 @@ namespace UI.ViewModel
 
         public ObservableCollection<Project> Projects { get; private set; }
         public ObservableCollection<Issue> Issues { get; private set; }
-        public ObservableCollection<Node> Nodes { get; private set; }
+        public ObservableCollection<IssueItemViewModel> Nodes { get; private set; }
         public DateTime SpentOnDate { get; set; }
 
         public ICommand SaveCommand { get; }
@@ -31,7 +31,7 @@ namespace UI.ViewModel
             _eventAggregator = eventAggregator;
             Projects = new ObservableCollection<Project>();
             Issues = new ObservableCollection<Issue>();
-            Nodes = new ObservableCollection<Node>();
+            Nodes = new ObservableCollection<IssueItemViewModel>();
             SpentOnDate = DateTime.Today;
             DisplayProjectsAsync();
 
@@ -122,8 +122,9 @@ namespace UI.ViewModel
             {
                 Issues.Add(issue);
             }
-            Nodes.Clear();
-            Nodes = (ObservableCollection<Node>)BuildTreeAndGetRoots(Issues);
+
+            BuildTreeAndGetRoots(Issues);
+
         }
 
         #region fullProperties
@@ -150,26 +151,31 @@ namespace UI.ViewModel
             public string Name { get; set; }
         }
 
-        public IEnumerable<Node> BuildTreeAndGetRoots(ObservableCollection<Issue> actualObjects)
+        public void BuildTreeAndGetRoots(ObservableCollection<Issue> actualObjects)
         {
-            Dictionary<int, Node> lookup = new Dictionary<int, Node>();
+            Nodes.Clear();
+            Dictionary<int, IssueItemViewModel> lookup = new Dictionary<int, IssueItemViewModel>();
 
             foreach (var issue in actualObjects)
             {
-                lookup.Add(issue.Id, new Node { AssociatedObject = issue, Name = issue.Name });
+                lookup.Add(issue.Id, new IssueItemViewModel { AssociatedObject = issue, Name = issue.Name });
             }
 
             //actualObjects.ForEach(x => lookup.Add(x.Id, new Node { AssociatedObject = x }));
             foreach (var item in lookup.Values)
             {
-                Node proposedParent;
+                IssueItemViewModel proposedParent;
                 if (lookup.TryGetValue(item.AssociatedObject.ParentId, out proposedParent))
                 {
                     item.Parent = proposedParent;
                     proposedParent.Children.Add(item);
                 }
             }
-            return lookup.Values.Where(x => x.Parent != null);
+            //return lookup.Values.Where(x => x.Parent == null);
+            foreach (var node in lookup)
+            {
+                Nodes.Add(node.Value);
+            }
         }
     }
 }
