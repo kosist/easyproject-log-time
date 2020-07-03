@@ -6,14 +6,14 @@ namespace UI.ViewModel
 {
     public class IssueItemViewModel : ViewModelBase
     {
-        public ObservableCollection<IssueItemViewModel> Children = new ObservableCollection<IssueItemViewModel>();
+        public List<IssueItemViewModel> Children { get; private set; }
         public IssueItemViewModel Parent { get; set; }
         public Issue AssociatedObject { get; set; }
         public string Name { get; set; }
 
         public IssueItemViewModel()
         {
-            Children = new ObservableCollection<IssueItemViewModel>();
+            Children = new List<IssueItemViewModel>();
         }
     }
 }

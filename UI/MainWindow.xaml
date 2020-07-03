@@ -27,16 +27,11 @@
                     <Setter Property="IsExpanded" Value="True"/>
                 </Style>
             </TreeView.ItemContainerStyle>
-            <TreeView.Items>
-                <TreeViewItem Header="{Binding Name}" ItemsSource="{Binding Children}">
-                    <HierarchicalDataTemplate DataType="{x:Type viewModel:IssueItemViewModel}" ItemsSource="{Binding Children}">
-                        <StackPanel Orientation="Horizontal">
-                            <TextBlock Margin="3" VerticalAlignment="Center" Text="{Binding Name}" />
-                        </StackPanel>
-                    </HierarchicalDataTemplate>
-                </TreeViewItem>
-
-            </TreeView.Items>
+            <TreeView.ItemTemplate>
+                <HierarchicalDataTemplate ItemsSource="{Binding Children}">
+                    <TextBlock Margin="3" VerticalAlignment="Center" Text="{Binding Name}" />
+                </HierarchicalDataTemplate>
+            </TreeView.ItemTemplate>
         </TreeView>
         <!--<ComboBox Grid.Column="1" Margin="10 0" ItemsSource="{Binding Nodes}" DisplayMemberPath="Name"/>-->
         <StackPanel>

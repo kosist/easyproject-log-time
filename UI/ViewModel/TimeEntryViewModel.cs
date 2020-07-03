@@ -158,7 +158,11 @@ namespace UI.ViewModel
 
             foreach (var issue in actualObjects)
             {
-                lookup.Add(issue.Id, new IssueItemViewModel { AssociatedObject = issue, Name = issue.Name });
+                lookup.Add(issue.Id, new IssueItemViewModel
+                {
+                    AssociatedObject = issue,
+                    Name = issue.Name,
+                });
             }
 
             //actualObjects.ForEach(x => lookup.Add(x.Id, new Node { AssociatedObject = x }));
@@ -174,7 +178,8 @@ namespace UI.ViewModel
             //return lookup.Values.Where(x => x.Parent == null);
             foreach (var node in lookup)
             {
-                Nodes.Add(node.Value);
+                if (node.Value.Parent == null)
+                    Nodes.Add(node.Value);
             }
         }
     }
