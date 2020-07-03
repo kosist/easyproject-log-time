@@ -10,6 +10,7 @@ namespace UI.ViewModel
         public IssueItemViewModel Parent { get; set; }
         public Issue AssociatedObject { get; set; }
         public string Name { get; set; }
+        public int Level { get; set; }
 
         public IssueItemViewModel()
         {

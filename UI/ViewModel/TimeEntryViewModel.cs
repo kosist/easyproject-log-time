@@ -162,6 +162,7 @@ namespace UI.ViewModel
                 {
                     AssociatedObject = issue,
                     Name = issue.Name,
+                    Level = 0,
                 });
             }
 
@@ -173,6 +174,7 @@ namespace UI.ViewModel
                 {
                     item.Parent = proposedParent;
                     proposedParent.Children.Add(item);
+                    item.Level++;
                 }
             }
             //return lookup.Values.Where(x => x.Parent == null);
