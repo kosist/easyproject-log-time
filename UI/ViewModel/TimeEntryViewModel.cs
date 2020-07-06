@@ -21,6 +21,7 @@ namespace UI.ViewModel
         public ObservableCollection<Project> Projects { get; private set; }
         public ObservableCollection<Issue> Issues { get; private set; }
         public ObservableCollection<IssueItemViewModel> Nodes { get; private set; }
+        public ObservableCollection<IssueItemViewModel> Tasks { get; private set; }
         public DateTime SpentOnDate { get; set; }
 
         public ICommand SaveCommand { get; }
@@ -32,6 +33,7 @@ namespace UI.ViewModel
             Projects = new ObservableCollection<Project>();
             Issues = new ObservableCollection<Issue>();
             Nodes = new ObservableCollection<IssueItemViewModel>();
+            Tasks = new ObservableCollection<IssueItemViewModel>();
             SpentOnDate = DateTime.Today;
             DisplayProjectsAsync();
 
@@ -173,15 +175,37 @@ namespace UI.ViewModel
                 if (lookup.TryGetValue(item.AssociatedObject.ParentId, out proposedParent))
                 {
                     item.Parent = proposedParent;
-                    proposedParent.Children.Add(item);
                     item.Level++;
+                    proposedParent.Children.Add(item);
                 }
             }
             //return lookup.Values.Where(x => x.Parent == null);
             foreach (var node in lookup)
-            {
+            {                
                 if (node.Value.Parent == null)
                     Nodes.Add(node.Value);
+            }
+            Tasks.Clear();
+            IndentNames(Nodes);
+        }
+
+        private void IndentNames(ObservableCollection<IssueItemViewModel> nodes)
+        {
+            
+            foreach (var node in nodes)
+            {
+                var item = new IssueItemViewModel();
+                item.AssociatedObject = node.AssociatedObject;
+                item.Parent = node.Parent;
+                item.Level = node.Level++;
+                item.Name = node.Name;
+                item.Children.AddRange(node.Children);
+                for (int i = 0; i < item.Level; i++)
+                {
+                    item.Name = "   " + item.Name;
+                }
+                Tasks.Add(item);
+                IndentNames(new ObservableCollection<IssueItemViewModel>(node.Children));
             }
         }
     }
