@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Web;
 using System.Windows.Input;
 using BaseLayer.Model;
 using EPProvider;
@@ -164,6 +165,7 @@ namespace UI.ViewModel
                 {
                     AssociatedObject = issue,
                     Name = issue.Name,
+                    SelectedName = issue.Name,
                     Level = 0,
                 });
             }
@@ -175,17 +177,19 @@ namespace UI.ViewModel
                 if (lookup.TryGetValue(item.AssociatedObject.ParentId, out proposedParent))
                 {
                     item.Parent = proposedParent;
-                    item.Level++;
                     proposedParent.Children.Add(item);
                 }
             }
             //return lookup.Values.Where(x => x.Parent == null);
             foreach (var node in lookup)
-            {                
+            {
                 if (node.Value.Parent == null)
+                {
                     Nodes.Add(node.Value);
+                }
             }
             Tasks.Clear();
+            UpdateLevel(Nodes);
             IndentNames(Nodes);
         }
 
@@ -197,15 +201,38 @@ namespace UI.ViewModel
                 var item = new IssueItemViewModel();
                 item.AssociatedObject = node.AssociatedObject;
                 item.Parent = node.Parent;
-                item.Level = node.Level++;
+                item.Level = node.Level;
                 item.Name = node.Name;
-                item.Children.AddRange(node.Children);
+                item.SelectedName = node.SelectedName;
+                foreach (var child in node.Children)
+                {
+                    item.Children.Add(child);
+                }
                 for (int i = 0; i < item.Level; i++)
                 {
                     item.Name = "   " + item.Name;
                 }
                 Tasks.Add(item);
                 IndentNames(new ObservableCollection<IssueItemViewModel>(node.Children));
+            }
+        }
+
+        private void UpdateLevel(ObservableCollection<IssueItemViewModel> items)
+        {
+            foreach (var item in items)
+            {
+                if (item.Parent != null)
+                {
+                    if (item.Level != item.Parent.Level + 1)
+                    {
+                        item.Level = item.Parent.Level + 1;
+                    }
+                }
+                else
+                {
+                    item.Level++;
+                }
+                UpdateLevel(item.Children);
             }
         }
     }
