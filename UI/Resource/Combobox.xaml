@@ -96,7 +96,7 @@
                             Margin="3,3,23,3"
                             Focusable="True" 
                             Background="GhostWhite"
-                            Foreground="Green"
+                            Foreground="Black"
                             Visibility="Hidden"
                             IsReadOnly="{TemplateBinding IsReadOnly}"/>
                         <Popup 

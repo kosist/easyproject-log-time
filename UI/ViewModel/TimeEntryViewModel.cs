@@ -24,7 +24,6 @@ namespace UI.ViewModel
         public ObservableCollection<IssueItemViewModel> Nodes { get; private set; }
         public ObservableCollection<IssueItemViewModel> Tasks { get; private set; }
         public DateTime SpentOnDate { get; set; }
-
         public ICommand SaveCommand { get; }
 
         public TimeEntryViewModel(IEPProvider provider, IEventAggregator eventAggregator)
@@ -125,9 +124,7 @@ namespace UI.ViewModel
             {
                 Issues.Add(issue);
             }
-
             BuildTreeAndGetRoots(Issues);
-
         }
 
         #region fullProperties

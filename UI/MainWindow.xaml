@@ -7,7 +7,7 @@
         xmlns:validationrules="clr-namespace:UI.Rule"
         xmlns:viewModel="clr-namespace:UI.ViewModel"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="MainWindow" Height="450" Width="500">
 
     <Grid DataContext="{Binding TimeEntryViewModel}">
         <Grid.RowDefinitions>
@@ -18,26 +18,6 @@
             <RowDefinition/>
             <RowDefinition/>
         </Grid.RowDefinitions>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition/>
-            <ColumnDefinition Width="300"/>
-        </Grid.ColumnDefinitions>
-        <!--<ScrollViewer Grid.Column="1">-->
-        <!--<Popup IsOpen="{Binding IsExpanded, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Expander}}}" Height="400">-->
-        <TreeView Grid.Column="1" Grid.Row="0" Margin="10 35 10 0" Grid.RowSpan="6" ItemsSource="{Binding Nodes}" BorderThickness="0">
-            <TreeView.ItemContainerStyle>
-                <Style TargetType="{x:Type TreeViewItem}">
-                    <Setter Property="IsExpanded" Value="True"/>
-                </Style>
-            </TreeView.ItemContainerStyle>
-            <TreeView.ItemTemplate>
-                <HierarchicalDataTemplate ItemsSource="{Binding Children}">
-                    <TextBlock Margin="3" VerticalAlignment="Center" Text="{Binding Name}" />
-                </HierarchicalDataTemplate>
-            </TreeView.ItemTemplate>
-        </TreeView>
-        <!--</Popup>-->
-        <!--</ScrollViewer>-->
 
         <StackPanel>
             <Label Content="Project name:" Margin="10 10 10 0" FontSize="14"/>
@@ -46,7 +26,7 @@
         <StackPanel Grid.Row="1">
             <Label Content="Task name:" Margin="10 10 10 0" FontSize="14"/>
             <!--<ComboBox Grid.Row="1" Margin="10 0"  ItemsSource="{Binding Issues}" DisplayMemberPath="Name" SelectedItem="{Binding TimeEntry.SelectedIssue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>-->
-            <ComboBox Grid.Row="1" Margin="10 0"  ItemsSource="{Binding Tasks}" DisplayMemberPath="Name"/>
+            <ComboBox Grid.Row="1" Margin="10 0"  ItemsSource="{Binding Tasks}" DisplayMemberPath="Name" SelectedValuePath="AssociatedObject" SelectedValue="{Binding TimeEntry.SelectedIssue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" IsEditable="True" IsTextSearchEnabled="True"  TextSearch.TextPath="SelectedName" StaysOpenOnEdit="True"/>
         </StackPanel>
         <StackPanel Grid.Row="2">
             <Label Content="Spent hours:" Margin="10 10 10 0" FontSize="14"/>
