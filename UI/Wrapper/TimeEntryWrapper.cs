@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using System.Collections.Generic;
 using BaseLayer.Model;
 using Support.Helper;
@@ -68,7 +69,8 @@ namespace UI.Wrapper
                     }
                     else if (!ValidateSpentTime(SpentTime))
                     {
-                        yield return "Time entry has wrong format. Examples of valid formats: 1.5, 2:30, 05:45";
+                        var culture = CultureInfo.CurrentCulture;
+                        yield return $"Time entry has wrong format. Examples of valid formats: 1{culture.NumberFormat.NumberDecimalSeparator}5, 2:30, 05:45";
                     }
                     break;
             }
