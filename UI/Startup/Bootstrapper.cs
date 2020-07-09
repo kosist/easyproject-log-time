@@ -22,6 +22,7 @@ namespace UI.Startup
             builder.RegisterType<MainWindow>().AsSelf();
             builder.RegisterType<MainViewModel>().AsSelf();
             builder.RegisterType<TimeEntryViewModel>().As<ITimeEntryViewModel>();
+            builder.RegisterType<LoginViewModel>().As<ILoginViewModel>();
 
             return builder.Build();
         }
