@@ -3,6 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
         xmlns:local="clr-namespace:UI"
         xmlns:validationrules="clr-namespace:UI.Rule"
         xmlns:viewModel="clr-namespace:UI.ViewModel"
@@ -48,7 +49,16 @@
             </Grid.ColumnDefinitions>
 
             <Button Style="{StaticResource btn-success}"  Grid.Column="1" Margin="15" Content="Save" Command="{Binding SaveCommand}"/>
-            <Button Style="{StaticResource btn-danger}" Grid.Column="2" Margin="15" Content="Cancel"/>
+            <Button Style="{StaticResource btn-danger}" Grid.Column="2" Margin="15" Content="Exit">
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="Click">
+                        <i:CallMethodAction MethodName="Close"
+                                            TargetObject="{Binding RelativeSource={RelativeSource
+                                                  Mode=FindAncestor,
+                                                  AncestorType=Window}}" />
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
+            </Button>
         </Grid>
     </Grid>
 </Window>
