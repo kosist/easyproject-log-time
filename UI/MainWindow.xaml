@@ -8,57 +8,108 @@
         xmlns:validationrules="clr-namespace:UI.Rule"
         xmlns:viewModel="clr-namespace:UI.ViewModel"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="500">
+        Title="MainWindow" Height="500" Width="500">
 
-    <Grid DataContext="{Binding TimeEntryViewModel}">
-        <Grid.RowDefinitions>
-            <RowDefinition/>
-            <RowDefinition/>
-            <RowDefinition/>
-            <RowDefinition/>
-            <RowDefinition/>
-            <RowDefinition/>
-        </Grid.RowDefinitions>
+    <TabControl Grid.Row="0">
+        <TabItem Header="Login">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
 
-        <StackPanel>
-            <Label Content="Project name:" Margin="10 10 10 0" FontSize="14"/>
-            <ComboBox Margin="10 0" ItemsSource="{Binding Projects}" DisplayMemberPath="Name" SelectedItem="{Binding TimeEntry.SelectedProject, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" IsEditable="True" IsTextSearchEnabled="True"  TextSearch.TextPath="Name" StaysOpenOnEdit="True"/>
-        </StackPanel>
-        <StackPanel Grid.Row="1">
-            <Label Content="Task name:" Margin="10 10 10 0" FontSize="14"/>
-            <ComboBox Grid.Row="1" Margin="10 0"  ItemsSource="{Binding Tasks}" DisplayMemberPath="Name" SelectedValuePath="AssociatedObject" SelectedValue="{Binding TimeEntry.SelectedIssue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" IsEditable="True" IsTextSearchEnabled="True" TextSearch.TextPath="SelectedName" StaysOpenOnEdit="True"/>
-        </StackPanel>
-        <StackPanel Grid.Row="2">
-            <Label Content="Spent hours:" Margin="10 10 10 0" FontSize="14"/>
-            <TextBox Width="120" HorizontalAlignment="Left" Margin="10 0" FontSize="16" Text="{Binding TimeEntry.SpentTime, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-        </StackPanel>
-        <StackPanel Grid.Row="3">
-            <Label Content="Comment:" Margin="10 10 10 0" FontSize="14"/>
-            <TextBox Margin="10 0" Text="{Binding TimeEntry.Description, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" FontSize="16"/>
-        </StackPanel>
-        <StackPanel Grid.Row="4">
-            <Label Content="Spent on:" Margin="10 10 10 0" FontSize="14"/>
-            <DatePicker Margin="10 0" Width="120" HorizontalAlignment="Left" SelectedDate="{Binding TimeEntry.SpentOnDate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" SelectedDateFormat="Short" Focusable="False" FontSize="16" MinWidth="150"/>
-        </StackPanel>
-        <Grid Grid.Row="5">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition/>
-                <ColumnDefinition/>
-                <ColumnDefinition/>
-                <ColumnDefinition/>
-            </Grid.ColumnDefinitions>
+                <StackPanel Grid.Row="1">
+                    <Label Content="Login" Margin="100 10 100 0" FontSize="14"/>
+                    <TextBox Margin="100 10" FontSize="16"/>
+                </StackPanel>
 
-            <Button Style="{StaticResource btn-success}"  Grid.Column="1" Margin="15" Content="Save" Command="{Binding SaveCommand}"/>
-            <Button Style="{StaticResource btn-danger}" Grid.Column="2" Margin="15" Content="Exit">
-                <i:Interaction.Triggers>
-                    <i:EventTrigger EventName="Click">
-                        <i:CallMethodAction MethodName="Close"
-                                            TargetObject="{Binding RelativeSource={RelativeSource
+                <StackPanel Grid.Row="2">
+                    <Label Content="Password" Margin="100 10 100 0" FontSize="14"/>
+                    <PasswordBox Margin="100 10" FontSize="16"/>
+                </StackPanel>
+
+                <Grid Grid.Row="3">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <Button Style="{StaticResource btn-info}" Grid.Column="3" Margin="20 25 0 25" Content="Login"/>
+
+                </Grid>
+
+                
+
+            </Grid>
+        </TabItem>
+
+        <TabItem Header="Log Hours">
+            <TabItem.Content>
+
+                <Grid DataContext="{Binding TimeEntryViewModel}">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="29*"/>
+                        <ColumnDefinition Width="466*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+
+                    <StackPanel Grid.ColumnSpan="2">
+                        <Label Content="Project name:" Margin="10 10 10 0" FontSize="14"/>
+                        <ComboBox Margin="10 0" ItemsSource="{Binding Projects}" DisplayMemberPath="Name" SelectedItem="{Binding TimeEntry.SelectedProject, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" IsEditable="True" IsTextSearchEnabled="True"  TextSearch.TextPath="Name" StaysOpenOnEdit="True"/>
+                    </StackPanel>
+                    <StackPanel Grid.ColumnSpan="2" Margin="0,76,0,0" Grid.RowSpan="2">
+                        <Label Content="Task name:" Margin="10 10 10 0" FontSize="14"/>
+                        <ComboBox Grid.Row="1" Margin="10 0"  ItemsSource="{Binding Tasks}" DisplayMemberPath="Name" SelectedValuePath="AssociatedObject" SelectedValue="{Binding TimeEntry.SelectedIssue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" IsEditable="True" IsTextSearchEnabled="True" TextSearch.TextPath="SelectedName" StaysOpenOnEdit="True"/>
+                    </StackPanel>
+                    <StackPanel Grid.Row="1" Grid.ColumnSpan="2" Margin="0,76,0,0" Grid.RowSpan="2">
+                        <Label Content="Spent hours:" Margin="10 10 10 0" FontSize="14"/>
+                        <TextBox Width="120" HorizontalAlignment="Left" Margin="10 0" FontSize="16" Text="{Binding TimeEntry.SpentTime, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                    </StackPanel>
+                    <StackPanel Grid.Row="2" Grid.ColumnSpan="2" Margin="0,76,0,0" Grid.RowSpan="2">
+                        <Label Content="Comment:" Margin="10 10 10 0" FontSize="14"/>
+                        <TextBox Margin="10 0" Text="{Binding TimeEntry.Description, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" FontSize="16"/>
+                    </StackPanel>
+                    <StackPanel Grid.Row="3" Grid.ColumnSpan="2" Margin="0,76,0,0" Grid.RowSpan="2">
+                        <Label Content="Spent on:" Margin="10 10 10 0" FontSize="14"/>
+                        <DatePicker Margin="10 0" Width="120" HorizontalAlignment="Left" SelectedDate="{Binding TimeEntry.SpentOnDate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" SelectedDateFormat="Short" Focusable="False" FontSize="16" MinWidth="150"/>
+                    </StackPanel>
+
+                    <Grid Grid.Row="4" Grid.ColumnSpan="2" Margin="0,76,0,0" Grid.RowSpan="2">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+
+                        <Button Style="{StaticResource btn-success}"  Grid.Column="1" Margin="15" Content="Save" Command="{Binding SaveCommand}"/>
+                        <Button Style="{StaticResource btn-danger}" Grid.Column="2" Margin="15" Content="Exit">
+                            <i:Interaction.Triggers>
+                                <i:EventTrigger EventName="Click">
+                                    <i:CallMethodAction MethodName="Close"
+                                                            TargetObject="{Binding RelativeSource={RelativeSource
                                                   Mode=FindAncestor,
                                                   AncestorType=Window}}" />
-                    </i:EventTrigger>
-                </i:Interaction.Triggers>
-            </Button>
-        </Grid>
-    </Grid>
+                                </i:EventTrigger>
+                            </i:Interaction.Triggers>
+                        </Button>
+                    </Grid>
+
+                </Grid>
+            </TabItem.Content>
+        </TabItem>
+    </TabControl>
 </Window>
