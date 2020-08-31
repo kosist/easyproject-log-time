@@ -18,34 +18,43 @@ namespace APIPlayground
         static void Main(string[] args)
         {
             var client = new RestClient("https://anv.easyproject.cz");
+            
 
-            var request = new RestRequest("time_entries.xml?key=a6531eb52dfbb0076075887bea7aa7bbd94c507b", Method.POST, DataFormat.Xml);
-            //request.AddHeader("content-type", "application/xml");
-            //request.AddParameter("key", "a6531eb52dfbb0076075887bea7aa7bbd94c507b");
+            string easyProjectAPIKey = Environment.GetEnvironmentVariable("EasyProjectAPIKey", EnvironmentVariableTarget.User);
+            string easyProjectUserName = Environment.GetEnvironmentVariable("EasyProjectUserName", EnvironmentVariableTarget.User);
+            string easyProjectPassword = Environment.GetEnvironmentVariable("EasyProjectPassword", EnvironmentVariableTarget.User);
 
-            //request.AddParameter("project_id", "240");
+            client.Authenticator = new HttpBasicAuthenticator(easyProjectUserName, easyProjectPassword);
 
-            var timeEntry = new TimeEntryDTO
-            {
-                ProjectId = 240,
-                IssueId = 4770,
-                Description = "Test API",
-                SpentTime = "2.5",
-                SpentOnDate = "2020-06-28"
-            };
+            var request = new RestRequest("time_entries.xml?", Method.GET, DataFormat.Xml);
+            request.AddHeader("content-type", "application/xml");
+            //request.AddParameter("key", easyProjectAPIKey);
+            request.AddParameter("Username", easyProjectAPIKey);
+            request.AddParameter("Username", easyProjectAPIKey);
 
-            request.AddXmlBody(timeEntry);
+            request.AddParameter("project_id", "240");
 
-            var response = client.Post<TimeEntryDTO>(request);
-
-            Console.WriteLine(response.Request.Body);
-            Console.WriteLine(response.StatusCode);
-            Console.WriteLine(response.StatusDescription);
-            //var response = client.Execute<List<TimeEntryXML>>(request);
-            //foreach (var timeEntryXml in response.Data)
+            //var timeEntry = new TimeEntryDTO
             //{
-            //    Console.WriteLine($"Issue ID: {timeEntryXml.Issue.Id}");
-            //}
+            //    ProjectId = 240,
+            //    IssueId = 4770,
+            //    Description = "Test API",
+            //    SpentTime = "2.5",
+            //    SpentOnDate = "2020-06-28"
+            //};
+
+            //request.AddXmlBody(timeEntry);
+
+            //var response = client.Post<TimeEntryDTO>(request);
+
+            //Console.WriteLine(response.Request.Body);
+            //Console.WriteLine(response.StatusCode);
+            //Console.WriteLine(response.StatusDescription);
+            var response = client.Execute<List<TimeEntryXML>>(request);
+            foreach (var timeEntryXml in response.Data)
+            {
+                Console.WriteLine($"Issue ID: {timeEntryXml.Issue.Id}");
+            }
             //Console.WriteLine(response.ResponseUri);
 
             //var builder = new ContainerBuilder();
