@@ -6,6 +6,7 @@ using AutoMapper;
 using BaseLayer.Model;
 using EPProvider.DTO;
 using RestSharp;
+using RestSharp.Authenticators;
 using Support.Helper;
 
 namespace EPProvider
@@ -21,13 +22,15 @@ namespace EPProvider
             _credentials = credentialsProvider.LoadAPIKey();
             _mapper = mapper;
             _client = new RestClient("https://anv.easyproject.cz");
+            Credentials credentials = credentialsProvider.LoadCredentials();
+            _client.Authenticator = new HttpBasicAuthenticator(credentials.UserName, credentials.Password);
         }
 
         public async Task<List<Project>> GetProjectsListAsync()
         {
             var request = new RestRequest("projects.xml", Method.GET, DataFormat.Xml);
             request.AddHeader("content-type", "application/xml");
-            request.AddParameter("key", _credentials);
+            //request.AddParameter("key", _credentials);
             var requestResult = await _client.ExecuteAsync<List<ProjectDTO>>(request); 
             var projects = requestResult.Data.Select(_mapper.Map<ProjectDTO, Project>).ToList();
             return projects;
@@ -39,7 +42,7 @@ namespace EPProvider
             {
                 var request = new RestRequest("issues.xml", Method.GET, DataFormat.Xml);
                 request.AddHeader("content-type", "application/xml");
-                request.AddParameter("key", _credentials);
+                //request.AddParameter("key", _credentials);
                 request.AddParameter("limit", 1000);
                 request.AddParameter("project_id", projectId);
                 var requestResult = await _client.ExecuteAsync<List<IssueDTO>>(request);
@@ -65,7 +68,8 @@ namespace EPProvider
                 throw new ArgumentException("Spent time has invalid format");
 
             var timeEntry = _mapper.Map<TimeEntry, TimeEntryDTO>(timeEntryData);
-            var request = new RestRequest($"time_entries.xml?key={_credentials}", Method.POST, DataFormat.Xml);
+            //var request = new RestRequest($"time_entries.xml?key={_credentials}", Method.POST, DataFormat.Xml);
+            var request = new RestRequest($"time_entries.xml?", Method.POST, DataFormat.Xml);
             request.AddXmlBody(timeEntry);
             var response = _client.Post<TimeEntryDTO>(request);
             var code = (int) response.StatusCode;

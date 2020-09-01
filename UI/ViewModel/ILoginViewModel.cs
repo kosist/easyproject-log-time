@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
+using EPProvider;
 
 namespace UI.ViewModel
 {
@@ -9,5 +10,6 @@ namespace UI.ViewModel
     {
         Task TestLogin();
         Task SaveCredentials();
+        Credentials LoadCredentials();
     }
 }

@@ -6,12 +6,11 @@ namespace UI.ViewModel
     {
 
         public ITimeEntryViewModel TimeEntryViewModel { get; }
-
-        public ApplicationPage CurrentPage { get; set; } = ApplicationPage.TimeLogger;
-
-        public MainViewModel(ITimeEntryViewModel timeEntryViewModel)
+        public ILoginViewModel LoginViewModel { get; }
+        public MainViewModel(ITimeEntryViewModel timeEntryViewModel, ILoginViewModel loginViewModel)
         {
             TimeEntryViewModel = timeEntryViewModel;
+            LoginViewModel = loginViewModel;
         }
     }
 }

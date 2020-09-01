@@ -17,14 +17,16 @@ namespace EPProvider
         public Credentials LoadCredentials()
         {
             string easyProjectUserName = Environment.GetEnvironmentVariable("EasyProjectUserName", EnvironmentVariableTarget.User);
-            if (string.IsNullOrEmpty(easyProjectUserName))
+            if (string.IsNullOrEmpty(easyProjectUserName) || string.IsNullOrWhiteSpace(easyProjectUserName))
             {
-                throw new ArgumentNullException(@"EasyProjectUserName is empty. Please, set 'EasyProjectUserName' system variable value!");
+                //throw new ArgumentNullException(@"EasyProjectUserName is empty. Please, set 'EasyProjectUserName' system variable value!");
+                easyProjectUserName = "";
             }
             string easyProjectPassword = Environment.GetEnvironmentVariable("EasyProjectPassword", EnvironmentVariableTarget.User);
-            if (string.IsNullOrEmpty(easyProjectPassword))
+            if (string.IsNullOrEmpty(easyProjectPassword) || string.IsNullOrWhiteSpace(easyProjectPassword))
             {
-                throw new ArgumentNullException(@"EasyProjectPassword is empty. Please, set 'EasyProjectPassword' system variable value!");
+                //throw new ArgumentNullException(@"EasyProjectPassword is empty. Please, set 'EasyProjectPassword' system variable value!");
+                easyProjectPassword = "";
             }
             return new Credentials(easyProjectUserName, easyProjectPassword);
         }

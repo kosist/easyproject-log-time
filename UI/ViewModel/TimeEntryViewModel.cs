@@ -127,7 +127,7 @@ namespace UI.ViewModel
             BuildTreeAndGetRoots(Issues);
         }
 
-        #region fullProperties
+        #region Full Properties
 
         private TimeEntryWrapper _timeEntry;
 
@@ -143,6 +143,8 @@ namespace UI.ViewModel
 
         #endregion
 
+        #region Tree View
+        
         public class Node
         {
             public List<Node> Children = new List<Node>();
@@ -232,5 +234,7 @@ namespace UI.ViewModel
                 UpdateLevel(item.Children);
             }
         }
+
+        #endregion
     }
 }
