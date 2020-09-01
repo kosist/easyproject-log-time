@@ -23,6 +23,8 @@ namespace UI.Startup
             builder.RegisterType<MainViewModel>().AsSelf();
             builder.RegisterType<TimeEntryViewModel>().As<ITimeEntryViewModel>();
             builder.RegisterType<LoginViewModel>().As<ILoginViewModel>();
+            builder.RegisterType<TabViewModel>().As<ITabViewModel>();
+            builder.RegisterType<ViewsAggregatorViewModel>().As<IViewsAggregatorViewModel>();
 
             return builder.Build();
         }

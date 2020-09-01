@@ -5,12 +5,10 @@ namespace UI.ViewModel
     public class MainViewModel : ViewModelBase
     {
 
-        public ITimeEntryViewModel TimeEntryViewModel { get; }
-        public ILoginViewModel LoginViewModel { get; }
-        public MainViewModel(ITimeEntryViewModel timeEntryViewModel, ILoginViewModel loginViewModel)
+        public IViewsAggregatorViewModel ViewsAggregatorViewModel { get; }
+        public MainViewModel(IViewsAggregatorViewModel viewsAggregatorViewModel)
         {
-            TimeEntryViewModel = timeEntryViewModel;
-            LoginViewModel = loginViewModel;
+            ViewsAggregatorViewModel = viewsAggregatorViewModel;
         }
     }
 }

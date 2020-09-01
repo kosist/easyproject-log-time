@@ -10,8 +10,8 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="500" Width="500">
 
-    <TabControl Grid.Row="0">
-        <TabItem Header="Login">
+    <TabControl Grid.Row="0" DataContext="{Binding ViewsAggregatorViewModel}">
+        <TabItem Header="Login" IsEnabled="{Binding TabViewModel.LoginTabEnabled, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
             <Grid DataContext="{Binding LoginViewModel}">
                 <Grid.RowDefinitions>
                     <RowDefinition/>
@@ -46,7 +46,7 @@
 
         </TabItem>
 
-        <TabItem Header="Log Hours">
+        <TabItem Header="Log Hours" IsEnabled="{Binding TabViewModel.LoggerPageActive, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" IsSelected="{Binding TabViewModel.LogHoursTabSelected, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
             <TabItem.Content>
 
                 <Grid DataContext="{Binding TimeEntryViewModel}">
