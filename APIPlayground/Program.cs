@@ -26,36 +26,36 @@ namespace APIPlayground
 
             client.Authenticator = new HttpBasicAuthenticator(easyProjectUserName, easyProjectPassword);
 
-            var request = new RestRequest("time_entries.xml?", Method.GET, DataFormat.Xml);
+            var request = new RestRequest("time_entries.xml?", Method.POST, DataFormat.Xml);
             request.AddHeader("content-type", "application/xml");
             //request.AddParameter("key", easyProjectAPIKey);
             request.AddParameter("Username", easyProjectAPIKey);
             request.AddParameter("Username", easyProjectAPIKey);
 
-            request.AddParameter("project_id", "240");
+            //request.AddParameter("project_id", "240");
 
-            //var timeEntry = new TimeEntryDTO
-            //{
-            //    ProjectId = 240,
-            //    IssueId = 4770,
-            //    Description = "Test API",
-            //    SpentTime = "2.5",
-            //    SpentOnDate = "2020-06-28"
-            //};
+            var timeEntry = new TimeEntryDTO
+            {
+                ProjectId = 240,
+                IssueId = 4770,
+                Description = "Test API",
+                SpentTime = "2.5",
+                SpentOnDate = "2020-09-01"
+            };
 
-            //request.AddXmlBody(timeEntry);
+            request.AddXmlBody(timeEntry);
 
-            //var response = client.Post<TimeEntryDTO>(request);
+            var response = client.Post<TimeEntryDTO>(request);
 
             //Console.WriteLine(response.Request.Body);
             //Console.WriteLine(response.StatusCode);
             //Console.WriteLine(response.StatusDescription);
-            var response = client.Execute<List<TimeEntryXML>>(request);
-            foreach (var timeEntryXml in response.Data)
-            {
-                Console.WriteLine($"Issue ID: {timeEntryXml.Issue.Id}");
-            }
-            //Console.WriteLine(response.ResponseUri);
+            //var response = client.Execute<List<TimeEntryXML>>(request);
+            //foreach (var timeEntryXml in response.Data)
+            //{
+            //    Console.WriteLine($"Issue ID: {timeEntryXml.Issue.Id}");
+            //}
+            Console.WriteLine(response.ResponseUri);
 
             //var builder = new ContainerBuilder();
             //builder.AddAutoMapper(typeof(ProjectMapperProfile).Assembly);
