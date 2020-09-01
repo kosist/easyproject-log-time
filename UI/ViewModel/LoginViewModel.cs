@@ -14,14 +14,16 @@ namespace UI.ViewModel
     {
         private ICredentialsProvider _credentialsProvider;
         private IEventAggregator _eventAggregator;
+        private IEPProvider _provider;
 
         public ICommand LoginCommand { get; }
 
-        public LoginViewModel(ICredentialsProvider credentialsProvider, IEventAggregator eventAggregator)
+        public LoginViewModel(ICredentialsProvider credentialsProvider, IEventAggregator eventAggregator, IEPProvider provider)
         {
             _credentialsProvider = credentialsProvider;
             _eventAggregator = eventAggregator;
-            
+            _provider = provider;
+
             LoginCommand = new DelegateCommand(OnLoginExecute, OnLoginCanExecute);
 
             GetCredentials();
@@ -31,7 +33,10 @@ namespace UI.ViewModel
         private void OnLoginExecute()
         {
            _credentialsProvider.SaveCredentials(new Credentials(Credentials.UserName, Credentials.UserPassword));
-           _eventAggregator.GetEvent<LoginSuccessEvent>().Publish(true);
+           GetCredentials();
+           var status = _provider.CredentialsValid();
+           if (status)
+                _eventAggregator.GetEvent<LoginSuccessEvent>().Publish(true);
         }
 
         private bool OnLoginCanExecute()
