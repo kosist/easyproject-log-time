@@ -4,6 +4,8 @@ using EPProvider;
 using Prism.Commands;
 using Prism.Events;
 using System.Threading.Tasks;
+using System.Windows.Input;
+using UI.Event;
 using UI.Wrapper;
 
 namespace UI.ViewModel
@@ -13,14 +15,30 @@ namespace UI.ViewModel
         private ICredentialsProvider _credentialsProvider;
         private IEventAggregator _eventAggregator;
 
+        public ICommand LoginCommand { get; }
+
         public LoginViewModel(ICredentialsProvider credentialsProvider, IEventAggregator eventAggregator)
         {
             _credentialsProvider = credentialsProvider;
             _eventAggregator = eventAggregator;
-            Credentials = new CredentialsWrapper(new CredentialsItemViewModel());
-            GetCredentials(LoadCredentials());
+            
+            LoginCommand = new DelegateCommand(OnLoginExecute, OnLoginCanExecute);
+
+            GetCredentials();
+
         }
-        
+
+        private void OnLoginExecute()
+        {
+           _credentialsProvider.SaveCredentials(new Credentials(Credentials.UserName, Credentials.UserPassword));
+           _eventAggregator.GetEvent<LoginSuccessEvent>().Publish(true);
+        }
+
+        private bool OnLoginCanExecute()
+        {
+            return Credentials != null && !Credentials.HasErrors;
+        }
+
         public Task SaveCredentials()
         {
             throw new NotImplementedException();
@@ -32,10 +50,22 @@ namespace UI.ViewModel
             return credentials;
         }
 
-        private void GetCredentials(Credentials credentials)
+        private void GetCredentials()
         {
+            var credentials = LoadCredentials();
+            Credentials = new CredentialsWrapper(new CredentialsItemViewModel());
             Credentials.UserName = credentials.UserName;
             Credentials.UserPassword = credentials.Password;
+
+            Credentials.PropertyChanged += (s, e) =>
+            {
+                if (e.PropertyName == nameof(Credentials.HasErrors))
+                {
+                    ((DelegateCommand)LoginCommand).RaiseCanExecuteChanged();
+                }
+            };
+            ((DelegateCommand)LoginCommand).RaiseCanExecuteChanged();
+
         }
 
         public Task TestLogin()

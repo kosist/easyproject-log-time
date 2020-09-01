@@ -41,12 +41,9 @@
                     </Grid.ColumnDefinitions>
 
                     <Button Style="{StaticResource btn-info}" Grid.Column="3" Margin="20 25 0 25" Content="Login" Command="{Binding LoginCommand}"/>
-
                 </Grid>
-
-                
-
             </Grid>
+
         </TabItem>
 
         <TabItem Header="Log Hours">

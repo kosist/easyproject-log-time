@@ -23,6 +23,7 @@ namespace UI.ViewModel
         public ObservableCollection<Issue> Issues { get; private set; }
         public ObservableCollection<IssueItemViewModel> Nodes { get; private set; }
         public ObservableCollection<IssueItemViewModel> Tasks { get; private set; }
+
         public DateTime SpentOnDate { get; set; }
         public ICommand SaveCommand { get; }
 
@@ -35,9 +36,17 @@ namespace UI.ViewModel
             Nodes = new ObservableCollection<IssueItemViewModel>();
             Tasks = new ObservableCollection<IssueItemViewModel>();
             SpentOnDate = DateTime.Today;
-            DisplayProjectsAsync();
+
+            _eventAggregator.GetEvent<LoginSuccessEvent>().Subscribe(OnLoginSuccessEvent);
 
             SaveCommand = new DelegateCommand(OnSaveExecute, OnSaveCanExecute);
+        }
+
+        private void OnLoginSuccessEvent(bool status)
+        {
+            if (status)
+                DisplayProjectsAsync();
+
         }
 
         private void OnSaveExecute()
