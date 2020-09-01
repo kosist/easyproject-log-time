@@ -35,8 +35,7 @@ namespace UI.ViewModel
            _credentialsProvider.SaveCredentials(new Credentials(Credentials.UserName, Credentials.UserPassword));
            GetCredentials();
            var status = _provider.CredentialsValid();
-           if (status)
-                _eventAggregator.GetEvent<LoginSuccessEvent>().Publish(true);
+           _eventAggregator.GetEvent<LoginSuccessEvent>().Publish(status);
         }
 
         private bool OnLoginCanExecute()
