@@ -47,10 +47,22 @@ namespace EPProvider
                 var request = new RestRequest("issues.xml", Method.GET, DataFormat.Xml);
                 request.AddHeader("content-type", "application/xml");
                 //request.AddParameter("key", _credentials);
-                request.AddParameter("limit", 1000);
+                request.AddParameter("limit", 100);
                 request.AddParameter("project_id", projectId);
-                var requestResult = await _client.ExecuteAsync<List<IssueDTO>>(request);
-                var issues = requestResult.Data.Select(_mapper.Map<IssueDTO, Issue>).ToList();
+                var offset = 0;
+                var requestResult = new List<IssueDTO>();
+                var allIssues = new List<IssueDTO>();
+                do
+                {
+                    request.AddOrUpdateParameter("offset", offset);
+                    var tasks = await _client.ExecuteAsync<List<IssueDTO>>(request);
+                    requestResult = tasks.Data;
+                    offset += 100;
+                    if (requestResult.Count != 0)
+                        allIssues.AddRange(requestResult);
+                } while (requestResult.Count != 0);
+                
+                var issues = allIssues.Select(_mapper.Map<IssueDTO, Issue>).ToList();
                 return issues;
             }
             throw new ArgumentOutOfRangeException("Project ID value is invalid!");
