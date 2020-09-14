@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
 using System.Threading.Tasks;
-using System.Web;
 using System.Windows.Input;
 using BaseLayer.Model;
 using EPProvider;
@@ -16,17 +14,25 @@ namespace UI.ViewModel
 {
     public class TimeEntryViewModel : ViewModelBase, ITimeEntryViewModel
     {
+        #region Private Properties
+
         private IEPProvider _provider;
         private IEventAggregator _eventAggregator;
+
+        #endregion
+
+        #region Public Properties
 
         public ObservableCollection<Project> Projects { get; private set; }
         public ObservableCollection<Issue> Issues { get; private set; }
         public ObservableCollection<IssueItemViewModel> Nodes { get; private set; }
         public ObservableCollection<IssueItemViewModel> Tasks { get; private set; }
-
         public DateTime SpentOnDate { get; set; }
         public ICommand SaveCommand { get; }
 
+        #endregion
+
+        #region Constructor
         public TimeEntryViewModel(IEPProvider provider, IEventAggregator eventAggregator)
         {
             _provider = provider;
@@ -36,19 +42,50 @@ namespace UI.ViewModel
             Nodes = new ObservableCollection<IssueItemViewModel>();
             Tasks = new ObservableCollection<IssueItemViewModel>();
             SpentOnDate = DateTime.Today;
-
             _eventAggregator.GetEvent<LoginSuccessEvent>().Subscribe(OnLoginSuccessEvent);
-
             SaveCommand = new DelegateCommand(OnSaveExecute, OnSaveCanExecute);
-        }
+        }       
 
+        #endregion
+        
+        #region Private helper methods
+
+        /// <summary>
+        /// Waits for LoginSuccessEvent. If status is true, then project's list is loaded
+        /// </summary>
+        /// <param name="status">Status of the login operation</param>
         private void OnLoginSuccessEvent(bool status)
         {
             if (status)
                 DisplayProjectsAsync();
+        }
+        private void InitTimeEntry()
+        {
+            TimeEntry = new TimeEntryWrapper(new TimeEntryItemViewModel());
+            TimeEntry.PropertyChanged += (s, e) =>
+            {
+                if (e.PropertyName == nameof(TimeEntry.HasErrors))
+                {
+                    ((DelegateCommand) SaveCommand).RaiseCanExecuteChanged();
+                }
 
+                if (e.PropertyName == "SelectedProject")
+                {
+                    TimeEntry.SpentTime = "";
+                    TimeEntry.Description = "";
+                    DisplayIssuesList(TimeEntry.SelectedProject.Id);
+                }
+            };
+            ((DelegateCommand) SaveCommand).RaiseCanExecuteChanged();
         }
 
+        #endregion
+        
+        #region Save Methods
+
+                /// <summary>
+        /// When Save button is pressed, TimeEntry data is written to EP
+        /// </summary>
         private void OnSaveExecute()
         {
             var timeEntry = new TimeEntry
@@ -63,35 +100,35 @@ namespace UI.ViewModel
             //if (!result)
             //    throw new Exception("Post method executed with error!");
 
-            TimeEntry = new TimeEntryWrapper(new TimeEntryItemViewModel());
-            TimeEntry.PropertyChanged += (s, e) =>
-            {
-                if (e.PropertyName == nameof(TimeEntry.HasErrors))
-                {
-                    ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
-                }
-
-                if (e.PropertyName == "SelectedProject")
-                {
-                    TimeEntry.SpentTime = "";
-                    TimeEntry.Description = "";
-                    DisplayIssuesList(TimeEntry.SelectedProject.Id);
-                }
-
-            };
-            ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
+            InitTimeEntry();
         }
 
+        /// <summary>
+        /// Check, whether Save button could be pressed (in other words, whether save operation could be executed
+        /// </summary>
+        /// <returns></returns>
         private bool OnSaveCanExecute()
         {
             return TimeEntry != null && !TimeEntry.HasErrors;
         }
 
+        #endregion
+
+        #region UI methods
+
+        /// <summary>
+        /// Loads list of projects from the EasyProject
+        /// </summary>
+        /// <returns></returns>
         public async Task<List<Project>> LoadProjects()
         {
             return await _provider.GetProjectsListAsync();
         }
 
+        /// <summary>
+        /// Displays list of project on the UI. List is cleared, and then projects are added to the list one-by-one
+        /// </summary>
+        /// <returns></returns>
         private async Task DisplayProjectsAsync()
         {
             Projects.Clear();
@@ -101,30 +138,27 @@ namespace UI.ViewModel
                 Projects.Add(project);
             }
 
-            TimeEntry = new TimeEntryWrapper(new TimeEntryItemViewModel());
-            TimeEntry.PropertyChanged += (s, e) =>
-            {
-                if (e.PropertyName == nameof(TimeEntry.HasErrors))
-                {
-                    ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
-                }
-
-                if (e.PropertyName == "SelectedProject")
-                {
-                    TimeEntry.SpentTime = "";
-                    TimeEntry.Description = "";
-                    DisplayIssuesList(TimeEntry.SelectedProject.Id);
-                }
-
-            };
-            ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
+            InitTimeEntry();
         }
 
+        /// <summary>
+        /// Retrieves list of issues for the selected project
+        /// </summary>
+        /// <param name="projectId">ID of the selected project</param>
+        /// <returns></returns>
         public async Task<List<Issue>> LoadIssues(int projectId)
         {
             return await _provider.GetIssuesListForProjectAsync(projectId);
         }
+        /// <summary>
+        /// Helper function which initializes TimeEntry with listening to PropertyChanged events
+        /// </summary>
 
+        /// <summary>
+        /// Displays list of issues for the selected project
+        /// </summary>
+        /// <param name="projectId">ID of the selected project</param>
+        /// <returns></returns>
         private async Task DisplayIssuesList(int projectId)
         {
             Issues.Clear();
@@ -134,8 +168,10 @@ namespace UI.ViewModel
                 Issues.Add(issue);
             }
             BuildTreeAndGetRoots(Issues);
-        }
+        }       
 
+        #endregion
+        
         #region Full Properties
 
         private TimeEntryWrapper _timeEntry;
