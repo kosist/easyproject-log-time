@@ -28,7 +28,9 @@
 
                 <StackPanel Grid.Row="2">
                     <Label Content="Password" Margin="100 10 100 0" FontSize="14"/>
-                    <TextBox Margin="100 10" FontSize="16" Text="{Binding Credentials.UserPassword, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                    <PasswordBox Margin="100 10" FontSize="16"
+                                 viewModel:PasswordBoxAssistant.BindPassword="true"  viewModel:PasswordBoxAssistant.BoundPassword="{Binding Credentials.UserPassword, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                    <!--<TextBox Margin="100 10" FontSize="16" Text="{Binding Credentials.UserPassword, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>-->
                 </StackPanel>
 
                 <Grid Grid.Row="3">
