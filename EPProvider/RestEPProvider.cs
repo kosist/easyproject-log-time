@@ -107,6 +107,7 @@ namespace EPProvider
             Credentials credentials = _credentialsProvider.LoadCredentials();
             _client.Authenticator = new HttpBasicAuthenticator(credentials.UserName, credentials.Password);
             var request = new RestRequest("time_entries.xml?", Method.GET, DataFormat.Xml);
+            request.AddParameter("period_type", "2");
             request.AddParameter("from", date.ToString("yyyy-MM-dd"));
             request.AddParameter("to", date.ToString("yyyy-MM-dd"));
             var requestResult = await _client.ExecuteAsync<List<TimeEntryDTO>>(request);

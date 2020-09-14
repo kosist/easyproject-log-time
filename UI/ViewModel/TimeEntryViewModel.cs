@@ -80,6 +80,26 @@ namespace UI.ViewModel
             ((DelegateCommand) SaveCommand).RaiseCanExecuteChanged();
         }
 
+        /// <summary>
+        /// Method returns sum of logged hours
+        /// </summary>
+        /// <param name=""></param>
+        /// <returns></returns>
+        private double CalculateLoggedTime(List<TimeEntry> timeEntries)
+        {
+            if (timeEntries.Count == 0)
+                return 0;
+            var sum = 0.0;
+            var result = 0.0;
+            var validRecord = false;
+            foreach (var timeEntry in timeEntries)
+            {
+                validRecord = double.TryParse(timeEntry.SpentTime, out result);
+                sum += result;
+            }
+            return sum;
+        }
+
         #endregion
         
         #region Save Methods
@@ -87,7 +107,7 @@ namespace UI.ViewModel
                 /// <summary>
         /// When Save button is pressed, TimeEntry data is written to EP
         /// </summary>
-        private void OnSaveExecute()
+        private async void OnSaveExecute()
         {
             var timeEntry = new TimeEntry
             {
@@ -102,6 +122,8 @@ namespace UI.ViewModel
             //    throw new Exception("Post method executed with error!");
 
             InitTimeEntry();
+            var timeEntries = await _provider.GetTimeEntries(TimeEntry.SpentOnDate);
+            LoggedTime = CalculateLoggedTime(timeEntries);
         }
 
         /// <summary>
