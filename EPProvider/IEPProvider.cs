@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using BaseLayer.Model;
 
@@ -10,5 +11,6 @@ namespace EPProvider
         Task<List<Issue>> GetIssuesListForProjectAsync(int projectId);
         bool AddTimeEntry(TimeEntry timeEntryData);
         bool CredentialsValid();
+        Task<List<TimeEntry>> GetTimeEntries(DateTime date);
     }
 }

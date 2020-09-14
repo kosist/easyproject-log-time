@@ -13,16 +13,18 @@ namespace EPProvider
 {
     public class RestEPProvider : IEPProvider
     {
-        private string _credentials;
         private IMapper _mapper;
         private RestClient _client;
         private ICredentialsProvider _credentialsProvider;
+        private Credentials _credentials;
 
         public RestEPProvider(ICredentialsProvider credentialsProvider, IMapper mapper)
         {
             _mapper = mapper;
             _credentialsProvider = credentialsProvider;
             _client = new RestClient("https://anv.easyproject.cz");
+            _credentials = _credentialsProvider.LoadCredentials();
+            _client.Authenticator = new HttpBasicAuthenticator(_credentials.UserName, _credentials.Password);
         }
 
         public async Task<List<Project>> GetProjectsListAsync()
@@ -31,7 +33,6 @@ namespace EPProvider
             _client.Authenticator = new HttpBasicAuthenticator(credentials.UserName, credentials.Password);
             var request = new RestRequest("projects.xml", Method.GET, DataFormat.Xml);
             request.AddHeader("content-type", "application/xml");
-            //request.AddParameter("key", _credentials);
             var requestResult = await _client.ExecuteAsync<List<ProjectDTO>>(request); 
             var projects = requestResult.Data.Select(_mapper.Map<ProjectDTO, Project>).ToList();
             return projects;
@@ -45,7 +46,6 @@ namespace EPProvider
                 _client.Authenticator = new HttpBasicAuthenticator(credentials.UserName, credentials.Password);
                 var request = new RestRequest("issues.xml", Method.GET, DataFormat.Xml);
                 request.AddHeader("content-type", "application/xml");
-                //request.AddParameter("key", _credentials);
                 request.AddParameter("limit", 100);
                 request.AddParameter("project_id", projectId);
                 var offset = 0;
@@ -83,7 +83,6 @@ namespace EPProvider
                 throw new ArgumentException("Spent time has invalid format");
 
             var timeEntry = _mapper.Map<TimeEntry, TimeEntryDTO>(timeEntryData);
-            //var request = new RestRequest($"time_entries.xml?key={_credentials}", Method.POST, DataFormat.Xml);
             Credentials credentials = _credentialsProvider.LoadCredentials();
             _client.Authenticator = new HttpBasicAuthenticator(credentials.UserName, credentials.Password);
             var request = new RestRequest($"time_entries.xml?", Method.POST, DataFormat.Xml);
@@ -101,6 +100,18 @@ namespace EPProvider
             request.AddHeader("content-type", "application/xml");
             var requestResult = _client.Execute<List<ProjectDTO>>(request);
             return requestResult.IsSuccessful;
+        }
+
+        public async Task<List<TimeEntry>> GetTimeEntries(DateTime date)
+        {
+            Credentials credentials = _credentialsProvider.LoadCredentials();
+            _client.Authenticator = new HttpBasicAuthenticator(credentials.UserName, credentials.Password);
+            var request = new RestRequest("time_entries.xml?", Method.GET, DataFormat.Xml);
+            request.AddParameter("from", date.ToString("yyyy-MM-dd"));
+            request.AddParameter("to", date.ToString("yyyy-MM-dd"));
+            var requestResult = await _client.ExecuteAsync<List<TimeEntryDTO>>(request);
+            var timeEntries = requestResult.Data.Select(_mapper.Map<TimeEntryDTO, TimeEntry>).ToList();
+            return timeEntries;
         }
     }
 }

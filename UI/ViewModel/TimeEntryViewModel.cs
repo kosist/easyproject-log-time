@@ -42,6 +42,7 @@ namespace UI.ViewModel
             Nodes = new ObservableCollection<IssueItemViewModel>();
             Tasks = new ObservableCollection<IssueItemViewModel>();
             SpentOnDate = DateTime.Today;
+            LoggedTime = 0;
             _eventAggregator.GetEvent<LoginSuccessEvent>().Subscribe(OnLoginSuccessEvent);
             SaveCommand = new DelegateCommand(OnSaveExecute, OnSaveCanExecute);
         }       
@@ -186,10 +187,23 @@ namespace UI.ViewModel
             }
         }
 
+        private double _loggedTime;
+
+        public double LoggedTime
+        {
+            get { return _loggedTime; }
+            set
+            {
+                _loggedTime = value;
+                OnPropertyChanged();
+            }
+        }
+
+
         #endregion
 
         #region Tree View
-        
+
         public class Node
         {
             public List<Node> Children = new List<Node>();

@@ -74,10 +74,27 @@
                         <Label Content="Task name:" Margin="10 10 10 0" FontSize="14"/>
                         <ComboBox Grid.Row="1" Margin="10 0"  ItemsSource="{Binding Tasks}" DisplayMemberPath="Name" SelectedValuePath="AssociatedObject" SelectedValue="{Binding TimeEntry.SelectedIssue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" IsEditable="True" IsTextSearchEnabled="True" TextSearch.TextPath="SelectedName" StaysOpenOnEdit="True"/>
                     </StackPanel>
-                    <StackPanel Grid.Row="1" Grid.ColumnSpan="3" Margin="0,76,0,0" Grid.RowSpan="2">
+
+
+
+
+
+                    <Grid Grid.Row="2" Grid.ColumnSpan="3">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        <StackPanel Grid.RowSpan="2">
                         <Label Content="Spent hours:" Margin="10 10 10 0" FontSize="14"/>
                         <TextBox Width="120" HorizontalAlignment="Left" Margin="10 0" FontSize="16" Text="{Binding TimeEntry.SpentTime, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-                    </StackPanel>
+                        </StackPanel>
+
+                        <StackPanel Grid.Column="1" Grid.RowSpan="2">
+                            <Label Content="Current logged hours:" Margin="10 10 10 0" FontSize="14"/>
+                            <TextBox IsReadOnly="True" Width="120" HorizontalAlignment="Left" Margin="10 0" FontSize="16" Text="{Binding LoggedTime, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"/>
+                        </StackPanel>
+                    </Grid>
+
                     <StackPanel Grid.Row="2" Grid.ColumnSpan="3" Margin="0,76,0,0" Grid.RowSpan="2">
                         <Label Content="Comment:" Margin="10 10 10 0" FontSize="14"/>
                         <TextBox Margin="10 0" Text="{Binding TimeEntry.Description, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" FontSize="16"/>
