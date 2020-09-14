@@ -23,6 +23,7 @@ namespace EPProvider
             _mapper = mapper;
             _credentialsProvider = credentialsProvider;
             _client = new RestClient("https://anv.easyproject.cz");
+            //_client = new RestClient("https://private-anon-b021501636-easyproject.apiary-mock.com/");
             _credentials = _credentialsProvider.LoadCredentials();
             _client.Authenticator = new HttpBasicAuthenticator(_credentials.UserName, _credentials.Password);
         }
@@ -110,8 +111,8 @@ namespace EPProvider
             request.AddParameter("period_type", "2");
             request.AddParameter("from", date.ToString("yyyy-MM-dd"));
             request.AddParameter("to", date.ToString("yyyy-MM-dd"));
-            var requestResult = await _client.ExecuteAsync<List<TimeEntryDTO>>(request);
-            var timeEntries = requestResult.Data.Select(_mapper.Map<TimeEntryDTO, TimeEntry>).ToList();
+            var requestResult = await _client.ExecuteAsync<List<LoggedTimeEntryDTO>>(request);
+            var timeEntries = requestResult.Data.Select(_mapper.Map<LoggedTimeEntryDTO, TimeEntry>).ToList();
             return timeEntries;
         }
     }

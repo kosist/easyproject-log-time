@@ -63,7 +63,7 @@ namespace UI.ViewModel
         private void InitTimeEntry()
         {
             TimeEntry = new TimeEntryWrapper(new TimeEntryItemViewModel());
-            TimeEntry.PropertyChanged += (s, e) =>
+            TimeEntry.PropertyChanged += async (s, e) =>
             {
                 if (e.PropertyName == nameof(TimeEntry.HasErrors))
                 {
@@ -75,6 +75,12 @@ namespace UI.ViewModel
                     TimeEntry.SpentTime = "";
                     TimeEntry.Description = "";
                     DisplayIssuesList(TimeEntry.SelectedProject.Id);
+                }
+
+                if (e.PropertyName == "SpentOnDate")
+                {
+                    var timeEntries = await _provider.GetTimeEntries(TimeEntry.SpentOnDate);
+                    LoggedTime = CalculateLoggedTime(timeEntries);
                 }
             };
             ((DelegateCommand) SaveCommand).RaiseCanExecuteChanged();

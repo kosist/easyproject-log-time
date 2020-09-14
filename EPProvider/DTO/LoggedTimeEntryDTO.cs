@@ -1,21 +1,23 @@
-﻿using RestSharp.Serializers;
+﻿using RestSharp.Deserializers;
+using RestSharp.Serializers;
 
 namespace EPProvider.DTO
 {
-    [SerializeAs(Name = "time_entry")]
+    [DeserializeAs(Name = "time_entry")]
     public class LoggedTimeEntryDTO
     {
         public ProjectDTO Project { get; set; }
 
         public IssueDTO Issue { get; set; }
 
-        [SerializeAs(Name = "hours")]
+        [DeserializeAs(Name = "hours")]
         public string SpentTime { get; set; }
 
-        [SerializeAs(Name = "comments")]
+        [DeserializeAs(Name = "comments")]
         public string Description { get; set; }
 
-        [SerializeAs(Name = "spent_on")]
+        [DeserializeAs(Name = "spent_on")]
         public string SpentOnDate { get; set; }
     }
+
 }
