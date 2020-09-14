@@ -20,7 +20,6 @@ namespace EPProvider
 
         public RestEPProvider(ICredentialsProvider credentialsProvider, IMapper mapper)
         {
-            _credentials = credentialsProvider.LoadAPIKey();
             _mapper = mapper;
             _credentialsProvider = credentialsProvider;
             _client = new RestClient("https://anv.easyproject.cz");
