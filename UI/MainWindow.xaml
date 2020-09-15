@@ -8,7 +8,7 @@
         xmlns:validationrules="clr-namespace:UI.Rule"
         xmlns:viewModel="clr-namespace:UI.ViewModel"
         mc:Ignorable="d"
-        Title="MainWindow" Height="500" Width="500">
+        Title="EasyProject Time Logger" Height="500" Width="500">
 
     <TabControl Grid.Row="0" DataContext="{Binding ViewsAggregatorViewModel}">
         <TabItem Header="Login" IsEnabled="{Binding TabViewModel.LoginTabEnabled, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
@@ -30,7 +30,6 @@
                     <Label Content="Password" Margin="100 10 100 0" FontSize="14"/>
                     <PasswordBox Margin="100 10" FontSize="16"
                                  viewModel:PasswordBoxAssistant.BindPassword="true"  viewModel:PasswordBoxAssistant.BoundPassword="{Binding Credentials.UserPassword, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-                    <!--<TextBox Margin="100 10" FontSize="16" Text="{Binding Credentials.UserPassword, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>-->
                 </StackPanel>
 
                 <Grid Grid.Row="3">
