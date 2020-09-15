@@ -11,6 +11,7 @@ namespace EPProvider
         Task<List<Issue>> GetIssuesListForProjectAsync(int projectId);
         bool AddTimeEntry(TimeEntry timeEntryData);
         bool CredentialsValid();
-        Task<List<TimeEntry>> GetTimeEntries(DateTime date);
+        Task<List<TimeEntry>> GetTimeEntries(DateTime date, int userId);
+        Task<int> GetCurrentUserId();
     }
 }

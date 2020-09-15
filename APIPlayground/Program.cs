@@ -1,15 +1,9 @@
 ﻿using RestSharp.Deserializers;
-using AutoMapper;
-using AutoMapper.Contrib.Autofac.DependencyInjection;
-using Autofac;
-using EPProvider.Mapping;
-using BaseLayer.Model;
 using System;
-using System.Collections.Generic;
+using System.Configuration;
 using EPProvider.DTO;
 using RestSharp;
 using RestSharp.Authenticators;
-using RestSharp.Serializers;
 
 namespace APIPlayground
 {
@@ -39,8 +33,8 @@ namespace APIPlayground
                 ProjectId = 240,
                 IssueId = 4770,
                 Description = "Test API",
-                SpentTime = "2.5",
-                SpentOnDate = "2020-09-01"
+                SpentTime = "",
+                SpentOnDate = "2020-09-15"
             };
 
             request.AddXmlBody(timeEntry);
@@ -55,7 +49,7 @@ namespace APIPlayground
             //{
             //    Console.WriteLine($"Issue ID: {timeEntryXml.Issue.Id}");
             //}
-            Console.WriteLine(response.ResponseUri);
+            Console.WriteLine(response.Content);
 
             //var builder = new ContainerBuilder();
             //builder.AddAutoMapper(typeof(ProjectMapperProfile).Assembly);

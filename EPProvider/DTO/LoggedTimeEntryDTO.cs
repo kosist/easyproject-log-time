@@ -1,11 +1,12 @@
 ﻿using RestSharp.Deserializers;
-using RestSharp.Serializers;
 
 namespace EPProvider.DTO
 {
     [DeserializeAs(Name = "time_entry")]
     public class LoggedTimeEntryDTO
     {
+        [DeserializeAs(Name = "id")]
+        public int Id { get; set; }
         public ProjectDTO Project { get; set; }
 
         public IssueDTO Issue { get; set; }
@@ -18,6 +19,8 @@ namespace EPProvider.DTO
 
         [DeserializeAs(Name = "spent_on")]
         public string SpentOnDate { get; set; }
+
+        public UserDTO User { get; set; }
     }
 
 }

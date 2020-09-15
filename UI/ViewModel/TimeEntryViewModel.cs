@@ -29,6 +29,7 @@ namespace UI.ViewModel
         public ObservableCollection<IssueItemViewModel> Tasks { get; private set; }
         public DateTime SpentOnDate { get; set; }
         public ICommand SaveCommand { get; }
+        public int CurrentUserId { get; private set; }
 
         #endregion
 
@@ -41,10 +42,12 @@ namespace UI.ViewModel
             Issues = new ObservableCollection<Issue>();
             Nodes = new ObservableCollection<IssueItemViewModel>();
             Tasks = new ObservableCollection<IssueItemViewModel>();
-            SpentOnDate = DateTime.Today;
-            LoggedTime = 0;
+
             _eventAggregator.GetEvent<LoginSuccessEvent>().Subscribe(OnLoginSuccessEvent);
             SaveCommand = new DelegateCommand(OnSaveExecute, OnSaveCanExecute);
+
+            LoggedTime = 0;
+            SpentOnDate = DateTime.Today;
         }       
 
         #endregion
@@ -55,10 +58,15 @@ namespace UI.ViewModel
         /// Waits for LoginSuccessEvent. If status is true, then project's list is loaded
         /// </summary>
         /// <param name="status">Status of the login operation</param>
-        private void OnLoginSuccessEvent(bool status)
+        private async void OnLoginSuccessEvent(bool status)
         {
             if (status)
-                DisplayProjectsAsync();
+            {
+                await DisplayProjectsAsync();
+                CurrentUserId = await _provider.GetCurrentUserId();
+            }
+                
+
         }
         private void InitTimeEntry()
         {
@@ -79,7 +87,7 @@ namespace UI.ViewModel
 
                 if (e.PropertyName == "SpentOnDate")
                 {
-                    var timeEntries = await _provider.GetTimeEntries(TimeEntry.SpentOnDate);
+                    var timeEntries = await _provider.GetTimeEntries(TimeEntry.SpentOnDate, CurrentUserId);
                     LoggedTime = CalculateLoggedTime(timeEntries);
                 }
             };
@@ -103,7 +111,7 @@ namespace UI.ViewModel
                 validRecord = double.TryParse(timeEntry.SpentTime, out result);
                 sum += result;
             }
-            return sum;
+            return Math.Round(sum, 2);
         }
 
         #endregion
@@ -128,7 +136,7 @@ namespace UI.ViewModel
             //    throw new Exception("Post method executed with error!");
 
             InitTimeEntry();
-            var timeEntries = await _provider.GetTimeEntries(TimeEntry.SpentOnDate);
+            var timeEntries = await _provider.GetTimeEntries(TimeEntry.SpentOnDate, CurrentUserId);
             LoggedTime = CalculateLoggedTime(timeEntries);
         }
 

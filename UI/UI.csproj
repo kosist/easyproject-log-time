@@ -5,6 +5,8 @@
     <TargetFramework>netcoreapp3.0</TargetFramework>
     <UseWPF>true</UseWPF>
     <ApplicationIcon>time.ico</ApplicationIcon>
+    <PackageProjectUrl></PackageProjectUrl>
+    <RepositoryUrl>https://github.com/kosist/easyproject-log-time</RepositoryUrl>
   </PropertyGroup>
 
   <ItemGroup>
