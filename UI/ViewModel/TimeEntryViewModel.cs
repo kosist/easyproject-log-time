@@ -49,8 +49,6 @@ namespace UI.ViewModel
 
             LoggedTime = 0;
             SpentOnDate = DateTime.Today;
-
-            ActiveTasks = false;
         }       
 
         #endregion
@@ -250,7 +248,13 @@ namespace UI.ViewModel
         public bool ActiveTasks
         {
             get { return _activeTasks; }
-            set { _activeTasks = value; }
+            set
+            {
+                _activeTasks = value;
+                if (TimeEntry != null)
+                    if (TimeEntry.SelectedProject.Id !=0 )
+                        DisplayIssuesList(TimeEntry.SelectedProject.Id);
+            }
         }
 
 
