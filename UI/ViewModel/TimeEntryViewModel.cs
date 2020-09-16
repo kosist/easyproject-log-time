@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
@@ -108,7 +109,7 @@ namespace UI.ViewModel
             var validRecord = false;
             foreach (var timeEntry in timeEntries)
             {
-                validRecord = double.TryParse(timeEntry.SpentTime, out result);
+                validRecord = double.TryParse(timeEntry.SpentTime.Replace(".", CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator), out result);
                 sum += result;
             }
             return Math.Round(sum, 2);
@@ -131,9 +132,9 @@ namespace UI.ViewModel
                 Description = TimeEntry.Description,
                 SpentTime = TimeEntry.SpentTime,
             };
-            //var result = _provider.AddTimeEntry(timeEntry);
-            //if (!result)
-            //    throw new Exception("Post method executed with error!");
+            var result = _provider.AddTimeEntry(timeEntry);
+            if (!result)
+                throw new Exception("Post method executed with error!");
 
             InitTimeEntry();
             var timeEntries = await _provider.GetTimeEntries(TimeEntry.SpentOnDate, CurrentUserId);
