@@ -65,9 +65,9 @@ namespace UI.ViewModel
             {
                 await DisplayProjectsAsync();
                 CurrentUserId = await _provider.GetCurrentUserId();
-            }
-                
-
+                var timeEntries = await _provider.GetTimeEntries(TimeEntry.SpentOnDate, CurrentUserId);
+                LoggedTime = CalculateLoggedTime(timeEntries);
+            }            
         }
         private void InitTimeEntry()
         {
