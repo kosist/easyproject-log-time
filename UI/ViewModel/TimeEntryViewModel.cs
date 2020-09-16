@@ -49,6 +49,8 @@ namespace UI.ViewModel
 
             LoggedTime = 0;
             SpentOnDate = DateTime.Today;
+
+            ActiveTasks = false;
         }       
 
         #endregion
@@ -175,7 +177,6 @@ namespace UI.ViewModel
             {
                 Projects.Add(project);
             }
-
             InitTimeEntry();
         }
 
@@ -203,7 +204,15 @@ namespace UI.ViewModel
             var issues = await LoadIssues(projectId);
             foreach (var issue in issues)
             {
-                Issues.Add(issue);
+                if (ActiveTasks)
+                {
+                    if (issue.Status.Id != "4")
+                        Issues.Add(issue);
+                }
+                else
+                {
+                    Issues.Add(issue);
+                }
             }
             BuildTreeAndGetRoots(Issues);
         }       
@@ -235,6 +244,15 @@ namespace UI.ViewModel
                 OnPropertyChanged();
             }
         }
+
+        private bool _activeTasks;
+
+        public bool ActiveTasks
+        {
+            get { return _activeTasks; }
+            set { _activeTasks = value; }
+        }
+
 
 
         #endregion

@@ -13,6 +13,11 @@
     <TabControl Grid.Row="0" DataContext="{Binding ViewsAggregatorViewModel}">
         <TabItem Header="Login" IsEnabled="{Binding TabViewModel.LoginTabEnabled, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
             <Grid DataContext="{Binding LoginViewModel}">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="53*"/>
+                    <ColumnDefinition Width="21*"/>
+                    <ColumnDefinition Width="421*"/>
+                </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
                     <RowDefinition/>
                     <RowDefinition/>
@@ -21,18 +26,18 @@
                     <RowDefinition/>
                 </Grid.RowDefinitions>
 
-                <StackPanel Grid.Row="1">
+                <StackPanel Grid.ColumnSpan="3" Margin="0,91,0,0" Grid.RowSpan="2">
                     <Label Content="Login" Margin="100 10 100 0" FontSize="14"/>
                     <TextBox Margin="100 10" FontSize="16" Text="{Binding Credentials.UserName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                 </StackPanel>
 
-                <StackPanel Grid.Row="2">
+                <StackPanel Grid.Row="1" Grid.ColumnSpan="3" Margin="0,91,0,91" Grid.RowSpan="3">
                     <Label Content="Password" Margin="100 10 100 0" FontSize="14"/>
                     <PasswordBox Margin="100 10" FontSize="16"
                                  viewModel:PasswordBoxAssistant.BindPassword="true"  viewModel:PasswordBoxAssistant.BoundPassword="{Binding Credentials.UserPassword, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                 </StackPanel>
 
-                <Grid Grid.Row="3">
+                <Grid Grid.Row="3" Grid.ColumnSpan="3" Margin="0,0,0,91" Grid.RowSpan="2">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="*"/>
@@ -69,28 +74,34 @@
                         <Label Content="Project name:" Margin="10 10 10 0" FontSize="14"/>
                         <ComboBox Margin="10 0" ItemsSource="{Binding Projects}" DisplayMemberPath="Name" SelectedItem="{Binding TimeEntry.SelectedProject, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" IsEditable="True" IsTextSearchEnabled="True"  TextSearch.TextPath="Name" StaysOpenOnEdit="True"/>
                     </StackPanel>
-                    <StackPanel Grid.ColumnSpan="3" Margin="0,76,0,0" Grid.RowSpan="2">
-                        <Label Content="Task name:" Margin="10 10 10 0" FontSize="14"/>
-                        <ComboBox Grid.Row="1" Margin="10 0"  ItemsSource="{Binding Tasks}" DisplayMemberPath="Name" SelectedValuePath="AssociatedObject" SelectedValue="{Binding TimeEntry.SelectedIssue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" IsEditable="True" IsTextSearchEnabled="True" TextSearch.TextPath="SelectedName" StaysOpenOnEdit="True"/>
-                    </StackPanel>
 
-
-
-
-
+                    <Grid Grid.Row="1" Grid.ColumnSpan="3">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="100"/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        <StackPanel Grid.RowSpan="2">
+                            <Label Content="Active Tasks?" Margin="5 10" FontSize="14"/>
+                            <CheckBox Margin="10 0" IsChecked="{Binding ActiveTasks, Mode=OneWayToSource}"/>
+                        </StackPanel>
+                        <StackPanel Grid.Column="1" Grid.RowSpan="2">
+                            <Label Content="Task name:" Margin="10 10 10 0" FontSize="14"/>
+                            <ComboBox Grid.Row="1" Margin="10 0"  ItemsSource="{Binding Tasks}" DisplayMemberPath="Name" SelectedValuePath="AssociatedObject" SelectedValue="{Binding TimeEntry.SelectedIssue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" IsEditable="True" IsTextSearchEnabled="True" TextSearch.TextPath="SelectedName" StaysOpenOnEdit="True"/>
+                        </StackPanel>
+                    </Grid>
                     <Grid Grid.Row="2" Grid.ColumnSpan="3">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition/>
                             <ColumnDefinition/>
                         </Grid.ColumnDefinitions>
                         <StackPanel Grid.RowSpan="2">
-                        <Label Content="Spent hours:" Margin="10 10 10 0" FontSize="14"/>
-                        <TextBox Width="120" HorizontalAlignment="Left" Margin="10 0" FontSize="16" Text="{Binding TimeEntry.SpentTime, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                            <Label Content="Spent hours:" Margin="10 10 10 0" FontSize="14"/>
+                            <TextBox Width="120" HorizontalAlignment="Left" Margin="10 0" FontSize="16" Text="{Binding TimeEntry.SpentTime, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                         </StackPanel>
 
                         <StackPanel Grid.Column="1" Grid.RowSpan="2">
                             <Label Content="Current logged hours:" Margin="10 10 10 0" FontSize="14"/>
-                            <TextBox IsReadOnly="True" Width="120" HorizontalAlignment="Left" Margin="10 0" FontSize="16" Text="{Binding LoggedTime, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"/>
+                            <TextBox IsReadOnly="True" Width="120" HorizontalAlignment="Left" Margin="10 0" FontSize="16" Text="{Binding LoggedTime, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" Background="LightGray"/>
                         </StackPanel>
                     </Grid>
 

@@ -12,5 +12,7 @@ namespace EPProvider.DTO
 
         [DeserializeAs(Name = "subject")]
         public string Name { get; set; }
+
+        public IssueStatusDTO Status { get; set; }
     }
 }
