@@ -86,6 +86,12 @@ namespace UI.ViewModel
                     DisplayIssuesList(TimeEntry.SelectedProject.Id);
                 }
 
+                if (e.PropertyName == "SelectedIssue")
+                {
+                    TimeEntry.SpentTime = "";
+                    TimeEntry.Description = "";
+                }
+
                 if (e.PropertyName == "SpentOnDate")
                 {
                     var timeEntries = await _provider.GetTimeEntries(TimeEntry.SpentOnDate, CurrentUserId);
@@ -132,11 +138,13 @@ namespace UI.ViewModel
                 Description = TimeEntry.Description,
                 SpentTime = TimeEntry.SpentTime,
             };
-            var result = _provider.AddTimeEntry(timeEntry);
-            if (!result)
-                throw new Exception("Post method executed with error!");
+            //var result = _provider.AddTimeEntry(timeEntry);
+            //if (!result)
+            //    throw new Exception("Post method executed with error!");
 
-            InitTimeEntry();
+            TimeEntry.Description = "";
+            TimeEntry.SpentTime = "";
+
             var timeEntries = await _provider.GetTimeEntries(TimeEntry.SpentOnDate, CurrentUserId);
             LoggedTime = CalculateLoggedTime(timeEntries);
         }
