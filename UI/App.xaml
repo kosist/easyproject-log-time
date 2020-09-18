@@ -10,6 +10,7 @@
                 <ResourceDictionary Source="Resource/BootstrapButton.xaml"/>
                 <ResourceDictionary Source="Resource/Combobox.xaml"/>
                 <ResourceDictionary Source="Resource/TextBoxValidated.xaml"/>
+                <ResourceDictionary Source="Resource/PasswordBox.xaml"/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
 
