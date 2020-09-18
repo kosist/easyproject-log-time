@@ -138,9 +138,9 @@ namespace UI.ViewModel
                 Description = TimeEntry.Description,
                 SpentTime = TimeEntry.SpentTime,
             };
-            //var result = _provider.AddTimeEntry(timeEntry);
-            //if (!result)
-            //    throw new Exception("Post method executed with error!");
+            var result = _provider.AddTimeEntry(timeEntry);
+            if (!result)
+                throw new Exception("Post method executed with error!");
 
             TimeEntry.Description = "";
             TimeEntry.SpentTime = "";
