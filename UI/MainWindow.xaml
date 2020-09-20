@@ -141,11 +141,11 @@
                         </StackPanel>
                         <StackPanel Grid.Column="1">
                             <Label Content="Done, %" Margin="5 10 10 0" FontSize="14"/>
-                            <ComboBox Margin="10 0" ItemsSource="{Binding DoneRatioList}" DisplayMemberPath="ValueName" SelectedItem="{Binding Task.DoneRatio, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                            <ComboBox Margin="10 0" ItemsSource="{Binding DoneRatioList}" SelectedItem="{Binding TimeEntry.SelectedIssue.DoneRatio, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                         </StackPanel>
                         <StackPanel Grid.Column="2">
                             <Label Content="Status" Margin="5 10 10 0" FontSize="14"/>
-                            <ComboBox Margin="10 0" ItemsSource="{Binding TaskStatuses}" DisplayMemberPath="Name" SelectedItem="{Binding Task.Status, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                            <ComboBox Margin="10 0" ItemsSource="{Binding TaskStatuses}" DisplayMemberPath="Name" SelectedItem="{Binding TaskStatus, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                         </StackPanel>
                     </Grid>
 

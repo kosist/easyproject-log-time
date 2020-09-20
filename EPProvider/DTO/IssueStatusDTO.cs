@@ -9,7 +9,7 @@ namespace EPProvider.DTO
     {
         [DeserializeAs(Name = "id")]
         [SerializeAs(Name = "id")]
-        public string Id { get; set; }
+        public int Id { get; set; }
 
         [DeserializeAs(Name = "name")]
         [SerializeAs(Name = "name")]

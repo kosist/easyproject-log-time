@@ -30,6 +30,8 @@ namespace UI.ViewModel
         public ObservableCollection<IssueItemViewModel> Nodes { get; private set; }
         public ObservableCollection<IssueItemViewModel> Tasks { get; private set; }
         public ObservableCollection<User> Users { get; private set; }
+        public DoneRatioList DoneRatioList { get; private set; }
+        public TaskStatuses TaskStatuses { get; private set; }
         public DateTime SpentOnDate { get; set; }
         public ICommand SaveCommand { get; }
         public int CurrentUserId { get; private set; }
@@ -46,6 +48,9 @@ namespace UI.ViewModel
             Nodes = new ObservableCollection<IssueItemViewModel>();
             Tasks = new ObservableCollection<IssueItemViewModel>();
             Users = new ObservableCollection<User>();
+            DoneRatioList = new DoneRatioList();
+            TaskStatuses = new TaskStatuses();
+
 
             _eventAggregator.GetEvent<LoginSuccessEvent>().Subscribe(OnLoginSuccessEvent);
             SaveCommand = new DelegateCommand(OnSaveExecute, OnSaveCanExecute);
@@ -131,6 +136,7 @@ namespace UI.ViewModel
                 {
                     TimeEntry.SpentTime = "";
                     TimeEntry.Description = "";
+                    TaskStatus = TimeEntry.SelectedIssue.Status;
                 }
 
                 if ((e.PropertyName == "SpentOnDate") || (e.PropertyName == "SelectedUser"))
@@ -259,7 +265,7 @@ namespace UI.ViewModel
             {
                 if (ActiveTasks)
                 {
-                    if (issue.Status.Id != "4")
+                    if (issue.Status.Id != 4)
                         Issues.Add(issue);
                 }
                 else
@@ -329,6 +335,24 @@ namespace UI.ViewModel
             get { return _updateTask; }
             set { _updateTask = value; }
         }
+
+        private IssueStatus _taskStatus;
+
+        public IssueStatus TaskStatus
+        {
+            get { return _taskStatus; }
+            set
+            {
+                _taskStatus = value;
+                if (TimeEntry.SelectedIssue != null)
+                {
+                    if (TimeEntry.SelectedIssue.Status != _taskStatus)
+                        TimeEntry.SelectedIssue.Status = value;
+                }
+                OnPropertyChanged();
+            }
+        }
+
 
         #endregion
 
