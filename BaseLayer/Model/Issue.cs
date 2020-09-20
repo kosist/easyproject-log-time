@@ -6,5 +6,6 @@
         public int ParentId { get; set; }
         public string Name { get; set; }
         public IssueStatus Status { get; set; }
+        public int DoneRatio { get; set; }
     }
 }

@@ -58,7 +58,7 @@ namespace UI.Wrapper
             switch (propertyName)
             {
                 case nameof(SelectedProject):
-                    if (SelectedProject == null)
+                    if ((SelectedProject == null) || (SelectedProject.Id == 0))
                     {
                         yield return "Project is not selected";
                     }

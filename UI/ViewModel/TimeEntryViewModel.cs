@@ -321,9 +321,6 @@ namespace UI.ViewModel
                         DisplayIssuesList(TimeEntry.SelectedProject.Id);
             }
         }
-
-
-
         #endregion
 
         #region Tree View
