@@ -10,7 +10,7 @@
         mc:Ignorable="d"
         Title="EasyProject Time Logger" Height="570" Width="500" ResizeMode="CanMinimize">
 
-    <TabControl Grid.Row="0" DataContext="{Binding ViewsAggregatorViewModel}">
+    <TabControl x:Name="TabControl" Grid.Row="0" DataContext="{Binding ViewsAggregatorViewModel}">
         <TabItem Header="Login" IsEnabled="{Binding TabViewModel.LoginTabEnabled, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
             <Grid DataContext="{Binding LoginViewModel}">
                 <Grid.ColumnDefinitions>
@@ -28,7 +28,7 @@
 
                 <StackPanel Grid.ColumnSpan="3" Margin="0,91,0,0" Grid.RowSpan="2">
                     <Label Content="Login" Margin="100 10 100 0" FontSize="14"/>
-                    <TextBox Margin="100 10" FontSize="16" Text="{Binding Credentials.UserName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                    <TextBox x:Name="UserName" Margin="100 10" FontSize="16" Text="{Binding Credentials.UserName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                 </StackPanel>
 
                 <StackPanel Grid.Row="1" Grid.ColumnSpan="3" Margin="0,91,0,91" Grid.RowSpan="3">
@@ -72,7 +72,7 @@
 
                     <StackPanel Grid.ColumnSpan="3">
                         <Label Content="Project name:" Margin="10 10 10 0" FontSize="14"/>
-                        <ComboBox Margin="10 0" ItemsSource="{Binding Projects}" DisplayMemberPath="Name" SelectedItem="{Binding TimeEntry.SelectedProject, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" IsEditable="True" IsTextSearchEnabled="True"  TextSearch.TextPath="Name" StaysOpenOnEdit="True"/>
+                        <ComboBox x:Name="SelectedProject" Margin="10 0" ItemsSource="{Binding Projects}" DisplayMemberPath="Name" SelectedItem="{Binding TimeEntry.SelectedProject, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" IsEditable="True" IsTextSearchEnabled="True"  TextSearch.TextPath="Name" StaysOpenOnEdit="True"/>
                     </StackPanel>
 
                     <Grid Grid.Row="1" Grid.ColumnSpan="3">
@@ -86,7 +86,7 @@
                         </StackPanel>
                         <StackPanel Grid.Column="1" Grid.RowSpan="2">
                             <Label Content="Task name:" Margin="10 10 10 0" FontSize="14"/>
-                            <ComboBox Grid.Row="1" Margin="10 0"  ItemsSource="{Binding Tasks}" DisplayMemberPath="Name" SelectedValuePath="AssociatedObject" SelectedValue="{Binding TimeEntry.SelectedIssue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" IsEditable="True" IsTextSearchEnabled="True" TextSearch.TextPath="SelectedName" StaysOpenOnEdit="True"/>
+                            <ComboBox Margin="10 0"  ItemsSource="{Binding Tasks}" DisplayMemberPath="Name" SelectedValuePath="AssociatedObject" SelectedValue="{Binding TimeEntry.SelectedIssue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" IsEditable="True" IsTextSearchEnabled="True" TextSearch.TextPath="SelectedName" StaysOpenOnEdit="True"/>
                         </StackPanel>
                     </Grid>
 

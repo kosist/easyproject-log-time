@@ -97,8 +97,19 @@ namespace UI.ViewModel
                 {
                     TimeEntry.SpentTime = "";
                     TimeEntry.Description = "";
-                    await DisplayIssuesList(TimeEntry.SelectedProject.Id);
-                    await DisplayUsersListAsync(TimeEntry.SelectedProject.Id);
+                    if (TimeEntry.SelectedProject != null)
+                    {
+                        await DisplayIssuesList(TimeEntry.SelectedProject.Id);
+                        await DisplayUsersListAsync(TimeEntry.SelectedProject.Id);
+                    }
+                    else
+                    {
+                        TimeEntry.SelectedIssue = null;
+                        TimeEntry.SelectedUser = null;
+                        Issues.Clear();
+                        Tasks.Clear();
+                        Users.Clear();
+                    }
                 }
 
                 if (e.PropertyName == "SelectedIssue")
