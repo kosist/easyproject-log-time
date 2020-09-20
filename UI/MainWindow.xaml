@@ -8,7 +8,7 @@
         xmlns:validationrules="clr-namespace:UI.Rule"
         xmlns:viewModel="clr-namespace:UI.ViewModel"
         mc:Ignorable="d"
-        Title="EasyProject Time Logger" Height="500" Width="500">
+        Title="EasyProject Time Logger" Height="550" Width="500" ResizeMode="CanMinimize">
 
     <TabControl Grid.Row="0" DataContext="{Binding ViewsAggregatorViewModel}">
         <TabItem Header="Login" IsEnabled="{Binding TabViewModel.LoginTabEnabled, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
@@ -46,7 +46,7 @@
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
 
-                    <Button Style="{StaticResource btn-info}" Grid.Column="3" Margin="20 25 0 25" Content="Login" Command="{Binding LoginCommand}"/>
+                    <Button Style="{StaticResource btn-info}" Grid.Column="3" Margin="20 25 0 25" Content="Login" Command="{Binding LoginCommand}" Height="40"/>
                 </Grid>
             </Grid>
 
@@ -62,12 +62,12 @@
                         <ColumnDefinition Width="465*"/>
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
-                        <RowDefinition/>
-                        <RowDefinition/>
-                        <RowDefinition/>
-                        <RowDefinition/>
-                        <RowDefinition/>
-                        <RowDefinition/>
+                        <RowDefinition Height="85"/>
+                        <RowDefinition Height="85"/>
+                        <RowDefinition Height="85"/>
+                        <RowDefinition Height="85"/>
+                        <RowDefinition Height="85"/>
+                        <RowDefinition Height="85"/>
                     </Grid.RowDefinitions>
 
                     <StackPanel Grid.ColumnSpan="3">
@@ -89,32 +89,40 @@
                             <ComboBox Grid.Row="1" Margin="10 0"  ItemsSource="{Binding Tasks}" DisplayMemberPath="Name" SelectedValuePath="AssociatedObject" SelectedValue="{Binding TimeEntry.SelectedIssue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" IsEditable="True" IsTextSearchEnabled="True" TextSearch.TextPath="SelectedName" StaysOpenOnEdit="True"/>
                         </StackPanel>
                     </Grid>
+
                     <Grid Grid.Row="2" Grid.ColumnSpan="3">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition/>
                             <ColumnDefinition/>
                         </Grid.ColumnDefinitions>
-                        <StackPanel Grid.RowSpan="2">
+                        <StackPanel>
                             <Label Content="Spent hours:" Margin="10 10 10 0" FontSize="14"/>
                             <TextBox Width="120" HorizontalAlignment="Left" Margin="10 0" FontSize="16" Text="{Binding TimeEntry.SpentTime, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                         </StackPanel>
 
-                        <StackPanel Grid.Column="1" Grid.RowSpan="2">
+                        <StackPanel Grid.Column="1">
                             <Label Content="Current logged hours:" Margin="10 10 10 0" FontSize="14"/>
                             <TextBox IsReadOnly="True" Width="120" HorizontalAlignment="Left" Margin="10 0" FontSize="16" Text="{Binding LoggedTime, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" Background="LightGray"/>
                         </StackPanel>
                     </Grid>
 
-                    <StackPanel Grid.Row="2" Grid.ColumnSpan="3" Margin="0,76,0,0" Grid.RowSpan="2">
+                    <StackPanel Grid.Row="3" Grid.ColumnSpan="3">
                         <Label Content="Comment:" Margin="10 10 10 0" FontSize="14"/>
                         <TextBox Margin="10 0" Text="{Binding TimeEntry.Description, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" FontSize="16"/>
                     </StackPanel>
-                    <StackPanel Grid.Row="3" Grid.ColumnSpan="3" Margin="0,76,0,0" Grid.RowSpan="2">
-                        <Label Content="Spent on:" Margin="10 10 10 0" FontSize="14"/>
-                        <DatePicker Margin="10 0" Width="120" HorizontalAlignment="Left" SelectedDate="{Binding TimeEntry.SpentOnDate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" SelectedDateFormat="Short" Focusable="False" FontSize="16" MinWidth="150"/>
-                    </StackPanel>
 
-                    <Grid Grid.Row="4" Grid.ColumnSpan="3" Margin="0,76,0,0" Grid.RowSpan="2">
+                    <Grid Grid.Row="4" Grid.ColumnSpan="3">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        <StackPanel Grid.ColumnSpan="2">
+                            <Label Content="Spent on:" Margin="10 10 10 0" FontSize="14"/>
+                            <DatePicker Margin="10 0" Width="120" HorizontalAlignment="Left" SelectedDate="{Binding TimeEntry.SpentOnDate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" SelectedDateFormat="Short" Focusable="False" FontSize="16" MinWidth="150"/>
+                        </StackPanel>
+                    </Grid>
+
+                    <Grid Grid.Row="5" Grid.ColumnSpan="3">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition/>
                             <ColumnDefinition/>
@@ -122,8 +130,8 @@
                             <ColumnDefinition/>
                         </Grid.ColumnDefinitions>
 
-                        <Button Style="{StaticResource btn-success}"  Grid.Column="1" Margin="15" Content="Save" Command="{Binding SaveCommand}"/>
-                        <Button Style="{StaticResource btn-danger}" Grid.Column="2" Margin="15" Content="Exit">
+                        <Button Style="{StaticResource btn-success}"  Grid.Column="1" Margin="15" Content="Save" Command="{Binding SaveCommand}" Height="40"/>
+                        <Button Style="{StaticResource btn-danger}" Grid.Column="2" Margin="15" Content="Exit" Height="40">
                             <i:Interaction.Triggers>
                                 <i:EventTrigger EventName="Click">
                                     <i:CallMethodAction MethodName="Close"
