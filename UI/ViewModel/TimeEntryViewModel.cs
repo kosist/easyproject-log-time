@@ -2,6 +2,7 @@
 using System.Globalization;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using BaseLayer.Model;
@@ -28,6 +29,7 @@ namespace UI.ViewModel
         public ObservableCollection<Issue> Issues { get; private set; }
         public ObservableCollection<IssueItemViewModel> Nodes { get; private set; }
         public ObservableCollection<IssueItemViewModel> Tasks { get; private set; }
+        public ObservableCollection<User> Users { get; private set; }
         public DateTime SpentOnDate { get; set; }
         public ICommand SaveCommand { get; }
         public int CurrentUserId { get; private set; }
@@ -125,11 +127,18 @@ namespace UI.ViewModel
         
         #region Save Methods
 
-                /// <summary>
+        /// <summary>
         /// When Save button is pressed, TimeEntry data is written to EP
         /// </summary>
         private async void OnSaveExecute()
         {
+            if (TimeEntry.SelectedUser == null)
+            {
+                TimeEntry.SelectedUser = new User
+                {
+                    Id = CurrentUserId
+                };
+            }
             var timeEntry = new TimeEntry
             {
                 ProjectId = TimeEntry.SelectedProject.Id,

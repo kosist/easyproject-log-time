@@ -28,6 +28,12 @@ namespace UI.Wrapper
             set => SetValue(value);
         }
 
+        public User SelectedUser
+        {
+            get => GetValue<User>();
+            set => SetValue(value);
+        }
+
         public string SpentTime
         {
             get => GetValue<string>();

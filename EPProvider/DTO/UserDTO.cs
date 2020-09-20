@@ -1,4 +1,5 @@
-﻿using RestSharp.Deserializers;
+﻿using System.Xml.Serialization;
+using RestSharp.Deserializers;
 using RestSharp.Serializers;
 
 namespace EPProvider.DTO
