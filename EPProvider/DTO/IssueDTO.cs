@@ -1,4 +1,5 @@
 ﻿using RestSharp.Deserializers;
+using RestSharp.Serializers;
 
 namespace EPProvider.DTO
 {
@@ -14,5 +15,8 @@ namespace EPProvider.DTO
         public string Name { get; set; }
 
         public IssueStatusDTO Status { get; set; }
+
+        [DeserializeAs(Name = "done_ratio")]
+        public int DoneRatio { get; set; }
     }
 }

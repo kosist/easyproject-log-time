@@ -14,9 +14,5 @@ namespace EPProvider.DTO
         [DeserializeAs(Name = "name")]
         [SerializeAs(Name = "name")]
         public string Name { get; set; }
-
-        [DeserializeAs(Name = "done_ratio")]
-        [SerializeAs(Name = "done_ratio")]
-        public int DoneRatio { get; set; }
     }
 }
