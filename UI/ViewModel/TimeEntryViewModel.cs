@@ -68,10 +68,21 @@ namespace UI.ViewModel
             {
                 await DisplayProjectsAsync();
                 CurrentUserId = await _provider.GetCurrentUserId();
-                var timeEntries = await _provider.GetTimeEntries(TimeEntry.SpentOnDate, CurrentUserId);
-                LoggedTime = CalculateLoggedTime(timeEntries);
+                await GetLoggedTime();
             }            
         }
+
+        private async Task GetLoggedTime()
+        {
+            var userId = CurrentUserId;
+            if (TimeEntry.SelectedUser != null)
+            {
+                userId = TimeEntry.SelectedUser.Id;
+            }
+            var timeEntries = await _provider.GetTimeEntries(TimeEntry.SpentOnDate, userId);
+            LoggedTime = CalculateLoggedTime(timeEntries);
+        }
+
         private async Task InitTimeEntry()
         {
             TimeEntry = new TimeEntryWrapper(new TimeEntryItemViewModel());
@@ -96,10 +107,9 @@ namespace UI.ViewModel
                     TimeEntry.Description = "";
                 }
 
-                if (e.PropertyName == "SpentOnDate")
+                if ((e.PropertyName == "SpentOnDate") || (e.PropertyName == "SelectedUser"))
                 {
-                    var timeEntries = await _provider.GetTimeEntries(TimeEntry.SpentOnDate, CurrentUserId);
-                    LoggedTime = CalculateLoggedTime(timeEntries);
+                    await GetLoggedTime();
                 }
             };
             ((DelegateCommand) SaveCommand).RaiseCanExecuteChanged();
@@ -157,8 +167,7 @@ namespace UI.ViewModel
             TimeEntry.Description = "";
             TimeEntry.SpentTime = "";
 
-            var timeEntries = await _provider.GetTimeEntries(TimeEntry.SpentOnDate, CurrentUserId);
-            LoggedTime = CalculateLoggedTime(timeEntries);
+            await GetLoggedTime();
         }
 
         /// <summary>
