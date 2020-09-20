@@ -8,7 +8,7 @@
         xmlns:validationrules="clr-namespace:UI.Rule"
         xmlns:viewModel="clr-namespace:UI.ViewModel"
         mc:Ignorable="d"
-        Title="EasyProject Time Logger" Height="550" Width="500" ResizeMode="CanMinimize">
+        Title="EasyProject Time Logger" Height="570" Width="500" ResizeMode="CanMinimize">
 
     <TabControl Grid.Row="0" DataContext="{Binding ViewsAggregatorViewModel}">
         <TabItem Header="Login" IsEnabled="{Binding TabViewModel.LoginTabEnabled, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
@@ -116,9 +116,13 @@
                             <ColumnDefinition/>
                             <ColumnDefinition/>
                         </Grid.ColumnDefinitions>
-                        <StackPanel Grid.ColumnSpan="2">
+                        <StackPanel>
                             <Label Content="Spent on:" Margin="10 10 10 0" FontSize="14"/>
                             <DatePicker Margin="10 0" Width="120" HorizontalAlignment="Left" SelectedDate="{Binding TimeEntry.SpentOnDate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" SelectedDateFormat="Short" Focusable="False" FontSize="16" MinWidth="150"/>
+                        </StackPanel>
+                        <StackPanel Grid.Column="1">
+                            <Label Content="User:" Margin="10 10 10 0" FontSize="14"/>
+                            <ComboBox Margin="10 0" ItemsSource="{Binding Users}" DisplayMemberPath="Name" SelectedItem="{Binding TimeEntry.SelectedUser, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" IsEditable="True" IsTextSearchEnabled="True"  TextSearch.TextPath="Name" StaysOpenOnEdit="True"/>
                         </StackPanel>
                     </Grid>
 

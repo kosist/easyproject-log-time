@@ -19,5 +19,7 @@ namespace EPProvider.DTO
 
         [SerializeAs(Name = "spent_on")]
         public string SpentOnDate { get; set; }
+
+        public UserDTO User { get; set; }
     }
 }

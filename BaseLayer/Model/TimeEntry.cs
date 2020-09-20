@@ -9,5 +9,6 @@ namespace BaseLayer.Model
         public string SpentTime { get; set; }
         public string Description { get; set; }
         public DateTime SpentOnDate { get; set; }
+        public User User { get; set; }
     }
 }
