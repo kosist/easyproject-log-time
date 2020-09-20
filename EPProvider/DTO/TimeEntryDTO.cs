@@ -11,6 +11,9 @@ namespace EPProvider.DTO
         [SerializeAs(Name = "issue_id")]
         public int IssueId { get; set; }
 
+        [SerializeAs(Name = "user_id")]
+        public int UserId { get; set; }
+
         [SerializeAs(Name ="hours")]
         public string SpentTime { get; set; }
 
@@ -19,7 +22,5 @@ namespace EPProvider.DTO
 
         [SerializeAs(Name = "spent_on")]
         public string SpentOnDate { get; set; }
-
-        public UserDTO User { get; set; }
     }
 }

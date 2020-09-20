@@ -45,6 +45,7 @@ namespace UI.ViewModel
             Issues = new ObservableCollection<Issue>();
             Nodes = new ObservableCollection<IssueItemViewModel>();
             Tasks = new ObservableCollection<IssueItemViewModel>();
+            Users = new ObservableCollection<User>();
 
             _eventAggregator.GetEvent<LoginSuccessEvent>().Subscribe(OnLoginSuccessEvent);
             SaveCommand = new DelegateCommand(OnSaveExecute, OnSaveCanExecute);
@@ -71,7 +72,7 @@ namespace UI.ViewModel
                 LoggedTime = CalculateLoggedTime(timeEntries);
             }            
         }
-        private void InitTimeEntry()
+        private async Task InitTimeEntry()
         {
             TimeEntry = new TimeEntryWrapper(new TimeEntryItemViewModel());
             TimeEntry.PropertyChanged += async (s, e) =>
@@ -85,7 +86,8 @@ namespace UI.ViewModel
                 {
                     TimeEntry.SpentTime = "";
                     TimeEntry.Description = "";
-                    DisplayIssuesList(TimeEntry.SelectedProject.Id);
+                    await DisplayIssuesList(TimeEntry.SelectedProject.Id);
+                    await DisplayUsersListAsync(TimeEntry.SelectedProject.Id);
                 }
 
                 if (e.PropertyName == "SelectedIssue")
@@ -146,6 +148,7 @@ namespace UI.ViewModel
                 SpentOnDate = TimeEntry.SpentOnDate,
                 Description = TimeEntry.Description,
                 SpentTime = TimeEntry.SpentTime,
+                UserId = TimeEntry.SelectedUser.Id,
             };
             var result = _provider.AddTimeEntry(timeEntry);
             if (!result)
@@ -192,7 +195,7 @@ namespace UI.ViewModel
             {
                 Projects.Add(project);
             }
-            InitTimeEntry();
+            await InitTimeEntry();
         }
 
         /// <summary>
@@ -230,10 +233,20 @@ namespace UI.ViewModel
                 }
             }
             BuildTreeAndGetRoots(Issues);
-        }       
+        }
+
+        private async Task DisplayUsersListAsync(int projectId)
+        {
+            Users.Clear();
+            var users = await _provider.GetProjectUsersListAsync(projectId);
+            foreach (var user in users)
+            {
+                Users.Add(user);
+            }
+        }
 
         #endregion
-        
+
         #region Full Properties
 
         private TimeEntryWrapper _timeEntry;

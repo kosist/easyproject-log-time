@@ -13,5 +13,6 @@ namespace EPProvider
         bool CredentialsValid();
         Task<List<TimeEntry>> GetTimeEntries(DateTime date, int userId);
         Task<int> GetCurrentUserId();
+        Task<List<User>> GetProjectUsersListAsync(int projectId);
     }
 }

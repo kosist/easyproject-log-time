@@ -15,7 +15,7 @@ namespace UI.ViewModel
         public string Description { get; set; }
 
         public DateTime SpentOnDate { get; set; }
-        public User User { get; set; }
+        public User SelectedUser { get; set; }
 
         public TimeEntryItemViewModel()
         {

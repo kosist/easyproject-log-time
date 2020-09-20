@@ -13,6 +13,7 @@ namespace UI.Wrapper
         {
             SelectedProject = null;
             SelectedIssue = null;
+            SelectedUser = null;
             SpentTime = "";
         }
 

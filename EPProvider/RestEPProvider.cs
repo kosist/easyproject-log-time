@@ -122,6 +122,20 @@ namespace EPProvider
             return userId;
         }
 
+        public async Task<List<User>> GetProjectUsersListAsync(int projectId)
+        {
+            if (projectId > 0)
+            {
+                InitHttpBasicAuthenticator();
+                var request = new RestRequest($"projects/{projectId}/memberships.xml", Method.GET, DataFormat.Xml);
+                request.AddHeader("content-type", "application/xml");
+                var requestResult = await _client.ExecuteAsync<List<UserDTO>>(request);
+                var users = requestResult.Data.Select(_mapper.Map<UserDTO, User>).ToList();
+                return users;
+            }
+            throw new ArgumentOutOfRangeException("Project ID value is invalid!");
+        }
+
         private void InitHttpBasicAuthenticator()
         {
             Credentials credentials = _credentialsProvider.LoadCredentials();
