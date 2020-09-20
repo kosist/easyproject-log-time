@@ -136,6 +136,15 @@ namespace EPProvider
             throw new ArgumentOutOfRangeException("Project ID value is invalid!");
         }
 
+        public async Task UpdateIssueStatus(UpdatedIssue issue)
+        {
+            var updatedIssue = _mapper.Map<UpdatedIssue, UpdatedIssueDTO>(issue);
+            InitHttpBasicAuthenticator();
+            var request = new RestRequest($"issues/{updatedIssue.Id}.xml", Method.PUT, DataFormat.Xml);
+            request.AddXmlBody(updatedIssue);
+            var response = await _client.PutAsync<UpdatedIssueDTO>(request);
+        }
+
         private void InitHttpBasicAuthenticator()
         {
             Credentials credentials = _credentialsProvider.LoadCredentials();

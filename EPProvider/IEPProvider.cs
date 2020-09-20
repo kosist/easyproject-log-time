@@ -14,5 +14,6 @@ namespace EPProvider
         Task<List<TimeEntry>> GetTimeEntries(DateTime date, int userId);
         Task<int> GetCurrentUserId();
         Task<List<User>> GetProjectUsersListAsync(int projectId);
+        Task UpdateIssueStatus(UpdatedIssue issue);
     }
 }

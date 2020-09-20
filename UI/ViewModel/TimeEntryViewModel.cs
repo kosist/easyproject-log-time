@@ -321,6 +321,15 @@ namespace UI.ViewModel
                         DisplayIssuesList(TimeEntry.SelectedProject.Id);
             }
         }
+
+        private bool _updateTask;
+
+        public bool UpdateTask
+        {
+            get { return _updateTask; }
+            set { _updateTask = value; }
+        }
+
         #endregion
 
         #region Tree View
