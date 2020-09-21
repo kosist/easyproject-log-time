@@ -31,7 +31,7 @@ namespace UI.ViewModel
         public ObservableCollection<IssueItemViewModel> Tasks { get; private set; }
         public ObservableCollection<User> Users { get; private set; }
         public DoneRatioList DoneRatioList { get; private set; }
-        public TaskStatuses TaskStatuses { get; private set; }
+        public TaskStatusesViewModel TaskStatuses { get; private set; }
         public DateTime SpentOnDate { get; set; }
         public ICommand SaveCommand { get; }
         public int CurrentUserId { get; private set; }
@@ -49,16 +49,14 @@ namespace UI.ViewModel
             Tasks = new ObservableCollection<IssueItemViewModel>();
             Users = new ObservableCollection<User>();
             DoneRatioList = new DoneRatioList();
-            TaskStatuses = new TaskStatuses();
-
+            TaskStatuses = new TaskStatusesViewModel();
 
             _eventAggregator.GetEvent<LoginSuccessEvent>().Subscribe(OnLoginSuccessEvent);
             SaveCommand = new DelegateCommand(OnSaveExecute, OnSaveCanExecute);
 
             LoggedTime = 0;
             SpentOnDate = DateTime.Today;
-        }       
-
+        }
         #endregion
         
         #region Private helper methods
@@ -116,20 +114,6 @@ namespace UI.ViewModel
                         await DisplayIssuesList(TimeEntry.SelectedProject.Id);
                         await DisplayUsersListAsync(TimeEntry.SelectedProject.Id);
                     }
-
-                    //if (TimeEntry.SelectedProject != null)
-                    //{
-                    //    await DisplayIssuesList(TimeEntry.SelectedProject.Id);
-                    //    await DisplayUsersListAsync(TimeEntry.SelectedProject.Id);
-                    //}
-                    //else if (TimeEntry.SelectedProject.Id != 0)
-                    //{
-                    //    TimeEntry.SelectedIssue = null;
-                    //    TimeEntry.SelectedUser = null;
-                    //    Issues.Clear();
-                    //    Tasks.Clear();
-                    //    Users.Clear();
-                    //}
                 }
 
                 if (e.PropertyName == "SelectedIssue")
@@ -137,7 +121,8 @@ namespace UI.ViewModel
                     TimeEntry.SpentTime = "";
                     TimeEntry.Description = "";
                     if (TimeEntry.SelectedIssue != null)
-                        TaskStatus = TimeEntry.SelectedIssue.Status;
+                        TaskStatuses.TaskStatus =
+                            TaskStatuses.Statuses.First(task => task.Id == TimeEntry.SelectedIssue.Status.Id);
                 }
 
                 if ((e.PropertyName == "SpentOnDate") || (e.PropertyName == "SelectedUser"))
@@ -334,7 +319,11 @@ namespace UI.ViewModel
         public bool UpdateTask
         {
             get { return _updateTask; }
-            set { _updateTask = value; }
+            set
+            {
+                _updateTask = value;
+                OnPropertyChanged();
+            }
         }
 
         private IssueStatus _taskStatus;
@@ -345,6 +334,7 @@ namespace UI.ViewModel
             set
             {
                 _taskStatus = value;
+                UpdateTask = true;
                 if (TimeEntry.SelectedIssue != null)
                 {
                     if (TimeEntry.SelectedIssue.Status != _taskStatus)

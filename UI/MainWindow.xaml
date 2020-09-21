@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+        xmlns:diag="clr-namespace:System.Diagnostics;assembly=WindowsBase"
         xmlns:local="clr-namespace:UI"
         xmlns:validationrules="clr-namespace:UI.Rule"
         xmlns:viewModel="clr-namespace:UI.ViewModel"
@@ -89,7 +90,7 @@
                         <StackPanel Grid.Column="1">
                             <Label Content="Task name:" Margin="5 10 10 0" FontSize="14"/>
                             <!--<ComboBox Margin="10 0"  ItemsSource="{Binding Tasks}" DisplayMemberPath="Name" SelectedValuePath="AssociatedObject" SelectedValue="{Binding TimeEntry.SelectedIssue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" IsEditable="True" IsTextSearchEnabled="True" TextSearch.TextPath="SelectedName" StaysOpenOnEdit="True"/>-->
-                            <ComboBox Margin="10 0"  ItemsSource="{Binding Tasks}" DisplayMemberPath="Name" SelectedValuePath="AssociatedObject" SelectedValue="{Binding TimeEntry.SelectedIssue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" IsTextSearchEnabled="True" TextSearch.TextPath="SelectedName" IsEditable="True" />
+                            <ComboBox Margin="10 0"  ItemsSource="{Binding Tasks}" DisplayMemberPath="Name" SelectedValuePath="AssociatedObject" SelectedValue="{Binding TimeEntry.SelectedIssue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  IsEditable="True" IsTextSearchEnabled="True" TextSearch.TextPath="SelectedName" StaysOpenOnEdit="True"/>
                         </StackPanel>
                     </Grid>
 
@@ -145,7 +146,7 @@
                         </StackPanel>
                         <StackPanel Grid.Column="2">
                             <Label Content="Status" Margin="5 10 10 0" FontSize="14"/>
-                            <ComboBox Margin="10 0" ItemsSource="{Binding TaskStatuses}" DisplayMemberPath="Name" SelectedItem="{Binding TaskStatus, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                            <ComboBox Margin="10 0" ItemsSource="{Binding TaskStatuses.Statuses}" DisplayMemberPath="Name" SelectedItem="{Binding TaskStatuses.TaskStatus, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, diag:PresentationTraceSources.TraceLevel=High}" />
                         </StackPanel>
                     </Grid>
 

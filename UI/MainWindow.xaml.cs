@@ -27,11 +27,6 @@ namespace UI
             {
                 UserName.Focus();
             }
-            if (tabControl.SelectedIndex == 1)
-            {
-                SelectedProject.Focusable = true;
-                SelectedProject.Focus();
-            }
         }
 
         private void MainWindow_Loaded(object sender, RoutedEventArgs e)
