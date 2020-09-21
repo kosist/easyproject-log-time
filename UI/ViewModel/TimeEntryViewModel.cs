@@ -136,7 +136,8 @@ namespace UI.ViewModel
                 {
                     TimeEntry.SpentTime = "";
                     TimeEntry.Description = "";
-                    TaskStatus = TimeEntry.SelectedIssue.Status;
+                    if (TimeEntry.SelectedIssue != null)
+                        TaskStatus = TimeEntry.SelectedIssue.Status;
                 }
 
                 if ((e.PropertyName == "SpentOnDate") || (e.PropertyName == "SelectedUser"))
