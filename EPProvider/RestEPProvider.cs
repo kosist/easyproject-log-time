@@ -142,7 +142,8 @@ namespace EPProvider
             InitHttpBasicAuthenticator();
             var request = new RestRequest($"issues/{updatedIssue.Id}.xml", Method.PUT, DataFormat.Xml);
             request.AddXmlBody(updatedIssue);
-            var response = await _client.PutAsync<UpdatedIssueDTO>(request);
+            var response = await _client.ExecuteAsync<UpdatedIssueDTO>(request);
+            var code = (int)response.StatusCode;
         }
 
         private void InitHttpBasicAuthenticator()

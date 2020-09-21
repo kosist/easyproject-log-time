@@ -178,9 +178,18 @@ namespace UI.ViewModel
                 SpentTime = TimeEntry.SpentTime,
                 UserId = TimeEntry.SelectedUser.Id,
             };
-            var result = _provider.AddTimeEntry(timeEntry);
-            if (!result)
-                throw new Exception("Post method executed with error!");
+            //var result = _provider.AddTimeEntry(timeEntry);
+            //if (!result)
+            //    throw new Exception("Post method executed with error!");
+            if (UpdateTask)
+            {
+                await _provider.UpdateIssueStatus(new UpdatedIssue
+                {
+                    Id = TimeEntry.SelectedIssue.Id,
+                    Status = TaskStatuses.TaskStatus,
+                    DoneRatio = TimeEntry.SelectedIssue.DoneRatio
+                });
+            }
 
             TimeEntry.Description = "";
             TimeEntry.SpentTime = "";
