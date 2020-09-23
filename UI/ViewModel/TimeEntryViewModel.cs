@@ -120,9 +120,12 @@ namespace UI.ViewModel
                 {
                     TimeEntry.SpentTime = "";
                     TimeEntry.Description = "";
+                    UpdateTask = false;
                     if (TimeEntry.SelectedIssue != null)
                         TaskStatuses.TaskStatus =
                             TaskStatuses.Statuses.First(task => task.Id == TimeEntry.SelectedIssue.Status.Id);
+                    else
+                        TaskStatuses.TaskStatus = null;
                 }
 
                 if ((e.PropertyName == "SpentOnDate") || (e.PropertyName == "SelectedUser"))
@@ -178,9 +181,9 @@ namespace UI.ViewModel
                 SpentTime = TimeEntry.SpentTime,
                 UserId = TimeEntry.SelectedUser.Id,
             };
-            //var result = _provider.AddTimeEntry(timeEntry);
-            //if (!result)
-            //    throw new Exception("Post method executed with error!");
+            var result = _provider.AddTimeEntry(timeEntry);
+            if (!result)
+                throw new Exception("Post method executed with error!");
             if (UpdateTask)
             {
                 await _provider.UpdateIssueStatus(new UpdatedIssue

@@ -105,7 +105,7 @@
                         </StackPanel>
 
                         <StackPanel Grid.Column="1">
-                            <Label Content="Current logged hours:" Margin="5 10 10 0" FontSize="14"/>
+                            <Label Content="Total logged hours:" Margin="5 10 10 0" FontSize="14"/>
                             <TextBox IsReadOnly="True" Width="120" HorizontalAlignment="Left" Margin="10 0" FontSize="16" Text="{Binding LoggedTime, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" Background="LightGray"/>
                         </StackPanel>
                     </Grid>
