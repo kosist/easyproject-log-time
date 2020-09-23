@@ -8,8 +8,11 @@ namespace EPProvider.Mapping
     {
         public UpdatedIssueMapperProfile()
         {
-            CreateMap<UpdatedIssue, UpdatedIssueDTO>();
-            CreateMap<UpdatedIssueDTO, UpdatedIssue>();
+            CreateMap<UpdatedIssue, UpdatedIssueDTO>()
+                .ForMember(dest => dest.StatusId, opt => opt.MapFrom(src => src.Status.Id));
+            CreateMap<UpdatedIssueDTO, UpdatedIssue>()
+                .ForMember(dest => dest.Status, opt => opt.Ignore())
+                .ForMember(dest => dest.Id, opt => opt.Ignore());
         }
     }
 }

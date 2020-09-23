@@ -140,7 +140,7 @@ namespace EPProvider
         {
             var updatedIssue = _mapper.Map<UpdatedIssue, UpdatedIssueDTO>(issue);
             InitHttpBasicAuthenticator();
-            var request = new RestRequest($"issues/{updatedIssue.Id}.xml", Method.PUT, DataFormat.Xml);
+            var request = new RestRequest($"issues/{issue.Id}.xml", Method.PUT, DataFormat.Xml);
             request.AddXmlBody(updatedIssue);
             var response = await _client.ExecuteAsync<UpdatedIssueDTO>(request);
             var code = (int)response.StatusCode;
