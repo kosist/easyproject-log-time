@@ -129,6 +129,7 @@ namespace EPProvider
                 InitHttpBasicAuthenticator();
                 var request = new RestRequest($"projects/{projectId}/memberships.xml", Method.GET, DataFormat.Xml);
                 request.AddHeader("content-type", "application/xml");
+                request.AddParameter("limit", 50);
                 var requestResult = await _client.ExecuteAsync<List<UserDTO>>(request);
                 var users = requestResult.Data.Select(_mapper.Map<UserDTO, User>).ToList();
                 return users;
