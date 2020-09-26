@@ -7,13 +7,13 @@ namespace EPProvider
 {
     public interface IEPProvider
     {
-        Task<List<Project>> GetProjectsListAsync();
+        Task<(OperationStatusInfo status, List<Project> projectsList)> GetProjectsListAsync();
         Task<List<Issue>> GetIssuesListForProjectAsync(int projectId);
-        bool AddTimeEntry(TimeEntry timeEntryData);
-        Task<LoginStatusInfo> CredentialsValid();
+        Task<OperationStatusInfo> AddTimeEntry(TimeEntry timeEntryData);
+        Task<OperationStatusInfo> CredentialsValid();
         Task<List<TimeEntry>> GetTimeEntries(DateTime date, int userId);
-        Task<int> GetCurrentUserId();
+        Task<(OperationStatusInfo status, int userId)> GetCurrentUserId();
         Task<List<User>> GetProjectUsersListAsync(int projectId);
-        Task UpdateIssueStatus(UpdatedIssue issue);
+        Task<OperationStatusInfo> UpdateIssueStatus(UpdatedIssue issue);
     }
 }

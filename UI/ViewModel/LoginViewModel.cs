@@ -52,14 +52,14 @@ namespace UI.ViewModel
            _credentialsProvider.SaveCredentials(new Credentials(Credentials.UserName, Credentials.UserPassword));
            GetCredentials();
            var status = await _provider.CredentialsValid();
-           if (status.LoginStatus)
+           if (status.OperationStatus)
                Status.UpdateStatusMessage("Login is successful!", StatusEnum.Ok);
            else
            {
-               Status.UpdateStatusMessage($"Login is not successful! {status.LoginMessage}", StatusEnum.NOk);
+               Status.UpdateStatusMessage($"Login is not successful! {status.OperationMessage}", StatusEnum.NOk);
             }
 
-           _eventAggregator.GetEvent<LoginSuccessEvent>().Publish(status.LoginStatus);
+           _eventAggregator.GetEvent<LoginSuccessEvent>().Publish(status.OperationStatus);
         }
 
         /// <summary>

@@ -70,7 +70,8 @@ namespace UI.ViewModel
             if (status)
             {
                 await DisplayProjectsAsync();
-                CurrentUserId = await _provider.GetCurrentUserId();
+                var requestResult = await _provider.GetCurrentUserId();
+                CurrentUserId = requestResult.userId;
                 await GetLoggedTime();
             }            
         }
@@ -181,8 +182,8 @@ namespace UI.ViewModel
                 SpentTime = TimeEntry.SpentTime,
                 UserId = TimeEntry.SelectedUser.Id,
             };
-            var result = _provider.AddTimeEntry(timeEntry);
-            if (!result)
+            var result = await _provider.AddTimeEntry(timeEntry);
+            if (!result.OperationStatus)
                 throw new Exception("Post method executed with error!");
             if (UpdateTask)
             {
@@ -219,7 +220,8 @@ namespace UI.ViewModel
         /// <returns></returns>
         public async Task<List<Project>> LoadProjects()
         {
-            return await _provider.GetProjectsListAsync();
+            var requestResult = await _provider.GetProjectsListAsync();
+            return requestResult.projectsList;
         }
 
         /// <summary>

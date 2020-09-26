@@ -28,14 +28,14 @@ namespace EPProvider
             _client.Authenticator = new HttpBasicAuthenticator(_credentials.UserName, _credentials.Password);
         }
 
-        public async Task<List<Project>> GetProjectsListAsync()
+        public async Task<(OperationStatusInfo status, List<Project> projectsList)> GetProjectsListAsync()
         {
             InitHttpBasicAuthenticator();
             var request = new RestRequest("projects.xml", Method.GET, DataFormat.Xml);
             request.AddHeader("content-type", "application/xml");
             var requestResult = await _client.ExecuteAsync<List<ProjectDTO>>(request); 
             var projects = requestResult.Data.Select(_mapper.Map<ProjectDTO, Project>).ToList();
-            return projects;
+            return (GetOperationStatusInfo(requestResult), projects);
         }
 
         public async Task<List<Issue>> GetIssuesListForProjectAsync(int projectId)
@@ -48,17 +48,18 @@ namespace EPProvider
                 request.AddParameter("limit", 100);
                 request.AddParameter("project_id", projectId);
                 var offset = 0;
-                var requestResult = new List<IssueDTO>();
+                var issuesReceieved = new List<IssueDTO>();
+                IRestResponse<List<IssueDTO>> requestResult;
                 var allIssues = new List<IssueDTO>();
                 do
                 {
                     request.AddOrUpdateParameter("offset", offset);
-                    var tasks = await _client.ExecuteAsync<List<IssueDTO>>(request);
-                    requestResult = tasks.Data;
+                    requestResult = await _client.ExecuteAsync<List<IssueDTO>>(request);
+                    issuesReceieved = requestResult.Data;
                     offset += 100;
-                    if (requestResult.Count != 0)
-                        allIssues.AddRange(requestResult);
-                } while (requestResult.Count != 0);
+                    if (issuesReceieved.Count != 0)
+                        allIssues.AddRange(issuesReceieved);
+                } while (issuesReceieved.Count != 0);
                 
                 var issues = allIssues.Select(_mapper.Map<IssueDTO, Issue>).ToList();
                 return issues;
@@ -66,7 +67,7 @@ namespace EPProvider
             throw new ArgumentOutOfRangeException("Project ID value is invalid!");
         }
 
-        public bool AddTimeEntry(TimeEntry timeEntryData)
+        public async Task<OperationStatusInfo> AddTimeEntry(TimeEntry timeEntryData)
         {
             if (timeEntryData.ProjectId <= 0)
                 throw new ArgumentOutOfRangeException("Project Id is not valid");
@@ -85,33 +86,39 @@ namespace EPProvider
             InitHttpBasicAuthenticator();
             var request = new RestRequest($"time_entries.xml?", Method.POST, DataFormat.Xml);
             request.AddXmlBody(timeEntry);
-            var response = _client.Post<TimeEntryDTO>(request);
-            var code = (int) response.StatusCode;
-            return (code == 201);
+            var requestResult = await _client.ExecuteAsync<TimeEntryDTO>(request);
+            return GetOperationStatusInfo(requestResult);
         }
 
-        public async Task<LoginStatusInfo> CredentialsValid()
+        public async Task<OperationStatusInfo> CredentialsValid()
         {
             InitHttpBasicAuthenticator();
             var request = new RestRequest("projects.xml", Method.GET, DataFormat.Xml);
             request.AddHeader("content-type", "application/xml");
             var requestResult = await _client.ExecuteAsync<List<ProjectDTO>>(request);
+            return GetOperationStatusInfo(requestResult);
+        }
+
+        private static OperationStatusInfo GetOperationStatusInfo(IRestResponse requestResult)
+        {
             var requestStatus = requestResult.IsSuccessful;
             var requestStatusMessage = "";
             if (string.IsNullOrEmpty(requestResult.ErrorMessage))
             {
                 requestStatusMessage = $"Status is {requestResult.StatusDescription}.";
                 if (requestResult.StatusDescription == "Unauthorized")
-                    requestStatusMessage = $"Status is {requestResult.StatusDescription}. Check your credentials (login and password).";
+                    requestStatusMessage =
+                        $"Status is {requestResult.StatusDescription}. Check your credentials (login and password).";
             }
             else
             {
                 requestStatusMessage = $"Status is {requestResult.ResponseStatus}. Error message: {requestResult.ErrorMessage}";
             }
-            return new LoginStatusInfo
+
+            return new OperationStatusInfo
             {
-                LoginStatus = requestStatus,
-                LoginMessage = requestStatusMessage
+                OperationStatus = requestStatus,
+                OperationMessage = requestStatusMessage
             };
         }
 
@@ -128,14 +135,14 @@ namespace EPProvider
             return timeEntries;
         }
 
-        public async Task<int> GetCurrentUserId()
+        public async Task<(OperationStatusInfo status, int userId)> GetCurrentUserId()
         {
             InitHttpBasicAuthenticator();
             
             var request = new RestRequest($"easy_attendances.xml?", Method.GET, DataFormat.Xml);
-            var response = await _client.ExecuteAsync<List<AttendanceDTO>>(request);
-            var userId = response.Data.First().UserId;
-            return userId;
+            var requestResult = await _client.ExecuteAsync<List<AttendanceDTO>>(request);
+            var userId = requestResult.Data.First().UserId;
+            return (GetOperationStatusInfo(requestResult), userId);
         }
 
         public async Task<List<User>> GetProjectUsersListAsync(int projectId)
@@ -153,14 +160,14 @@ namespace EPProvider
             throw new ArgumentOutOfRangeException("Project ID value is invalid!");
         }
 
-        public async Task UpdateIssueStatus(UpdatedIssue issue)
+        public async Task<OperationStatusInfo> UpdateIssueStatus(UpdatedIssue issue)
         {
             var updatedIssue = _mapper.Map<UpdatedIssue, UpdatedIssueDTO>(issue);
             InitHttpBasicAuthenticator();
             var request = new RestRequest($"issues/{issue.Id}.xml", Method.PUT, DataFormat.Xml);
             request.AddXmlBody(updatedIssue);
-            var response = await _client.ExecuteAsync<UpdatedIssueDTO>(request);
-            var code = (int)response.StatusCode;
+            var requestResult = await _client.ExecuteAsync<UpdatedIssueDTO>(request);
+            return GetOperationStatusInfo(requestResult);
         }
 
         private void InitHttpBasicAuthenticator()
