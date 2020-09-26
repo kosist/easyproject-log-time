@@ -48,16 +48,16 @@ namespace UI.ViewModel
         /// <summary>
         /// Save credentials, then read it back. After, checks its status and generates event LoginSuccessEvent
         /// </summary>
-        private void OnLoginExecute()
+        private async void OnLoginExecute()
         {
            _credentialsProvider.SaveCredentials(new Credentials(Credentials.UserName, Credentials.UserPassword));
            GetCredentials();
-           var status = _provider.CredentialsValid();
-           if (status)
+           var status = await _provider.CredentialsValid();
+           if (status.LoginStatus)
                Status.UpdateStatusMessage("Login is successful!", StatusEnum.Ok);
            else
            {
-               Status.UpdateStatusMessage("Login is not successful!", StatusEnum.NOk);
+               Status.UpdateStatusMessage($"Login is not successful! {status.LoginMessage}", StatusEnum.NOk);
             }
 
            //_eventAggregator.GetEvent<LoginSuccessEvent>().Publish(status);

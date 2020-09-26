@@ -90,13 +90,25 @@ namespace EPProvider
             return (code == 201);
         }
 
-        public bool CredentialsValid()
+        public async Task<LoginStatusInfo> CredentialsValid()
         {
             InitHttpBasicAuthenticator();
             var request = new RestRequest("projects.xml", Method.GET, DataFormat.Xml);
             request.AddHeader("content-type", "application/xml");
-            var requestResult = _client.Execute<List<ProjectDTO>>(request);
-            return requestResult.IsSuccessful;
+            var requestResult = await _client.ExecuteAsync<List<ProjectDTO>>(request);
+            var requestStatus = requestResult.IsSuccessful;
+            var requestStatusMessage = "";
+            if (string.IsNullOrEmpty(requestResult.ErrorMessage))
+                requestStatusMessage = $"Status is {requestResult.StatusDescription}";
+            else
+            {
+                requestStatusMessage = $"Status is {requestResult.StatusDescription}. Error {requestResult.ErrorMessage}";
+            }
+            return new LoginStatusInfo
+            {
+                LoginStatus = requestStatus,
+                LoginMessage = requestStatusMessage
+            };
         }
 
         public async Task<List<TimeEntry>> GetTimeEntries(DateTime date, int userId)

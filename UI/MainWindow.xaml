@@ -55,7 +55,7 @@
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
 
-                    <TextBox Grid.Column="1" Grid.ColumnSpan="3" Margin="0 20" IsReadOnly="True" Text="{Binding Status.StatusMessage, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" Foreground="{Binding Status.StatusColor, Converter={StaticResource StatusToColorConverter}}" BorderThickness="0"/>
+                    <TextBox Grid.Column="1" Grid.ColumnSpan="3" Margin="0 20" IsReadOnly="True" Text="{Binding Status.StatusMessage, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" Foreground="{Binding Status.StatusColor, Converter={StaticResource StatusToColorConverter}}" BorderThickness="0" TextWrapping="WrapWithOverflow"/>
 
                     <Button Style="{StaticResource btn-info}" Grid.Row="1" Grid.Column="3" Margin="0" Content="Login" Command="{Binding LoginCommand}" Height="40"/>
                 </Grid>
