@@ -5,6 +5,7 @@ using Prism.Commands;
 using Prism.Events;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using UI.DataModel;
 using UI.Event;
 using UI.Wrapper;
 
@@ -23,6 +24,7 @@ namespace UI.ViewModel
         #region Public Properties
 
         public ICommand LoginCommand { get; }
+        public IStatusMessageString Status { get; private set; }
 
         #endregion
 
@@ -34,6 +36,7 @@ namespace UI.ViewModel
             _provider = provider;
 
             LoginCommand = new DelegateCommand(OnLoginExecute, OnLoginCanExecute);
+            Status = new StatusMessageViewModel();
 
             GetCredentials();
 
@@ -50,7 +53,14 @@ namespace UI.ViewModel
            _credentialsProvider.SaveCredentials(new Credentials(Credentials.UserName, Credentials.UserPassword));
            GetCredentials();
            var status = _provider.CredentialsValid();
-           _eventAggregator.GetEvent<LoginSuccessEvent>().Publish(status);
+           if (status)
+               Status.UpdateStatusMessage("Login is successful!", StatusEnum.Ok);
+           else
+           {
+               Status.UpdateStatusMessage("Login is not successful!", StatusEnum.NOk);
+            }
+
+           //_eventAggregator.GetEvent<LoginSuccessEvent>().Publish(status);
         }
 
         /// <summary>
