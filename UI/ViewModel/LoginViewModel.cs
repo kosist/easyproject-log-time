@@ -39,7 +39,6 @@ namespace UI.ViewModel
             Status = new StatusMessageViewModel();
 
             GetCredentials();
-
         }
 
         #endregion
@@ -60,7 +59,7 @@ namespace UI.ViewModel
                Status.UpdateStatusMessage($"Login is not successful! {status.LoginMessage}", StatusEnum.NOk);
             }
 
-           //_eventAggregator.GetEvent<LoginSuccessEvent>().Publish(status);
+           _eventAggregator.GetEvent<LoginSuccessEvent>().Publish(status.LoginStatus);
         }
 
         /// <summary>

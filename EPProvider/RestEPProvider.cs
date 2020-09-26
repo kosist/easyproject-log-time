@@ -99,10 +99,14 @@ namespace EPProvider
             var requestStatus = requestResult.IsSuccessful;
             var requestStatusMessage = "";
             if (string.IsNullOrEmpty(requestResult.ErrorMessage))
-                requestStatusMessage = $"Status is {requestResult.StatusDescription}";
+            {
+                requestStatusMessage = $"Status is {requestResult.StatusDescription}.";
+                if (requestResult.StatusDescription == "Unauthorized")
+                    requestStatusMessage = $"Status is {requestResult.StatusDescription}. Check your credentials (login and password).";
+            }
             else
             {
-                requestStatusMessage = $"Status is {requestResult.StatusDescription}. Error {requestResult.ErrorMessage}";
+                requestStatusMessage = $"Status is {requestResult.ResponseStatus}. Error message: {requestResult.ErrorMessage}";
             }
             return new LoginStatusInfo
             {
