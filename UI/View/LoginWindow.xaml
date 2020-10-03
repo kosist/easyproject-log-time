@@ -13,7 +13,7 @@
         <ui:StatusToColorConverter x:Key="StatusToColorConverter"/>
     </UserControl.Resources>
 
-    <Grid >
+    <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="53*"/>
             <ColumnDefinition Width="21*"/>
