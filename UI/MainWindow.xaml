@@ -8,6 +8,7 @@
         xmlns:local="clr-namespace:UI"
         xmlns:validationrules="clr-namespace:UI.Rule"
         xmlns:viewModel="clr-namespace:UI.ViewModel"
+        xmlns:view="clr-namespace:UI.View"
         mc:Ignorable="d"
         Title="EasyProject Time Logger" Height="665" Width="500" ResizeMode="CanMinimize">
 
@@ -17,53 +18,10 @@
 
     <TabControl x:Name="TabControl" Grid.Row="0" DataContext="{Binding ViewsAggregatorViewModel}">
         <TabItem Header="Login" IsEnabled="{Binding TabViewModel.LoginTabEnabled, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
-            <Grid DataContext="{Binding LoginViewModel}">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="53*"/>
-                    <ColumnDefinition Width="21*"/>
-                    <ColumnDefinition Width="421*"/>
-                </Grid.ColumnDefinitions>
-                <Grid.RowDefinitions>
-                    <RowDefinition/>
-                    <RowDefinition/>
-                    <RowDefinition/>
-                    <RowDefinition/>
-                    <RowDefinition/>
-                </Grid.RowDefinitions>
-
-                <StackPanel Grid.ColumnSpan="3" Margin="0,91,0,0" Grid.RowSpan="2">
-                    <Label Content="Login" Margin="100 10 100 0" FontSize="14"/>
-                    <TextBox x:Name="UserName" Margin="100 10" FontSize="16" Text="{Binding Credentials.UserName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-                </StackPanel>
-
-                <StackPanel Grid.Row="1" Grid.ColumnSpan="3" Margin="0,91,0,91" Grid.RowSpan="3">
-                    <Label Content="Password" Margin="100 10 100 0" FontSize="14"/>
-                    <PasswordBox Margin="100 10" FontSize="16"
-                                 viewModel:PasswordBoxAssistant.BindPassword="true"  viewModel:PasswordBoxAssistant.BoundPassword="{Binding Credentials.UserPassword, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-                </StackPanel>
-
-                <Grid Grid.Row="3" Grid.ColumnSpan="3" Margin="0,0,0,91" Grid.RowSpan="2">
-                    <Grid.RowDefinitions>
-                        <RowDefinition/>
-                        <RowDefinition/>
-                    </Grid.RowDefinitions>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="*"/>
-                    </Grid.ColumnDefinitions>
-
-                    <TextBox Grid.Column="1" Grid.ColumnSpan="3" Margin="0 20" IsReadOnly="True" Text="{Binding Status.StatusMessage, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" Foreground="{Binding Status.StatusColor, Converter={StaticResource StatusToColorConverter}}" BorderThickness="0" TextWrapping="WrapWithOverflow"/>
-
-                    <Button Style="{StaticResource btn-info}" Grid.Row="1" Grid.Column="3" Margin="0" Content="Login" Command="{Binding LoginCommand}" Height="40"/>
-                </Grid>
-            </Grid>
+            <view:LoginWindow DataContext="{Binding LoginViewModel}"/>
         </TabItem>
 
         <TabItem Header="Log Hours" IsEnabled="{Binding TabViewModel.LoggerPageActive, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" IsSelected="{Binding TabViewModel.LogHoursTabSelected, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
-            <TabItem.Content>
 
                 <Grid DataContext="{Binding TimeEntryViewModel}">
                     <Grid.ColumnDefinitions>
@@ -181,7 +139,6 @@
                     </Grid>
 
                 </Grid>
-            </TabItem.Content>
         </TabItem>
     </TabControl>
 </Window>
