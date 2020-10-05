@@ -29,5 +29,13 @@
 
         </Grid>
 
+        <DataGrid Grid.Row="1" ItemsSource="{Binding SpentTimeRecords}" Margin="10" AutoGenerateColumns="False">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Project" Binding="{Binding ProjectName}" Width="150" IsReadOnly="True"/>
+                <DataGridTextColumn Header="Task" Binding="{Binding TaskName}" Width="*" IsReadOnly="True"/>
+                <DataGridTextColumn Header="Spent Time" Binding="{Binding SpentTime}" Width="100" IsReadOnly="True"/>
+            </DataGrid.Columns>
+        </DataGrid>
+
     </Grid>
 </UserControl>

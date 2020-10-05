@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using BaseLayer.Model;
 using EPProvider;
@@ -57,6 +58,22 @@ namespace UI.ViewModel
             {
                 _selectedUser = value;
                 OnPropertyChanged();
+                UpdateSpentTimeList();
+            }
+        }
+
+        private async void UpdateSpentTimeList()
+        {
+            var records = await _provider.GetTimeEntries(SpentOnDate, _selectedUser.Id);
+            SpentTimeRecords.Clear();
+            foreach (var timeEntry in records)
+            {
+                SpentTimeRecords.Add(new SpentTimeRecordViewModel
+                {
+                    ProjectName = timeEntry.ProjectId.ToString(),
+                    TaskName = timeEntry.IssueId.ToString(),
+                    SpentTime = timeEntry.SpentTime
+                });
             }
         }
 
