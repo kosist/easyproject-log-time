@@ -7,11 +7,13 @@ namespace UI.ViewModel
         public ITimeEntryViewModel TimeEntryViewModel { get; }
         public ILoginViewModel LoginViewModel { get; }
         public ITabViewModel TabViewModel { get; }
-        public ViewsAggregatorViewModel(ITimeEntryViewModel timeEntryViewModel, ILoginViewModel loginViewModel, ITabViewModel tabViewModel)
+        public ISpentTimeViewModel SpentTimeViewModel { get; }
+        public ViewsAggregatorViewModel(ITimeEntryViewModel timeEntryViewModel, ILoginViewModel loginViewModel, ITabViewModel tabViewModel, ISpentTimeViewModel spentTimeViewModel)
         {
             TimeEntryViewModel = timeEntryViewModel;
             LoginViewModel = loginViewModel;
             TabViewModel = tabViewModel;
+            SpentTimeViewModel = spentTimeViewModel;
         }
     }
 }

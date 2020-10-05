@@ -24,5 +24,9 @@
         <TabItem Header="Log Hours" IsEnabled="{Binding TabViewModel.LoggerPageActive, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" IsSelected="{Binding TabViewModel.LogHoursTabSelected, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
             <view:LogHours DataContext="{Binding TimeEntryViewModel}"/>
         </TabItem>
+
+        <TabItem Header="Spent Time List" IsEnabled="{Binding TabViewModel.LoggerPageActive, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+            <view:LoggedHoursList DataContext="{Binding SpentTimeViewModel}"/>
+        </TabItem>
     </TabControl>
 </Window>
