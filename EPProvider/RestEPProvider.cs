@@ -33,6 +33,7 @@ namespace EPProvider
             InitHttpBasicAuthenticator();
             var request = new RestRequest("projects.xml", Method.GET, DataFormat.Xml);
             request.AddHeader("content-type", "application/xml");
+            request.AddParameter("limit", 100);
             var requestResult = await _client.ExecuteAsync<List<ProjectDTO>>(request); 
             var projects = requestResult.Data.Select(_mapper.Map<ProjectDTO, Project>).ToList();
             return (GetOperationStatusInfo(requestResult), projects);

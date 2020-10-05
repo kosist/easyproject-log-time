@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using BaseLayer.Model;
@@ -15,6 +16,7 @@ namespace UI.ViewModel
         private IEPProvider _provider;
         public ObservableCollection<SpentTimeRecordViewModel> SpentTimeRecords { get; private set; }
         public ObservableCollection<User> UsersList { get; private set; }
+        public Dictionary<int, List<Issue>> IssuesLookup { get; set; }
 
         public SpentTimeViewModel(IEPProvider provider, IEventAggregator eventAggregator)
         {
@@ -23,11 +25,10 @@ namespace UI.ViewModel
             SpentTimeRecords = new ObservableCollection<SpentTimeRecordViewModel>();
             UsersList = new ObservableCollection<User>();
             SpentOnDate = DateTime.Today;
+            IssuesLookup = new Dictionary<int, List<Issue>>();
             InitView();
         }
-
-
-
+        
         public Task<List<TimeEntry>> LoadTimeEntries(DateTime date)
         {
             throw new NotImplementedException();
@@ -47,6 +48,38 @@ namespace UI.ViewModel
             }
         }
 
+        private async Task<List<Project>> LoadProjects()
+        {
+            var projects = await _provider.GetProjectsListAsync();
+            return projects.projectsList;
+        }
+
+        private async void UpdateSpentTimeList()
+        {
+            var records = await _provider.GetTimeEntries(SpentOnDate, _selectedUser.Id);
+            var projects = await LoadProjects();
+            var issues = new List<Issue>();
+            SpentTimeRecords.Clear();
+            foreach (var timeEntry in records)
+            {
+                if (IssuesLookup.ContainsKey(timeEntry.ProjectId))
+                {
+                    issues = IssuesLookup[timeEntry.ProjectId];
+                }
+                else
+                {
+                    issues = await _provider.GetIssuesListForProjectAsync(timeEntry.ProjectId);
+                    IssuesLookup.Add(timeEntry.ProjectId, issues);
+                }
+                SpentTimeRecords.Add(new SpentTimeRecordViewModel
+                {
+                    ProjectName = projects.SingleOrDefault(p => p.Id == timeEntry.ProjectId)?.Name,
+                    TaskName = issues.SingleOrDefault(p => p.Id == timeEntry.IssueId)?.Name,
+                    SpentTime = timeEntry.SpentTime
+                });
+            }
+        }
+
         #region Full Properties
 
         private User _selectedUser;
@@ -61,22 +94,7 @@ namespace UI.ViewModel
                 UpdateSpentTimeList();
             }
         }
-
-        private async void UpdateSpentTimeList()
-        {
-            var records = await _provider.GetTimeEntries(SpentOnDate, _selectedUser.Id);
-            SpentTimeRecords.Clear();
-            foreach (var timeEntry in records)
-            {
-                SpentTimeRecords.Add(new SpentTimeRecordViewModel
-                {
-                    ProjectName = timeEntry.ProjectId.ToString(),
-                    TaskName = timeEntry.IssueId.ToString(),
-                    SpentTime = timeEntry.SpentTime
-                });
-            }
-        }
-
+        
         private DateTime _spentOnDate;
 
         public DateTime SpentOnDate
