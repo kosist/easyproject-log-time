@@ -21,6 +21,7 @@ namespace UI.ViewModel
             _eventAggregator = eventAggregator;
             SpentTimeRecords = new ObservableCollection<SpentTimeRecordViewModel>();
             UsersList = new ObservableCollection<User>();
+            SpentOnDate = DateTime.Today;
             InitView();
         }
 
@@ -44,6 +45,36 @@ namespace UI.ViewModel
                 UsersList.Add(user);
             }
         }
+
+        #region Full Properties
+
+        private User _selectedUser;
+
+        public User SelectedUser
+        {
+            get { return _selectedUser; }
+            set
+            {
+                _selectedUser = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private DateTime _spentOnDate;
+
+        public DateTime SpentOnDate
+        {
+            get { return _spentOnDate; }
+            set
+            {
+                _spentOnDate = value; 
+                OnPropertyChanged();
+            }
+        }
+
+
+        #endregion
+
 
     }
 }

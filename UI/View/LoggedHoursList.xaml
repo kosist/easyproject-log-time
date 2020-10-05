@@ -7,9 +7,27 @@
              mc:Ignorable="d" 
              d:DesignHeight="665" d:DesignWidth="500">
     <Grid>
-        <StackPanel>
-            <Label Content="User:" Margin="5 10 10 0" FontSize="14"/>
-            <ComboBox Margin="10 0" ItemsSource="{Binding UsersList}" DisplayMemberPath="Name"/>
-        </StackPanel>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="80"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+
+            <StackPanel Grid.Column="0">
+                <Label Content="User:" Margin="5 10 10 0" FontSize="14"/>
+                <ComboBox Margin="10 0" ItemsSource="{Binding UsersList}" DisplayMemberPath="Name" SelectedItem="{Binding SelectedUser, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+            </StackPanel>
+            <StackPanel Grid.Column="1">
+                <Label Content="Spent on:" Margin="5 10 10 0" FontSize="14"/>
+                <DatePicker Margin="10 0" Width="120" HorizontalAlignment="Left" SelectedDate="{Binding SpentOnDate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" SelectedDateFormat="Short" Focusable="False" FontSize="16" MinWidth="150"/>
+            </StackPanel>
+
+        </Grid>
+
     </Grid>
 </UserControl>
