@@ -7,7 +7,7 @@
              mc:Ignorable="d" 
              xmlns:viewModel="clr-namespace:UI.ViewModel"
              xmlns:ui="clr-namespace:UI"
-             d:DesignHeight="450" d:DesignWidth="800">
+             d:DesignHeight="665" d:DesignWidth="500">
 
     <UserControl.Resources>
         <ui:StatusToColorConverter x:Key="StatusToColorConverter"/>
