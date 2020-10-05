@@ -15,5 +15,6 @@ namespace EPProvider
         Task<(OperationStatusInfo status, int userId)> GetCurrentUserId();
         Task<List<User>> GetProjectUsersListAsync(int projectId);
         Task<OperationStatusInfo> UpdateIssueStatus(UpdatedIssue issue);
+        Task<List<User>> GetUsersList();
     }
 }

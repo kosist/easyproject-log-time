@@ -170,12 +170,22 @@ namespace EPProvider
             return GetOperationStatusInfo(requestResult);
         }
 
+        public async Task<List<User>> GetUsersList()
+        {
+            var projectsListRequest = await GetProjectsListAsync();
+            var projects = projectsListRequest.projectsList;
+            var users = new List<User>();
+            foreach (var project in projects)
+            {
+                users.AddRange(await GetProjectUsersListAsync(project.Id));
+            }
+            return users.Select(user => user).Distinct().ToList();
+        }
+
         private void InitHttpBasicAuthenticator()
         {
             Credentials credentials = _credentialsProvider.LoadCredentials();
             _client.Authenticator = new HttpBasicAuthenticator(credentials.UserName, credentials.Password);
         }
-
-
     }
 }
