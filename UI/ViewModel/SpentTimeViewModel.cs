@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using BaseLayer.Model;
 using EPProvider;
 using Prism.Events;
+using UI.Event;
 
 namespace UI.ViewModel
 {
@@ -26,9 +27,16 @@ namespace UI.ViewModel
             UsersList = new ObservableCollection<User>();
             SpentOnDate = DateTime.Today;
             IssuesLookup = new Dictionary<int, List<Issue>>();
-            InitView();
+            _eventAggregator.GetEvent<UserSelectedEvent>().Subscribe(OnUserSelectedEvent);
         }
-        
+
+        private async void OnUserSelectedEvent(int userId)
+        {
+            await InitUsersList();
+            if (UsersList.Count != 0)
+                SelectedUser = UsersList.Single(user => user.Id == userId);
+        }
+
         public Task<List<TimeEntry>> LoadTimeEntries(DateTime date)
         {
             throw new NotImplementedException();
@@ -39,9 +47,10 @@ namespace UI.ViewModel
             return await _provider.GetUsersList();
         }
 
-        private async void InitView()
+        private async Task InitUsersList()
         {
             var users = await LoadUsersList();
+            UsersList.Clear();
             foreach (var user in users)
             {
                 UsersList.Add(user);
@@ -104,6 +113,8 @@ namespace UI.ViewModel
             {
                 _spentOnDate = value; 
                 OnPropertyChanged();
+                if (SelectedUser != null)
+                    UpdateSpentTimeList();
             }
         }
 

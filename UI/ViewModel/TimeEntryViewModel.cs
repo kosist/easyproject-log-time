@@ -32,6 +32,7 @@ namespace UI.ViewModel
         public ObservableCollection<User> Users { get; private set; }
         public DoneRatioList DoneRatioList { get; private set; }
         public TaskStatusesViewModel TaskStatuses { get; private set; }
+        public UserSelectedEvent SelectedUserEventPublisher { get; set; }
         public DateTime SpentOnDate { get; set; }
         public ICommand SaveCommand { get; }
         public int CurrentUserId { get; private set; }
@@ -52,11 +53,15 @@ namespace UI.ViewModel
             TaskStatuses = new TaskStatusesViewModel();
 
             _eventAggregator.GetEvent<LoginSuccessEvent>().Subscribe(OnLoginSuccessEvent);
+            SelectedUserEventPublisher = _eventAggregator.GetEvent<UserSelectedEvent>();
             SaveCommand = new DelegateCommand(OnSaveExecute, OnSaveCanExecute);
 
             LoggedTime = 0;
             SpentOnDate = DateTime.Today;
         }
+
+        
+
         #endregion
         
         #region Private helper methods
@@ -72,6 +77,7 @@ namespace UI.ViewModel
                 await DisplayProjectsAsync();
                 var requestResult = await _provider.GetCurrentUserId();
                 CurrentUserId = requestResult.userId;
+                SelectedUserEventPublisher.Publish(CurrentUserId);
                 await GetLoggedTime();
             }            
         }
