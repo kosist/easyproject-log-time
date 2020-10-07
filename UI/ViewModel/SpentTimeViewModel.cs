@@ -4,8 +4,10 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
+using System.Windows.Input;
 using BaseLayer.Model;
 using EPProvider;
+using Prism.Commands;
 using Prism.Events;
 using UI.Event;
 
@@ -18,6 +20,8 @@ namespace UI.ViewModel
         public ObservableCollection<SpentTimeRecordViewModel> SpentTimeRecords { get; private set; }
         public ObservableCollection<User> UsersList { get; private set; }
         public Dictionary<int, List<Issue>> IssuesLookup { get; set; }
+        public ICommand CopyModifyCommand { get; set; }
+        public ICommand EditCommand { get; set; }
 
         public SpentTimeViewModel(IEPProvider provider, IEventAggregator eventAggregator)
         {
@@ -28,7 +32,33 @@ namespace UI.ViewModel
             SpentOnDate = DateTime.Today;
             IssuesLookup = new Dictionary<int, List<Issue>>();
             _eventAggregator.GetEvent<UserSelectedEvent>().Subscribe(OnUserSelectedEvent);
+            CopyModifyCommand = new DelegateCommand(OnCopyModifyExecute, OnCopyModifyCanExecute);
+            EditCommand = new DelegateCommand(OnEditExecute, OnEditCanExecute);
         }
+
+        #region Command Handlers
+
+        private void OnCopyModifyExecute()
+        {
+            throw new NotImplementedException();
+        }
+
+        private bool OnCopyModifyCanExecute()
+        {
+            return true;
+        }
+
+        private void OnEditExecute()
+        {
+            throw new NotImplementedException();
+        }
+
+        private bool OnEditCanExecute()
+        {
+            return true;
+        }
+
+        #endregion
 
         private async void OnUserSelectedEvent(int userId)
         {
