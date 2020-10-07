@@ -6,6 +6,17 @@
              xmlns:local="clr-namespace:UI.View"
              mc:Ignorable="d" 
              d:DesignHeight="665" d:DesignWidth="500">
+
+    <UserControl.Resources>
+        <ContextMenu  x:Key="RowMenu" DataContext="{Binding PlacementTarget.DataContext, RelativeSource={RelativeSource Self}}">
+            <MenuItem Header="Copy/Modify" Command="{Binding CopyModifyCommand}"/>
+            <MenuItem Header="Edit" Command="{Binding EditCommand}"/>
+        </ContextMenu>
+        <Style x:Key="DefaultRowStyle" TargetType="{x:Type DataGridRow}">
+            <Setter Property="ContextMenu" Value="{StaticResource RowMenu}" />
+        </Style>
+    </UserControl.Resources>
+
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="80"/>
@@ -29,7 +40,8 @@
 
         </Grid>
 
-        <DataGrid Grid.Row="1" ItemsSource="{Binding SpentTimeRecords}" Margin="10" AutoGenerateColumns="False">
+        <DataGrid Grid.Row="1" ItemsSource="{Binding SpentTimeRecords}" Margin="10" AutoGenerateColumns="False" CanUserAddRows="false" SelectionUnit="FullRow" RowStyle="{StaticResource DefaultRowStyle}">
+
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Project" Binding="{Binding ProjectName}" Width="150" IsReadOnly="True"/>
                 <DataGridTextColumn Header="Task" Binding="{Binding TaskName}" Width="*" IsReadOnly="True"/>
