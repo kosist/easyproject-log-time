@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using BaseLayer.Model;
 
-namespace MockProvider.Mapping
+namespace MockProvider
 {
     public class ProjectMockMapperProfile : Profile
     {

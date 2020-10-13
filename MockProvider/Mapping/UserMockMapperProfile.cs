@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using BaseLayer.Model
+using BaseLayer.Model;
 
 namespace MockProvider
 {

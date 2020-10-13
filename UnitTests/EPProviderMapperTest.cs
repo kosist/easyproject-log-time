@@ -5,6 +5,7 @@ using BaseLayer.Model;
 using Xunit;
 using EPProvider;
 using EPProvider.Mapping;
+using MockProvider;
 
 namespace UnitTests
 {
@@ -20,5 +21,17 @@ namespace UnitTests
             var mapperCfg = container.Resolve<MapperConfiguration>();
             mapperCfg.AssertConfigurationIsValid();
         }
+
+        [Fact]
+        public void TestMockMapper()
+        {
+            var builder = new ContainerBuilder();
+            builder.AddAutoMapper(typeof(ProjectMockMapperProfile).Assembly);
+
+            var container = builder.Build();
+            var mapperCfg = container.Resolve<MapperConfiguration>();
+            mapperCfg.AssertConfigurationIsValid();
+        }
+
     }
 }
