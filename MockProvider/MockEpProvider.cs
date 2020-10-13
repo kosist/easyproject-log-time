@@ -8,9 +8,32 @@ namespace MockProvider
 {
     public class MockEpProvider : IEPProvider
     {
+        public List<Project> ProjectsList { get; set; }
+        public List<Issue> IssuesList { get; set; }
+
+        public MockEpProvider()
+        {
+            ProjectsList = new List<Project>();
+            ProjectsList.Add(new Project
+            {
+                Id = 1,
+                Name = "2009 AKN 720 6 DUTs"
+            });
+            ProjectsList.Add(new Project
+            {
+                Id = 2,
+                Name = "2010 Powertrain CU Board"
+            });
+        }
         public async Task<(OperationStatusInfo status, List<Project> projectsList)> GetProjectsListAsync()
         {
-            throw new NotImplementedException();
+            var operationStatus = new OperationStatusInfo
+            {
+                OperationMessage = "",
+                OperationStatus = true
+            };
+            
+            return (operationStatus, projectsList);
         }
 
         public async Task<List<Issue>> GetIssuesListForProjectAsync(int projectId)
