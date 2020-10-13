@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using BaseLayer.Model;
 using EPProvider;
 
@@ -8,42 +10,158 @@ namespace MockProvider
 {
     public class MockEpProvider : IEPProvider
     {
-        public List<Project> ProjectsList { get; set; }
-        public List<Issue> IssuesList { get; set; }
+        private IMapper _mapper;
 
-        public MockEpProvider()
+        public List<ProjectMockDto> ProjectsList { get; set; }
+        public List<IssueMockDto> IssuesList { get; set; }
+        public List<TimeEntryMockDto> TimeEntries { get; set; }
+        public List<UserMockDto> Users { get; set; }
+
+        private void BuildProjectsList()
         {
-            ProjectsList = new List<Project>();
-            ProjectsList.Add(new Project
+            List<IssueMockDto> projectAIssues = new List<IssueMockDto>();
+            List<IssueMockDto> projectBIssues = new List<IssueMockDto>();
+
+            projectAIssues.Add(new IssueMockDto
             {
                 Id = 1,
-                Name = "2009 AKN 720 6 DUTs"
+                Name = "DIO Control Module",
+                DoneRatio = 10,
+                Status = new IssueStatusMockDto
+                {
+                    Id = 3,
+                    Name = "In Progress"
+                },
+                Parent = new IssueParentMockDto
+                {
+                    Id = 0,
+                },
             });
-            ProjectsList.Add(new Project
+            projectAIssues.Add(new IssueMockDto
             {
                 Id = 2,
-                Name = "2010 Powertrain CU Board"
+                Name = "PS Control",
+                DoneRatio = 20,
+                Status = new IssueStatusMockDto
+                {
+                    Id = 2,
+                    Name = "New"
+                },
+                Parent = new IssueParentMockDto
+                {
+                    Id = 0,
+                },
             });
+            projectAIssues.Add(new IssueMockDto
+            {
+                Id = 0,
+                Name = "Implementation",
+                DoneRatio = 0,
+                Status = new IssueStatusMockDto
+                {
+                    Id = 3,
+                    Name = "In Progress"
+                },
+                Parent = new IssueParentMockDto
+                {
+                    Id = -1,
+                },
+            });
+
+            IssuesList.AddRange(projectAIssues);
+
+            ProjectsList.Add(new ProjectMockDto
+            {
+                Id = 1,
+                Name = "2009 AKT Motor CU",
+                Issues = projectAIssues,
+            });
+        }
+
+        private void GetUsers()
+        {
+            Users.Clear();
+            Users.Add(new UserMockDto
+            {
+                Id = 0,
+                Name = "Ivan Yakushchenko",
+            });
+            Users.Add(new UserMockDto
+            {
+                Id = 1,
+                Name = "John Smith",
+            });
+            Users.Add(new UserMockDto
+            {
+                Id = 2,
+                Name = "Santa Claus",
+            });
+        }
+
+        private void ListTimeEntries()
+        {
+            TimeEntries.Add(new TimeEntryMockDto
+            {
+                ProjectId = 1,
+                IssueId = 1,
+                UserId = 0,
+                SpentOnDate = DateTime.Now,
+                SpentTime = "1.5",
+                Description = "Implemented the plugin"
+            });
+            TimeEntries.Add(new TimeEntryMockDto
+            {
+                ProjectId = 1,
+                IssueId = 2,
+                UserId = 0,
+                SpentOnDate = DateTime.Now,
+                SpentTime = "6.5",
+                Description = "Tested the UI"
+            });
+        }
+
+        public MockEpProvider(IMapper mapper)
+        {
+            _mapper = mapper;
+            ProjectsList = new List<ProjectMockDto>();
+            IssuesList = new List<IssueMockDto>();
+            TimeEntries = new List<TimeEntryMockDto>();
+            Users = new List<UserMockDto>();
+            BuildProjectsList();
+            GetUsers();
+            ListTimeEntries();
         }
         public async Task<(OperationStatusInfo status, List<Project> projectsList)> GetProjectsListAsync()
         {
-            var operationStatus = new OperationStatusInfo
+            var projects = ProjectsList.Select(_mapper.Map<ProjectMockDto, Project>).ToList();
+            return (new OperationStatusInfo
             {
-                OperationMessage = "",
+                OperationMessage = "Login is valid",
                 OperationStatus = true
-            };
-            
-            return (operationStatus, projectsList);
+            }, projects);
         }
 
         public async Task<List<Issue>> GetIssuesListForProjectAsync(int projectId)
         {
-            throw new NotImplementedException();
+            var issues = ProjectsList.Single(proj => proj.Id == projectId).Issues;
+            return issues.Select(_mapper.Map<IssueMockDto, Issue>).ToList();
         }
 
         public async Task<OperationStatusInfo> AddTimeEntry(TimeEntry timeEntryData)
         {
-            throw new NotImplementedException();
+            TimeEntries.Add(new TimeEntryMockDto
+            {
+                ProjectId = timeEntryData.ProjectId,
+                IssueId = timeEntryData.IssueId,
+                UserId = timeEntryData.UserId,
+                SpentOnDate = timeEntryData.SpentOnDate,
+                SpentTime = timeEntryData.SpentTime,
+                Description = timeEntryData.Description,
+            });
+            return new OperationStatusInfo
+            {
+                OperationStatus = true,
+            };
         }
 
         public async Task<OperationStatusInfo> CredentialsValid()
@@ -57,27 +175,38 @@ namespace MockProvider
 
         public async Task<List<TimeEntry>> GetTimeEntries(DateTime date, int userId)
         {
-            throw new NotImplementedException();
+            return TimeEntries.Select(_mapper.Map<TimeEntryMockDto, TimeEntry>)
+                .Where(entry => entry.UserId == userId).Where(entry => entry.SpentOnDate.Date == date.Date).ToList();
         }
 
         public async Task<(OperationStatusInfo status, int userId)> GetCurrentUserId()
         {
-            throw new NotImplementedException();
+            return (new OperationStatusInfo
+            {
+                OperationStatus = true,
+            }, 0);
         }
 
         public async Task<List<User>> GetProjectUsersListAsync(int projectId)
         {
-            throw new NotImplementedException();
+            return Users.Select(_mapper.Map<UserMockDto, User>).ToList();
         }
 
         public async Task<OperationStatusInfo> UpdateIssueStatus(UpdatedIssue issue)
         {
-            throw new NotImplementedException();
+            var issueToUpdate = IssuesList.Single(e => e.Id == issue.Id);
+            var updatedIssue = _mapper.Map<UpdatedIssue, UpdatedIssueMockDto>(issue);
+            issueToUpdate.Status = updatedIssue.Status;
+            issueToUpdate.DoneRatio = updatedIssue.DoneRatio;
+            return new OperationStatusInfo
+            {
+                OperationStatus = true,
+            };
         }
 
         public async Task<List<User>> GetUsersList()
         {
-            throw new NotImplementedException();
+            return Users.Select(_mapper.Map<UserMockDto, User>).ToList();
         }
     }
 }

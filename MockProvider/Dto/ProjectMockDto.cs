@@ -6,6 +6,6 @@ namespace MockProvider
     {
         public int Id { get; set; }
         public string Name { get; set; }
-        public List<IssueStatusMockDto> Issues { get; set; }
+        public List<IssueMockDto> Issues { get; set; }
     }
 }

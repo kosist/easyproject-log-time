@@ -59,9 +59,6 @@ namespace UI.ViewModel
             LoggedTime = 0;
             SpentOnDate = DateTime.Today;
         }
-
-        
-
         #endregion
         
         #region Private helper methods
