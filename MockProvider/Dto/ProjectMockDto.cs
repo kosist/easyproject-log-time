@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace MockProvider.Dto
+namespace MockProvider
 {
     public class ProjectMockDto
     {

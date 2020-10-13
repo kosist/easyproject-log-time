@@ -1,4 +1,4 @@
-﻿namespace MockProvider.Dto
+﻿namespace MockProvider
 {
     public class IssueMockDto
     {
