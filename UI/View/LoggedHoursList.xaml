@@ -8,7 +8,7 @@
              d:DesignHeight="665" d:DesignWidth="500">
 
     <UserControl.Resources>
-        <ContextMenu  x:Key="RowMenu" DataContext="{Binding PlacementTarget.DataContext, RelativeSource={RelativeSource Self}}">
+        <ContextMenu  x:Key="RowMenu" DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=DataGrid, Mode=FindAncestor}}">
             <MenuItem Header="Copy/Modify" Command="{Binding CopyModifyCommand}"/>
             <MenuItem Header="Edit" Command="{Binding EditCommand}"/>
         </ContextMenu>
