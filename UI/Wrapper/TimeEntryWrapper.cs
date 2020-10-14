@@ -17,6 +17,12 @@ namespace UI.Wrapper
             SpentTime = "";
         }
 
+        public int Id
+        {
+            get => GetValue<int>();
+            set => SetValue(value);
+        }
+
         public Project SelectedProject
         {
             get => GetValue<Project>();

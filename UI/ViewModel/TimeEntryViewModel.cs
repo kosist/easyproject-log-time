@@ -74,6 +74,8 @@ namespace UI.ViewModel
             TimeEntry.SelectedUser = Users.Single(user => user.Id == timeEntry.UserId);
             TimeEntry.Description = timeEntry.Description;
             TimeEntry.SpentOnDate = timeEntry.SpentOnDate;
+            TimeEntry.SpentTime = timeEntry.SpentTime;
+            TimeEntry.Id = timeEntry.Id;
         }
 
         #endregion

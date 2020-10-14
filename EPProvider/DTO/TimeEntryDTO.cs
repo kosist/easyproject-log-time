@@ -5,6 +5,8 @@ namespace EPProvider.DTO
     [SerializeAs(Name = "time_entry")]
     public class TimeEntryDTO
     {
+        [SerializeAs(Name = "id")]
+        public int Id { get; set; }
         [SerializeAs(Name = "project_id")]
         public int ProjectId { get; set; }
 

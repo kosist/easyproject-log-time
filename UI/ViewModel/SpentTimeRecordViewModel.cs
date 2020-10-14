@@ -6,6 +6,7 @@ namespace UI.ViewModel
     {
         public string ProjectName { get; set; }
         public string TaskName { get; set; }
+        public int LoggedTimeId { get; set; }
         public TimeEntry TimeEntry { get; set; }
     }
 }
