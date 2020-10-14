@@ -19,8 +19,8 @@ namespace UI.Startup
 
             builder.RegisterType<EventAggregator>().As<IEventAggregator>().SingleInstance();
             builder.RegisterType<EnvironnmentCredentialsProvider>().As<ICredentialsProvider>().SingleInstance();
-            builder.RegisterType<RestEPProvider>().As<IEPProvider>();
-            //builder.RegisterType<MockEpProvider>().As<IEPProvider>().SingleInstance();
+            //builder.RegisterType<RestEPProvider>().As<IEPProvider>();
+            builder.RegisterType<MockEpProvider>().As<IEPProvider>().SingleInstance();
 
             builder.RegisterType<MainWindow>().AsSelf();
             builder.RegisterType<MainViewModel>().AsSelf();

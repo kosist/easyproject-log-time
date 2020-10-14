@@ -6,6 +6,6 @@ namespace UI.ViewModel
     {
         public string ProjectName { get; set; }
         public string TaskName { get; set; }
-        public string SpentTime { get; set; }
+        public TimeEntry TimeEntry { get; set; }
     }
 }

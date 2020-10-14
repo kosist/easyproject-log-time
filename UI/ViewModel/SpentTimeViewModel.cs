@@ -22,6 +22,8 @@ namespace UI.ViewModel
         public Dictionary<int, List<Issue>> IssuesLookup { get; set; }
         public ICommand CopyModifyCommand { get; set; }
         public ICommand EditCommand { get; set; }
+        public EditTimeEntryEvent EditTimeEntryEvent { get; }
+        public SelectLogHoursTabEvent SelectLogHoursTabEvent { get; }
 
         public SpentTimeViewModel(IEPProvider provider, IEventAggregator eventAggregator)
         {
@@ -32,6 +34,8 @@ namespace UI.ViewModel
             SpentOnDate = DateTime.Today;
             IssuesLookup = new Dictionary<int, List<Issue>>();
             _eventAggregator.GetEvent<UserSelectedEvent>().Subscribe(OnUserSelectedEvent);
+            EditTimeEntryEvent = _eventAggregator.GetEvent<EditTimeEntryEvent>();
+            SelectLogHoursTabEvent = _eventAggregator.GetEvent<SelectLogHoursTabEvent>();
             CopyModifyCommand = new DelegateCommand(OnCopyModifyExecute, OnCopyModifyCanExecute);
             EditCommand = new DelegateCommand(OnEditExecute, OnEditCanExecute);
         }
@@ -45,17 +49,18 @@ namespace UI.ViewModel
 
         private bool OnCopyModifyCanExecute()
         {
-            return true;
+            return SelectedRow != null;
         }
 
         private void OnEditExecute()
         {
-            throw new NotImplementedException();
+            SelectLogHoursTabEvent.Publish();
+            EditTimeEntryEvent.Publish(SelectedRow.TimeEntry);
         }
 
         private bool OnEditCanExecute()
         {
-            return true;
+            return SelectedRow != null;
         }
 
         #endregion
@@ -114,7 +119,7 @@ namespace UI.ViewModel
                 {
                     ProjectName = projects.SingleOrDefault(p => p.Id == timeEntry.ProjectId)?.Name,
                     TaskName = issues.SingleOrDefault(p => p.Id == timeEntry.IssueId)?.Name,
-                    SpentTime = timeEntry.SpentTime
+                    TimeEntry = timeEntry,
                 });
             }
         }
@@ -148,6 +153,17 @@ namespace UI.ViewModel
             }
         }
 
+        private SpentTimeRecordViewModel _selectedRow;
+
+        public SpentTimeRecordViewModel SelectedRow
+        {
+            get { return _selectedRow; }
+            set
+            {
+                _selectedRow = value; 
+                OnPropertyChanged();
+            }
+        }
 
         #endregion
 

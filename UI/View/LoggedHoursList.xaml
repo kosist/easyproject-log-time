@@ -40,12 +40,12 @@
 
         </Grid>
 
-        <DataGrid Grid.Row="1" ItemsSource="{Binding SpentTimeRecords}" Margin="10" AutoGenerateColumns="False" CanUserAddRows="false" SelectionUnit="FullRow" RowStyle="{StaticResource DefaultRowStyle}">
+        <DataGrid Grid.Row="1" ItemsSource="{Binding SpentTimeRecords}" Margin="10" AutoGenerateColumns="False" CanUserAddRows="false" SelectionUnit="FullRow" RowStyle="{StaticResource DefaultRowStyle}" SelectedItem="{Binding SelectedRow, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
 
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Project" Binding="{Binding ProjectName}" Width="150" IsReadOnly="True"/>
                 <DataGridTextColumn Header="Task" Binding="{Binding TaskName}" Width="*" IsReadOnly="True"/>
-                <DataGridTextColumn Header="Spent Time" Binding="{Binding SpentTime}" Width="100" IsReadOnly="True"/>
+                <DataGridTextColumn Header="Spent Time" Binding="{Binding TimeEntry.SpentTime}" Width="100" IsReadOnly="True"/>
             </DataGrid.Columns>
         </DataGrid>
 

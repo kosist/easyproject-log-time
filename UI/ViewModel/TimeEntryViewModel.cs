@@ -53,14 +53,32 @@ namespace UI.ViewModel
             TaskStatuses = new TaskStatusesViewModel();
 
             _eventAggregator.GetEvent<LoginSuccessEvent>().Subscribe(OnLoginSuccessEvent);
+            _eventAggregator.GetEvent<EditTimeEntryEvent>().Subscribe(OnEditTimeEntryEvent);
+
             SelectedUserEventPublisher = _eventAggregator.GetEvent<UserSelectedEvent>();
             SaveCommand = new DelegateCommand(OnSaveExecute, OnSaveCanExecute);
 
             LoggedTime = 0;
             SpentOnDate = DateTime.Today;
         }
+
+
         #endregion
-        
+
+        #region Event Handlers
+
+        private void OnEditTimeEntryEvent(TimeEntry timeEntry)
+        {
+            TimeEntry.SelectedProject = Projects.Single(proj => proj.Id == timeEntry.ProjectId);
+            TimeEntry.SelectedIssue = Issues.Single(issue => issue.Id == timeEntry.IssueId);
+            TimeEntry.SelectedUser = Users.Single(user => user.Id == timeEntry.UserId);
+            TimeEntry.Description = timeEntry.Description;
+            TimeEntry.SpentOnDate = timeEntry.SpentOnDate;
+        }
+
+        #endregion
+
+
         #region Private helper methods
 
         /// <summary>

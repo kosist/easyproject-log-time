@@ -11,10 +11,16 @@ namespace UI.ViewModel
         {
             _eventAggregator = eventAggregator;
             _eventAggregator.GetEvent<LoginSuccessEvent>().Subscribe(OnLoginExecute);
+            _eventAggregator.GetEvent<SelectLogHoursTabEvent>().Subscribe(OnSelectLogHoursTabEvent);
 
             LoggerPageActive = false;
             LogHoursTabSelected = false;
             LoginTabEnabled = true;
+        }
+
+        private void OnSelectLogHoursTabEvent()
+        {
+            LogHoursTabSelected = true;
         }
 
         private void OnLoginExecute(bool status)
