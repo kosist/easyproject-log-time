@@ -33,6 +33,7 @@ namespace UI.ViewModel
         public DoneRatioList DoneRatioList { get; private set; }
         public TaskStatusesViewModel TaskStatuses { get; private set; }
         public UserSelectedEvent SelectedUserEventPublisher { get; set; }
+        public TimeLogsUpdatedEvent TimeLogsUpdatedEventPublisher { get; set; }
         public DateTime SpentOnDate { get; set; }
         public ICommand SaveCommand { get; }
         public int CurrentUserId { get; private set; }
@@ -56,6 +57,7 @@ namespace UI.ViewModel
             _eventAggregator.GetEvent<EditTimeEntryEvent>().Subscribe(OnEditTimeEntryEvent);
 
             SelectedUserEventPublisher = _eventAggregator.GetEvent<UserSelectedEvent>();
+            TimeLogsUpdatedEventPublisher = _eventAggregator.GetEvent<TimeLogsUpdatedEvent>();
             SaveCommand = new DelegateCommand(OnSaveExecute, OnSaveCanExecute);
 
             LoggedTime = 0;
@@ -222,6 +224,7 @@ namespace UI.ViewModel
             TimeEntry.SpentTime = "";
 
             await GetLoggedTime();
+            TimeLogsUpdatedEventPublisher.Publish();
         }
 
         /// <summary>

@@ -29,16 +29,23 @@ namespace UI.ViewModel
         {
             _provider = provider;
             _eventAggregator = eventAggregator;
+
             SpentTimeRecords = new ObservableCollection<SpentTimeRecordViewModel>();
             UsersList = new ObservableCollection<User>();
             SpentOnDate = DateTime.Today;
             IssuesLookup = new Dictionary<int, List<Issue>>();
+
             _eventAggregator.GetEvent<UserSelectedEvent>().Subscribe(OnUserSelectedEvent);
+            _eventAggregator.GetEvent<TimeLogsUpdatedEvent>().Subscribe(OnTimeLogsUpdatedEvent);
+
             EditTimeEntryEvent = _eventAggregator.GetEvent<EditTimeEntryEvent>();
             SelectLogHoursTabEvent = _eventAggregator.GetEvent<SelectLogHoursTabEvent>();
+
             CopyModifyCommand = new DelegateCommand(OnCopyModifyExecute, OnCopyModifyCanExecute);
             EditCommand = new DelegateCommand(OnEditExecute, OnEditCanExecute);
         }
+
+
 
         #region Command Handlers
 
@@ -63,13 +70,19 @@ namespace UI.ViewModel
             return SelectedRow != null;
         }
 
+        private void OnTimeLogsUpdatedEvent()
+        {
+            if (SelectedUser != null)
+                UpdateSpentTimeList();
+        }
+
         #endregion
 
         private async void OnUserSelectedEvent(int userId)
         {
             await InitUsersList();
             if (UsersList.Count != 0)
-                SelectedUser = UsersList.Single(user => user.Id == userId);
+                SelectedUser = UsersList.SingleOrDefault(user => user.Id == userId);
         }
 
         public Task<List<TimeEntry>> LoadTimeEntries(DateTime date)
@@ -100,7 +113,7 @@ namespace UI.ViewModel
 
         private async void UpdateSpentTimeList()
         {
-            var records = await _provider.GetTimeEntries(SpentOnDate, _selectedUser.Id);
+            var records = await _provider.GetTimeEntries(SpentOnDate, SelectedUser.Id);
             var projects = await LoadProjects();
             var issues = new List<Issue>();
             SpentTimeRecords.Clear();
