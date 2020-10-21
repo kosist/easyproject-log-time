@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using BaseLayer.Model;
 using EPProvider;
+using Microsoft.VisualBasic.FileIO;
 using Prism.Commands;
 using Prism.Events;
 using UI.Event;
@@ -36,6 +37,7 @@ namespace UI.ViewModel
         public TimeLogsUpdatedEvent TimeLogsUpdatedEventPublisher { get; set; }
         public DateTime SpentOnDate { get; set; }
         public ICommand SaveCommand { get; }
+        public ICommand CancelCommand { get; }
         public int CurrentUserId { get; private set; }
 
         #endregion
@@ -59,10 +61,15 @@ namespace UI.ViewModel
             SelectedUserEventPublisher = _eventAggregator.GetEvent<UserSelectedEvent>();
             TimeLogsUpdatedEventPublisher = _eventAggregator.GetEvent<TimeLogsUpdatedEvent>();
             SaveCommand = new DelegateCommand(OnSaveExecute, OnSaveCanExecute);
+            CancelCommand = new DelegateCommand(OnCancelExecute, OnCancelCanExecute);
+
+            SaveOption = true;
+            UpdateOption = false;
 
             LoggedTime = 0;
             SpentOnDate = DateTime.Today;
         }
+
 
 
         #endregion
@@ -78,6 +85,17 @@ namespace UI.ViewModel
             TimeEntry.SpentOnDate = timeEntry.SpentOnDate;
             TimeEntry.SpentTime = timeEntry.SpentTime;
             TimeEntry.Id = timeEntry.Id;
+        }
+
+        private bool OnCancelCanExecute()
+        {
+            return true;
+        }
+
+        private void OnCancelExecute()
+        {
+            if (TimeEntry != null)
+                TimeEntry.SelectedProject = null;
         }
 
         #endregion
@@ -383,6 +401,32 @@ namespace UI.ViewModel
                 OnPropertyChanged();
             }
         }
+
+        private bool _saveOption;
+
+        public bool SaveOption
+        {
+            get { return _saveOption; }
+            set
+            {
+                _saveOption = value; 
+                OnPropertyChanged();
+            }
+        }
+
+        private bool _updateOption;
+
+        public bool UpdateOption
+        {
+            get { return _updateOption; }
+            set
+            {
+                _updateOption = value; 
+                OnPropertyChanged();
+            }
+        }
+
+
 
 
         #endregion

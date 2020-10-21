@@ -10,6 +10,9 @@
              xmlns:view="clr-namespace:UI.View"
              mc:Ignorable="d" 
              d:DesignHeight="665" d:DesignWidth="500">
+    <UserControl.Resources>
+        <BooleanToVisibilityConverter x:Key="BoolToVisibility" />
+    </UserControl.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="18*"/>
@@ -112,17 +115,11 @@
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
 
-            <Button Style="{StaticResource btn-success}"  Grid.Column="1" Margin="15" Content="Save" Command="{Binding SaveCommand}" Height="40"/>
-            <Button Style="{StaticResource btn-danger}" Grid.Column="2" Margin="15" Content="Exit" Height="40">
-                <b:Interaction.Triggers>
-                    <b:EventTrigger EventName="Click">
-                        <b:CallMethodAction MethodName="Close"
-                                                            TargetObject="{Binding RelativeSource={RelativeSource
-                                                  Mode=FindAncestor,
-                                                  AncestorType=Window}}" />
-                    </b:EventTrigger>
-                </b:Interaction.Triggers>
-            </Button>
+            <Button Style="{StaticResource btn-success}"  Grid.Column="1" Margin="15" Content="Save" Command="{Binding SaveCommand}" Height="40" Visibility="{Binding SaveOption, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter=
+                {StaticResource BoolToVisibility}}"/>
+            <Button Style="{StaticResource btn-info}"  Grid.Column="1" Margin="15" Content="Update" Command="{Binding UpdateCommand}" Height="40" Visibility="{Binding UpdateOption, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter=
+                {StaticResource BoolToVisibility}}"/>
+            <Button Style="{StaticResource btn-danger}" Grid.Column="2" Margin="15" Content="Clear" Command="{Binding CancelCommand}" Height="40"/>
         </Grid>
 
     </Grid>
