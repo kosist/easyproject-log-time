@@ -37,6 +37,7 @@ namespace UI.ViewModel
         public TimeLogsUpdatedEvent TimeLogsUpdatedEventPublisher { get; set; }
         public DateTime SpentOnDate { get; set; }
         public ICommand SaveCommand { get; }
+        public ICommand UpdateCommand { get; }
         public ICommand CancelCommand { get; }
         public int CurrentUserId { get; private set; }
 
@@ -61,6 +62,7 @@ namespace UI.ViewModel
             SelectedUserEventPublisher = _eventAggregator.GetEvent<UserSelectedEvent>();
             TimeLogsUpdatedEventPublisher = _eventAggregator.GetEvent<TimeLogsUpdatedEvent>();
             SaveCommand = new DelegateCommand(OnSaveExecute, OnSaveCanExecute);
+            UpdateCommand = new DelegateCommand(OnSaveExecute, OnSaveCanExecute);
             CancelCommand = new DelegateCommand(OnCancelExecute, OnCancelCanExecute);
 
             SaveOption = true;
@@ -69,8 +71,6 @@ namespace UI.ViewModel
             LoggedTime = 0;
             SpentOnDate = DateTime.Today;
         }
-
-
 
         #endregion
 
@@ -218,6 +218,7 @@ namespace UI.ViewModel
             }
             var timeEntry = new TimeEntry
             {
+                Id = TimeEntry.Id,
                 ProjectId = TimeEntry.SelectedProject.Id,
                 IssueId = TimeEntry.SelectedIssue.Id,
                 SpentOnDate = TimeEntry.SpentOnDate,
@@ -225,7 +226,16 @@ namespace UI.ViewModel
                 SpentTime = TimeEntry.SpentTime,
                 UserId = TimeEntry.SelectedUser.Id,
             };
-            var result = await _provider.AddTimeEntry(timeEntry);
+            OperationStatusInfo result;
+            if (timeEntry.Id != 0)
+            {
+                result = await _provider.UpdateTimeEntry(timeEntry);
+            }
+            else
+            {
+                result = await _provider.AddTimeEntry(timeEntry);
+            }
+            
             if (!result.OperationStatus)
                 throw new Exception("Post method executed with error!");
             if (UpdateTask)

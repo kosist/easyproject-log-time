@@ -164,6 +164,21 @@ namespace MockProvider
             };
         }
 
+        public async Task<OperationStatusInfo> UpdateTimeEntry(TimeEntry timeEntryData)
+        {
+            var entry = TimeEntries.Single(e => e.Id == timeEntryData.Id);
+            entry.ProjectId = timeEntryData.ProjectId;
+            entry.IssueId = timeEntryData.IssueId;
+            entry.UserId = timeEntryData.UserId;
+            entry.SpentOnDate = timeEntryData.SpentOnDate;
+            entry.SpentTime = timeEntryData.SpentTime;
+            entry.Description = timeEntryData.Description;
+            return new OperationStatusInfo
+            {
+                OperationStatus = true,
+            };
+        }
+
         public async Task<OperationStatusInfo> CredentialsValid()
         {
             return new OperationStatusInfo

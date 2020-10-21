@@ -91,6 +91,11 @@ namespace EPProvider
             return GetOperationStatusInfo(requestResult);
         }
 
+        public async Task<OperationStatusInfo> UpdateTimeEntry(TimeEntry timeEntryData)
+        {
+            throw new NotImplementedException();
+        }
+
         public async Task<OperationStatusInfo> CredentialsValid()
         {
             InitHttpBasicAuthenticator();
