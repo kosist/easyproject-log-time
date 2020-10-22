@@ -147,6 +147,7 @@ namespace UI.ViewModel
 
                     if (TimeEntry.SelectedProject == null)
                     {
+                        TimeEntry.Id = 0;
                         TimeEntry.SelectedIssue = null;
                         TimeEntry.SelectedUser = null;
                         Issues.Clear();
@@ -250,6 +251,7 @@ namespace UI.ViewModel
 
             TimeEntry.Description = "";
             TimeEntry.SpentTime = "";
+            TimeEntry.Id = 0;
 
             await GetLoggedTime();
             TimeLogsUpdatedEventPublisher.Publish();

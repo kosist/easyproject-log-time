@@ -102,6 +102,7 @@ namespace MockProvider
         {
             TimeEntries.Add(new TimeEntryMockDto
             {
+                Id = 1,
                 ProjectId = 1,
                 IssueId = 1,
                 UserId = 0,
@@ -111,6 +112,7 @@ namespace MockProvider
             });
             TimeEntries.Add(new TimeEntryMockDto
             {
+                Id = 2,
                 ProjectId = 1,
                 IssueId = 2,
                 UserId = 0,
@@ -149,8 +151,13 @@ namespace MockProvider
 
         public async Task<OperationStatusInfo> AddTimeEntry(TimeEntry timeEntryData)
         {
+            var newId = TimeEntries.Max(id => id.Id) + 1;
+            var timeEntryId = timeEntryData.Id;
+            if (timeEntryId == 0)
+                timeEntryId = newId;
             TimeEntries.Add(new TimeEntryMockDto
             {
+                Id = timeEntryId,
                 ProjectId = timeEntryData.ProjectId,
                 IssueId = timeEntryData.IssueId,
                 UserId = timeEntryData.UserId,
