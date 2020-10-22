@@ -117,7 +117,7 @@
 
             <Button Style="{StaticResource btn-success}"  Grid.Column="1" Margin="15" Content="Save" Command="{Binding SaveCommand}" Height="40" Visibility="{Binding SaveOption, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter=
                 {StaticResource BoolToVisibility}}"/>
-            <Button Style="{StaticResource btn-info}"  Grid.Column="1" Margin="15" Content="Update" Command="{Binding UpdateCommand}" Height="40" Visibility="{Binding UpdateOption, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter=
+            <Button Style="{StaticResource btn-info}"  Grid.Column="1" Margin="15" Content="Update" Command="{Binding SaveCommand}" Height="40" Visibility="{Binding UpdateOption, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter=
                 {StaticResource BoolToVisibility}}"/>
             <Button Style="{StaticResource btn-danger}" Grid.Column="2" Margin="15" Content="Clear" Command="{Binding CancelCommand}" Height="40"/>
         </Grid>

@@ -3,6 +3,7 @@ using System.Globalization;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using BaseLayer.Model;
@@ -37,7 +38,6 @@ namespace UI.ViewModel
         public TimeLogsUpdatedEvent TimeLogsUpdatedEventPublisher { get; set; }
         public DateTime SpentOnDate { get; set; }
         public ICommand SaveCommand { get; }
-        public ICommand UpdateCommand { get; }
         public ICommand CancelCommand { get; }
         public int CurrentUserId { get; private set; }
 
@@ -62,7 +62,6 @@ namespace UI.ViewModel
             SelectedUserEventPublisher = _eventAggregator.GetEvent<UserSelectedEvent>();
             TimeLogsUpdatedEventPublisher = _eventAggregator.GetEvent<TimeLogsUpdatedEvent>();
             SaveCommand = new DelegateCommand(OnSaveExecute, OnSaveCanExecute);
-            UpdateCommand = new DelegateCommand(OnSaveExecute, OnSaveCanExecute);
             CancelCommand = new DelegateCommand(OnCancelExecute, OnCancelCanExecute);
 
             SaveOption = true;
@@ -76,15 +75,19 @@ namespace UI.ViewModel
 
         #region Event Handlers
 
-        private void OnEditTimeEntryEvent(TimeEntry timeEntry)
+        private async void OnEditTimeEntryEvent(TimeEntry timeEntry)
         {
+            
             TimeEntry.SelectedProject = Projects.Single(proj => proj.Id == timeEntry.ProjectId);
-            TimeEntry.SelectedIssue = Issues.Single(issue => issue.Id == timeEntry.IssueId);
+            ActiveTasks = false;
+            TimeEntry.SelectedIssue = Issues?.Single(issue => issue.Id == timeEntry.IssueId);
             TimeEntry.SelectedUser = Users.Single(user => user.Id == timeEntry.UserId);
             TimeEntry.Description = timeEntry.Description;
             TimeEntry.SpentOnDate = timeEntry.SpentOnDate;
             TimeEntry.SpentTime = timeEntry.SpentTime;
             TimeEntry.Id = timeEntry.Id;
+            SaveOption = false;
+            UpdateOption = true;
         }
 
         private bool OnCancelCanExecute()
@@ -153,6 +156,8 @@ namespace UI.ViewModel
                         Issues.Clear();
                         Tasks.Clear();
                         Users.Clear();
+                        SaveOption = true;
+                        UpdateOption = false;
                     }
                     else if(Projects.SingleOrDefault(proj => proj.Name == TimeEntry.SelectedProject.Name) != null)
                     {
@@ -239,6 +244,7 @@ namespace UI.ViewModel
             
             if (!result.OperationStatus)
                 throw new Exception("Post method executed with error!");
+            
             if (UpdateTask)
             {
                 await _provider.UpdateIssueStatus(new UpdatedIssue
@@ -252,6 +258,8 @@ namespace UI.ViewModel
             TimeEntry.Description = "";
             TimeEntry.SpentTime = "";
             TimeEntry.Id = 0;
+            SaveOption = true;
+            UpdateOption = false;
 
             await GetLoggedTime();
             TimeLogsUpdatedEventPublisher.Publish();
