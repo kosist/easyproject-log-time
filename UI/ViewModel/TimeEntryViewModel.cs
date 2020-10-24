@@ -47,6 +47,7 @@ namespace UI.ViewModel
         #endregion
 
         #region Constructor
+
         public TimeEntryViewModel(IEPProvider provider, IEventAggregator eventAggregator)
         {
             _provider = provider;
@@ -61,6 +62,7 @@ namespace UI.ViewModel
 
             _eventAggregator.GetEvent<LoginSuccessEvent>().Subscribe(OnLoginSuccessEvent);
             _eventAggregator.GetEvent<EditTimeEntryEvent>().Subscribe(OnEditTimeEntryEvent);
+            _eventAggregator.GetEvent<CopyTimeEntryEvent>().Subscribe(OnCopyTimeEntryEvent);
 
             SelectedUserEventPublisher = _eventAggregator.GetEvent<UserSelectedEvent>();
             TimeLogsUpdatedEventPublisher = _eventAggregator.GetEvent<TimeLogsUpdatedEvent>();
@@ -81,19 +83,21 @@ namespace UI.ViewModel
 
         #region Event Handlers
 
-        private async void OnEditTimeEntryEvent(TimeEntry timeEntry)
+        private void OnEditTimeEntryEvent(TimeEntry timeEntry)
         {
             SaveOption = false;
             UpdateOption = true;
             _timeEntryToUpdate = timeEntry;
             TimeEntry.SelectedProject = Projects.Single(proj => proj.Id == timeEntry.ProjectId);
-            //TimeEntry.SelectedIssue = Issues?.Single(issue => issue.Id == timeEntry.IssueId);
-            //TimeEntry.SelectedUser = Users.Single(user => user.Id == timeEntry.UserId);
-            //TimeEntry.Description = timeEntry.Description;
-            //TimeEntry.SpentOnDate = timeEntry.SpentOnDate;
-            //TimeEntry.SpentTime = timeEntry.SpentTime;
-            //TimeEntry.Id = timeEntry.Id;
-            
+        }
+
+        private void OnCopyTimeEntryEvent(TimeEntry timeEntry)
+        {
+            SaveOption = true;
+            UpdateOption = false;
+            timeEntry.Id = 0;
+            _timeEntryToUpdate = timeEntry;
+            TimeEntry.SelectedProject = Projects.Single(proj => proj.Id == timeEntry.ProjectId);
         }
 
         private bool OnCancelCanExecute()
@@ -159,6 +163,9 @@ namespace UI.ViewModel
                         TimeEntry.Id = 0;
                         TimeEntry.SelectedIssue = null;
                         TimeEntry.SelectedUser = null;
+                        TimeEntry.Description = "";
+                        TimeEntry.SpentTime = "";
+                        TimeEntry.SpentOnDate = DateTime.Today;
                         Issues.Clear();
                         Tasks.Clear();
                         Users.Clear();
@@ -168,8 +175,8 @@ namespace UI.ViewModel
                     }
                     else if(Projects.SingleOrDefault(proj => proj.Name == TimeEntry.SelectedProject.Name) != null)
                     {
-                        await DisplayIssuesList(TimeEntry.SelectedProject.Id, _timeEntryToUpdate.IssueId);
-                        await DisplayUsersListAsync(TimeEntry.SelectedProject.Id, _timeEntryToUpdate.UserId);
+                        await DisplayIssuesList(TimeEntry.SelectedProject.Id, _timeEntryToUpdate?.IssueId);
+                        await DisplayUsersListAsync(TimeEntry.SelectedProject.Id, _timeEntryToUpdate?.UserId);
                     }
                 }
 
@@ -183,7 +190,7 @@ namespace UI.ViewModel
                             TaskStatuses.Statuses.First(task => task.Id == TimeEntry.SelectedIssue.Status.Id);
                     else
                         TaskStatuses.TaskStatus = null;
-                    if (UpdateOption && (_timeEntryToUpdate != null))
+                    if (_timeEntryToUpdate != null)
                     {
                         TimeEntry.Description = _timeEntryToUpdate.Description;
                         TimeEntry.SpentOnDate = _timeEntryToUpdate.SpentOnDate;
@@ -337,7 +344,7 @@ namespace UI.ViewModel
         /// <param name="projectId">ID of the selected project</param>
         /// <param name="issueId">ID of default issue to be selected</param>
         /// <returns></returns>
-        private async Task DisplayIssuesList(int projectId, int issueId = 0)
+        private async Task DisplayIssuesList(int projectId, int? issueId = 0)
         {
             Issues.Clear();
             var issues = await LoadIssues(projectId);
@@ -357,7 +364,7 @@ namespace UI.ViewModel
             BuildTreeAndGetRoots(Issues, issueId);
         }
 
-        private async Task DisplayUsersListAsync(int projectId, int selectedUserId = 0)
+        private async Task DisplayUsersListAsync(int projectId, int? selectedUserId = 0)
         {
             Users.Clear();
             var users = await _provider.GetProjectUsersListAsync(projectId);
@@ -478,7 +485,7 @@ namespace UI.ViewModel
             public string Name { get; set; }
         }
 
-        public void BuildTreeAndGetRoots(ObservableCollection<Issue> actualObjects, int issueId = 0)
+        public void BuildTreeAndGetRoots(ObservableCollection<Issue> actualObjects, int? issueId = 0)
         {
             Nodes.Clear();
             Dictionary<int, IssueItemViewModel> lookup = new Dictionary<int, IssueItemViewModel>();
@@ -518,7 +525,7 @@ namespace UI.ViewModel
             IndentNames(Nodes, issueId);
         }
 
-        private void IndentNames(ObservableCollection<IssueItemViewModel> nodes, int issueId = 0)
+        private void IndentNames(ObservableCollection<IssueItemViewModel> nodes, int? issueId = 0)
         {
             
             foreach (var node in nodes)

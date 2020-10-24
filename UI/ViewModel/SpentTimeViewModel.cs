@@ -23,6 +23,7 @@ namespace UI.ViewModel
         public ICommand CopyModifyCommand { get; set; }
         public ICommand EditCommand { get; set; }
         public EditTimeEntryEvent EditTimeEntryEvent { get; }
+        public CopyTimeEntryEvent CopyTimeEntryEvent { get; }
         public DataUpdatedEvent DataUpdatedEvent { get; }
 
         public SpentTimeViewModel(IEPProvider provider, IEventAggregator eventAggregator)
@@ -39,6 +40,7 @@ namespace UI.ViewModel
             _eventAggregator.GetEvent<TimeLogsUpdatedEvent>().Subscribe(OnTimeLogsUpdatedEvent);
 
             EditTimeEntryEvent = _eventAggregator.GetEvent<EditTimeEntryEvent>();
+            CopyTimeEntryEvent = _eventAggregator.GetEvent<CopyTimeEntryEvent>();
             DataUpdatedEvent = _eventAggregator.GetEvent<DataUpdatedEvent>();
 
             CopyModifyCommand = new DelegateCommand(OnCopyModifyExecute, OnCopyModifyCanExecute);
@@ -51,7 +53,8 @@ namespace UI.ViewModel
 
         private void OnCopyModifyExecute()
         {
-            throw new NotImplementedException();
+            DataUpdatedEvent.Publish(false);
+            CopyTimeEntryEvent.Publish(SelectedRow.TimeEntry);
         }
 
         private bool OnCopyModifyCanExecute()
