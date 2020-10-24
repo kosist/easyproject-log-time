@@ -23,6 +23,7 @@ namespace UI.ViewModel
         public ICommand CopyModifyCommand { get; set; }
         public ICommand EditCommand { get; set; }
         public EditTimeEntryEvent EditTimeEntryEvent { get; }
+        public DataUpdatedEvent DataUpdatedEvent { get; }
 
         public SpentTimeViewModel(IEPProvider provider, IEventAggregator eventAggregator)
         {
@@ -38,6 +39,7 @@ namespace UI.ViewModel
             _eventAggregator.GetEvent<TimeLogsUpdatedEvent>().Subscribe(OnTimeLogsUpdatedEvent);
 
             EditTimeEntryEvent = _eventAggregator.GetEvent<EditTimeEntryEvent>();
+            DataUpdatedEvent = _eventAggregator.GetEvent<DataUpdatedEvent>();
 
             CopyModifyCommand = new DelegateCommand(OnCopyModifyExecute, OnCopyModifyCanExecute);
             EditCommand = new DelegateCommand(OnEditExecute, OnEditCanExecute);
@@ -59,6 +61,7 @@ namespace UI.ViewModel
 
         private void OnEditExecute()
         {
+            DataUpdatedEvent.Publish(false);
             EditTimeEntryEvent.Publish(SelectedRow.TimeEntry);
         }
 
@@ -110,6 +113,7 @@ namespace UI.ViewModel
 
         private async void UpdateSpentTimeList()
         {
+            DataUpdatedEvent.Publish(false);
             var records = await _provider.GetTimeEntries(SpentOnDate, SelectedUser.Id);
             var projects = await LoadProjects();
             var issues = new List<Issue>();
@@ -132,6 +136,7 @@ namespace UI.ViewModel
                     TimeEntry = timeEntry,
                 });
             }
+            DataUpdatedEvent.Publish(true);
         }
 
         #region Full Properties

@@ -41,6 +41,7 @@ namespace UI.ViewModel
         public ICommand CancelCommand { get; }
         public int CurrentUserId { get; private set; }
         private TimeEntry _timeEntryToUpdate { get; set; }
+        public DataUpdatedEvent DataUpdatedEvent { get; }
         public SelectLogHoursTabEvent SelectLogHoursTabEvent { get; }
 
         #endregion
@@ -63,7 +64,9 @@ namespace UI.ViewModel
 
             SelectedUserEventPublisher = _eventAggregator.GetEvent<UserSelectedEvent>();
             TimeLogsUpdatedEventPublisher = _eventAggregator.GetEvent<TimeLogsUpdatedEvent>();
+            DataUpdatedEvent = _eventAggregator.GetEvent<DataUpdatedEvent>();
             SelectLogHoursTabEvent = _eventAggregator.GetEvent<SelectLogHoursTabEvent>();
+
             SaveCommand = new DelegateCommand(OnSaveExecute, OnSaveCanExecute);
             CancelCommand = new DelegateCommand(OnCancelExecute, OnCancelCanExecute);
 
@@ -539,6 +542,7 @@ namespace UI.ViewModel
             }
             if ((issueId > 0) && (TimeEntry != null))
                 TimeEntry.SelectedIssue = Issues.FirstOrDefault(issue => issue.Id == issueId);
+            DataUpdatedEvent.Publish(true);
             SelectLogHoursTabEvent.Publish();
         }
 

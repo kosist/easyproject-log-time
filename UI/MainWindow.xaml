@@ -13,7 +13,7 @@
         Title="EasyProject Time Logger" Height="665" Width="500" ResizeMode="CanMinimize">
 
     <Window.Resources>
-        <local:StatusToColorConverter x:Key="StatusToColorConverter"/>
+        <local:StatusToColorConverter x:Key="StatusToColorConverter" />
     </Window.Resources>
 
     <TabControl x:Name="TabControl" Grid.Row="0" DataContext="{Binding ViewsAggregatorViewModel}">
