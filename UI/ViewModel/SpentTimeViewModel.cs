@@ -35,6 +35,7 @@ namespace UI.ViewModel
             UsersList = new ObservableCollection<User>();
             SpentOnDate = DateTime.Today;
             IssuesLookup = new Dictionary<int, List<Issue>>();
+            StatusString = "";
 
             _eventAggregator.GetEvent<UserSelectedEvent>().Subscribe(OnUserSelectedEvent);
             _eventAggregator.GetEvent<TimeLogsUpdatedEvent>().Subscribe(OnTimeLogsUpdatedEvent);
@@ -116,6 +117,7 @@ namespace UI.ViewModel
 
         private async void UpdateSpentTimeList()
         {
+            StatusString = "";
             DataUpdatedEvent.Publish(false);
             var records = await _provider.GetTimeEntries(SpentOnDate, SelectedUser.Id);
             var projects = await LoadProjects();
@@ -139,6 +141,14 @@ namespace UI.ViewModel
                     TimeEntry = timeEntry,
                 });
             }
+
+            if (SpentTimeRecords.Count == 0)
+                StatusString = $"No time entries for {SelectedUser.Name} found.";
+            else if (SpentTimeRecords.Count == 1)
+                StatusString = $"{SpentTimeRecords.Count} time entry for {SelectedUser.Name} found.";
+            else
+                StatusString = $"{SpentTimeRecords.Count} time entries for {SelectedUser.Name} found.";
+
             DataUpdatedEvent.Publish(true);
         }
 
@@ -182,6 +192,19 @@ namespace UI.ViewModel
                 OnPropertyChanged();
             }
         }
+
+        private string _statusString;
+
+        public string StatusString
+        {
+            get { return _statusString; }
+            set
+            {
+                _statusString = value; 
+                OnPropertyChanged();
+            }
+        }
+
 
         #endregion
 
