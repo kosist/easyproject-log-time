@@ -41,6 +41,7 @@ namespace UI.ViewModel
         public ICommand CancelCommand { get; }
         public int CurrentUserId { get; private set; }
         private TimeEntry _timeEntryToUpdate { get; set; }
+        public SelectLogHoursTabEvent SelectLogHoursTabEvent { get; }
 
         #endregion
 
@@ -62,6 +63,7 @@ namespace UI.ViewModel
 
             SelectedUserEventPublisher = _eventAggregator.GetEvent<UserSelectedEvent>();
             TimeLogsUpdatedEventPublisher = _eventAggregator.GetEvent<TimeLogsUpdatedEvent>();
+            SelectLogHoursTabEvent = _eventAggregator.GetEvent<SelectLogHoursTabEvent>();
             SaveCommand = new DelegateCommand(OnSaveExecute, OnSaveCanExecute);
             CancelCommand = new DelegateCommand(OnCancelExecute, OnCancelCanExecute);
 
@@ -537,6 +539,7 @@ namespace UI.ViewModel
             }
             if ((issueId > 0) && (TimeEntry != null))
                 TimeEntry.SelectedIssue = Issues.FirstOrDefault(issue => issue.Id == issueId);
+            SelectLogHoursTabEvent.Publish();
         }
 
         private void UpdateLevel(ObservableCollection<IssueItemViewModel> items)

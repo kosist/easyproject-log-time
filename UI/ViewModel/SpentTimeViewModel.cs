@@ -23,7 +23,6 @@ namespace UI.ViewModel
         public ICommand CopyModifyCommand { get; set; }
         public ICommand EditCommand { get; set; }
         public EditTimeEntryEvent EditTimeEntryEvent { get; }
-        public SelectLogHoursTabEvent SelectLogHoursTabEvent { get; }
 
         public SpentTimeViewModel(IEPProvider provider, IEventAggregator eventAggregator)
         {
@@ -39,7 +38,6 @@ namespace UI.ViewModel
             _eventAggregator.GetEvent<TimeLogsUpdatedEvent>().Subscribe(OnTimeLogsUpdatedEvent);
 
             EditTimeEntryEvent = _eventAggregator.GetEvent<EditTimeEntryEvent>();
-            SelectLogHoursTabEvent = _eventAggregator.GetEvent<SelectLogHoursTabEvent>();
 
             CopyModifyCommand = new DelegateCommand(OnCopyModifyExecute, OnCopyModifyCanExecute);
             EditCommand = new DelegateCommand(OnEditExecute, OnEditCanExecute);
@@ -61,7 +59,6 @@ namespace UI.ViewModel
 
         private void OnEditExecute()
         {
-            SelectLogHoursTabEvent.Publish();
             EditTimeEntryEvent.Publish(SelectedRow.TimeEntry);
         }
 
