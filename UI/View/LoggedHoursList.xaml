@@ -9,7 +9,7 @@
 
     <UserControl.Resources>
         <ContextMenu  x:Key="RowMenu" DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=DataGrid, Mode=FindAncestor}}">
-            <MenuItem Header="Copy/Modify" Command="{Binding CopyModifyCommand}"/>
+            <MenuItem Header="Copy" Command="{Binding CopyModifyCommand}"/>
             <MenuItem Header="Edit" Command="{Binding EditCommand}"/>
         </ContextMenu>
         <Style x:Key="DefaultRowStyle" TargetType="{x:Type DataGridRow}">
