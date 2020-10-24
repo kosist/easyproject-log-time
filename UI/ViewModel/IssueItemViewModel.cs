@@ -11,6 +11,7 @@ namespace UI.ViewModel
         public string Name { get; set; }
         public string SelectedName { get; set; }
         public int Level { get; set; }
+        public int IssueId { get; set; }
 
         public IssueItemViewModel()
         {

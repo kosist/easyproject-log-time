@@ -40,6 +40,7 @@ namespace UI.ViewModel
         public ICommand SaveCommand { get; }
         public ICommand CancelCommand { get; }
         public int CurrentUserId { get; private set; }
+        private TimeEntry _timeEntryToUpdate { get; set; }
 
         #endregion
 
@@ -77,17 +78,17 @@ namespace UI.ViewModel
 
         private async void OnEditTimeEntryEvent(TimeEntry timeEntry)
         {
-            
-            TimeEntry.SelectedProject = Projects.Single(proj => proj.Id == timeEntry.ProjectId);
-            ActiveTasks = false;
-            TimeEntry.SelectedIssue = Issues?.Single(issue => issue.Id == timeEntry.IssueId);
-            TimeEntry.SelectedUser = Users.Single(user => user.Id == timeEntry.UserId);
-            TimeEntry.Description = timeEntry.Description;
-            TimeEntry.SpentOnDate = timeEntry.SpentOnDate;
-            TimeEntry.SpentTime = timeEntry.SpentTime;
-            TimeEntry.Id = timeEntry.Id;
             SaveOption = false;
             UpdateOption = true;
+            _timeEntryToUpdate = timeEntry;
+            TimeEntry.SelectedProject = Projects.Single(proj => proj.Id == timeEntry.ProjectId);
+            //TimeEntry.SelectedIssue = Issues?.Single(issue => issue.Id == timeEntry.IssueId);
+            //TimeEntry.SelectedUser = Users.Single(user => user.Id == timeEntry.UserId);
+            //TimeEntry.Description = timeEntry.Description;
+            //TimeEntry.SpentOnDate = timeEntry.SpentOnDate;
+            //TimeEntry.SpentTime = timeEntry.SpentTime;
+            //TimeEntry.Id = timeEntry.Id;
+            
         }
 
         private bool OnCancelCanExecute()
@@ -158,11 +159,12 @@ namespace UI.ViewModel
                         Users.Clear();
                         SaveOption = true;
                         UpdateOption = false;
+                        _timeEntryToUpdate = null;
                     }
                     else if(Projects.SingleOrDefault(proj => proj.Name == TimeEntry.SelectedProject.Name) != null)
                     {
-                        await DisplayIssuesList(TimeEntry.SelectedProject.Id);
-                        await DisplayUsersListAsync(TimeEntry.SelectedProject.Id);
+                        await DisplayIssuesList(TimeEntry.SelectedProject.Id, _timeEntryToUpdate.IssueId);
+                        await DisplayUsersListAsync(TimeEntry.SelectedProject.Id, _timeEntryToUpdate.UserId);
                     }
                 }
 
@@ -176,6 +178,13 @@ namespace UI.ViewModel
                             TaskStatuses.Statuses.First(task => task.Id == TimeEntry.SelectedIssue.Status.Id);
                     else
                         TaskStatuses.TaskStatus = null;
+                    if (UpdateOption && (_timeEntryToUpdate != null))
+                    {
+                        TimeEntry.Description = _timeEntryToUpdate.Description;
+                        TimeEntry.SpentOnDate = _timeEntryToUpdate.SpentOnDate;
+                        TimeEntry.SpentTime = _timeEntryToUpdate.SpentTime;
+                        TimeEntry.Id = _timeEntryToUpdate.Id;
+                    }
                 }
 
                 if ((e.PropertyName == "SpentOnDate") || (e.PropertyName == "SelectedUser"))
@@ -260,6 +269,7 @@ namespace UI.ViewModel
             TimeEntry.Id = 0;
             SaveOption = true;
             UpdateOption = false;
+            _timeEntryToUpdate = null;
 
             await GetLoggedTime();
             TimeLogsUpdatedEventPublisher.Publish();
@@ -320,8 +330,9 @@ namespace UI.ViewModel
         /// Displays list of issues for the selected project
         /// </summary>
         /// <param name="projectId">ID of the selected project</param>
+        /// <param name="issueId">ID of default issue to be selected</param>
         /// <returns></returns>
-        private async Task DisplayIssuesList(int projectId)
+        private async Task DisplayIssuesList(int projectId, int issueId = 0)
         {
             Issues.Clear();
             var issues = await LoadIssues(projectId);
@@ -337,10 +348,11 @@ namespace UI.ViewModel
                     Issues.Add(issue);
                 }
             }
-            BuildTreeAndGetRoots(Issues);
+            
+            BuildTreeAndGetRoots(Issues, issueId);
         }
 
-        private async Task DisplayUsersListAsync(int projectId)
+        private async Task DisplayUsersListAsync(int projectId, int selectedUserId = 0)
         {
             Users.Clear();
             var users = await _provider.GetProjectUsersListAsync(projectId);
@@ -348,6 +360,9 @@ namespace UI.ViewModel
             {
                 Users.Add(user);
             }
+
+            if ((selectedUserId > 0) && (TimeEntry != null))
+                TimeEntry.SelectedUser = Users.FirstOrDefault(user => user.Id == selectedUserId);
         }
 
         #endregion
@@ -446,9 +461,6 @@ namespace UI.ViewModel
             }
         }
 
-
-
-
         #endregion
 
         #region Tree View
@@ -461,7 +473,7 @@ namespace UI.ViewModel
             public string Name { get; set; }
         }
 
-        public void BuildTreeAndGetRoots(ObservableCollection<Issue> actualObjects)
+        public void BuildTreeAndGetRoots(ObservableCollection<Issue> actualObjects, int issueId = 0)
         {
             Nodes.Clear();
             Dictionary<int, IssueItemViewModel> lookup = new Dictionary<int, IssueItemViewModel>();
@@ -474,6 +486,7 @@ namespace UI.ViewModel
                     Name = issue.Name,
                     SelectedName = issue.Name,
                     Level = 0,
+                    IssueId = issue.Id,
                 });
             }
 
@@ -497,10 +510,10 @@ namespace UI.ViewModel
             }
             Tasks.Clear();
             UpdateLevel(Nodes);
-            IndentNames(Nodes);
+            IndentNames(Nodes, issueId);
         }
 
-        private void IndentNames(ObservableCollection<IssueItemViewModel> nodes)
+        private void IndentNames(ObservableCollection<IssueItemViewModel> nodes, int issueId = 0)
         {
             
             foreach (var node in nodes)
@@ -522,6 +535,8 @@ namespace UI.ViewModel
                 Tasks.Add(item);
                 IndentNames(new ObservableCollection<IssueItemViewModel>(node.Children));
             }
+            if ((issueId > 0) && (TimeEntry != null))
+                TimeEntry.SelectedIssue = Issues.FirstOrDefault(issue => issue.Id == issueId);
         }
 
         private void UpdateLevel(ObservableCollection<IssueItemViewModel> items)

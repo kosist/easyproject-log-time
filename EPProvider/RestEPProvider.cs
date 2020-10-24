@@ -93,7 +93,12 @@ namespace EPProvider
 
         public async Task<OperationStatusInfo> UpdateTimeEntry(TimeEntry timeEntryData)
         {
-            throw new NotImplementedException();
+            var timeEntry = _mapper.Map<TimeEntry, TimeEntryDTO>(timeEntryData);
+            InitHttpBasicAuthenticator();
+            var request = new RestRequest($"time_entries/{timeEntry.Id}.xml", Method.PUT, DataFormat.Xml);
+            request.AddXmlBody(timeEntry);
+            var requestResult = await _client.ExecuteAsync<TimeEntryDTO>(request);
+            return GetOperationStatusInfo(requestResult);
         }
 
         public async Task<OperationStatusInfo> CredentialsValid()
