@@ -7,6 +7,7 @@
     <ApplicationIcon>time.ico</ApplicationIcon>
     <PackageProjectUrl></PackageProjectUrl>
     <RepositoryUrl>https://github.com/kosist/easyproject-log-time</RepositoryUrl>
+    <Platforms>AnyCPU;x64;x86</Platforms>
   </PropertyGroup>
 
   <ItemGroup>
