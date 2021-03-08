@@ -125,8 +125,8 @@ namespace UI.ViewModel
             if (status)
             {
                 await DisplayProjectsAsync();
-                var requestResult = await _provider.GetCurrentUserId();
-                CurrentUserId = requestResult.userId;
+                //var requestResult = await _provider.GetCurrentUserId();
+                CurrentUserId = 93;
                 SelectedUserEventPublisher.Publish(CurrentUserId);
                 await GetLoggedTime();
             }            
@@ -150,7 +150,7 @@ namespace UI.ViewModel
             {
                 if (e.PropertyName == nameof(TimeEntry.HasErrors))
                 {
-                    ((DelegateCommand) SaveCommand).RaiseCanExecuteChanged();
+                    ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
                 }
 
                 if (e.PropertyName == "SelectedProject")
@@ -194,7 +194,26 @@ namespace UI.ViewModel
                     {
                         TimeEntry.Description = _timeEntryToUpdate.Description;
                         TimeEntry.SpentOnDate = _timeEntryToUpdate.SpentOnDate;
-                        TimeEntry.SpentTime = _timeEntryToUpdate.SpentTime;
+                        var culture = CultureInfo.CurrentCulture;
+                        var separator = culture.NumberFormat.NumberDecimalSeparator;
+                        var currentSeparator = "";
+                        if (separator == ".")
+                        {
+                            currentSeparator = ",";
+                        }
+                        else
+                        {
+                            currentSeparator = ".";
+                        }
+                        if (!_timeEntryToUpdate.SpentTime.Contains(separator))
+                        {
+                            TimeEntry.SpentTime = _timeEntryToUpdate.SpentTime.Replace(currentSeparator, separator);
+                        }
+                        else
+                        {
+                            TimeEntry.SpentTime = _timeEntryToUpdate.SpentTime;
+                        }
+                        
                         TimeEntry.Id = _timeEntryToUpdate.Id;
                     }
                 }
