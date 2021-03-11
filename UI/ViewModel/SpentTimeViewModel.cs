@@ -142,12 +142,12 @@ namespace UI.ViewModel
                 });
             }
 
+            var totalSum = SpentTimeRecords.Sum(s => Convert.ToDecimal(s.TimeEntry.SpentTime));
+
             if (SpentTimeRecords.Count == 0)
                 StatusString = $"No time entries for {SelectedUser.Name} found.";
-            else if (SpentTimeRecords.Count == 1)
-                StatusString = $"{SpentTimeRecords.Count} time entry for {SelectedUser.Name} found.";
             else
-                StatusString = $"{SpentTimeRecords.Count} time entries for {SelectedUser.Name} found.";
+                StatusString = $"{SelectedUser.Name} has logged {totalSum} hours";
 
             DataUpdatedEvent.Publish(true);
         }
