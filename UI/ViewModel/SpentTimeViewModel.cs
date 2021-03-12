@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
@@ -142,7 +143,9 @@ namespace UI.ViewModel
                 });
             }
 
-            var totalSum = SpentTimeRecords.Sum(s => Convert.ToDecimal(s.TimeEntry.SpentTime));
+            var culture = CultureInfo.CurrentCulture;
+            var separator = culture.NumberFormat.NumberDecimalSeparator;
+            var totalSum = SpentTimeRecords.Sum(s => Convert.ToDecimal(s.TimeEntry.SpentTime.Replace(".", separator)));
 
             if (SpentTimeRecords.Count == 0)
                 StatusString = $"No time entries for {SelectedUser.Name} found.";
