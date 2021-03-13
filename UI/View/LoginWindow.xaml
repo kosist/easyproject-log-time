@@ -55,7 +55,7 @@
 
             <StackPanel Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" VerticalAlignment="Center">
                 <Label Content="Remember Credentials?"/>
-                <CheckBox VerticalAlignment="Center"></CheckBox>
+                <CheckBox VerticalAlignment="Center" IsChecked="{Binding RememberCredentials, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"></CheckBox>
             </StackPanel>
 
             

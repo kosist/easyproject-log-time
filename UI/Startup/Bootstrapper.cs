@@ -4,6 +4,7 @@ using EPProvider;
 using EPProvider.Mapping;
 using MockProvider;
 using Prism.Events;
+using UI.ConfigurationData;
 using UI.ViewModel;
 
 namespace UI.Startup
@@ -12,6 +13,9 @@ namespace UI.Startup
     {
         public IContainer Bootstrap()
         {
+
+
+
             var builder = new ContainerBuilder();
 
             builder.AddAutoMapper(typeof(ProjectMapperProfile).Assembly);
@@ -20,6 +24,7 @@ namespace UI.Startup
             builder.RegisterType<EventAggregator>().As<IEventAggregator>().SingleInstance();
             builder.RegisterType<EnvironnmentCredentialsProvider>().As<ICredentialsProvider>().SingleInstance();
             builder.RegisterType<RestEPProvider>().As<IEPProvider>();
+            builder.RegisterType<JsonEpConfigurationHandler>().As<IEpConfigurationParameters>();
             //builder.RegisterType<MockEpProvider>().As<IEPProvider>().SingleInstance();
 
             builder.RegisterType<MainWindow>().AsSelf();
