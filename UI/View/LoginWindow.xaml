@@ -53,6 +53,13 @@
 
             <TextBox Grid.Column="1" Grid.ColumnSpan="3" Margin="0 20" IsReadOnly="True" Text="{Binding Status.StatusMessage, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" Foreground="{Binding Status.StatusColor, Converter={StaticResource StatusToColorConverter}}" BorderThickness="0" TextWrapping="WrapWithOverflow"/>
 
+            <StackPanel Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" VerticalAlignment="Center">
+                <Label Content="Remember Credentials?"/>
+                <CheckBox VerticalAlignment="Center"></CheckBox>
+            </StackPanel>
+
+            
+
             <Button Style="{StaticResource btn-info}" Grid.Row="1" Grid.Column="3" Margin="0" Content="Login" Command="{Binding LoginCommand}" Height="40"/>
         </Grid>
     </Grid>
