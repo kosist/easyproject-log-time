@@ -10,8 +10,10 @@
              xmlns:view="clr-namespace:UI.View"
              mc:Ignorable="d" 
              d:DesignHeight="665" d:DesignWidth="500">
+
     <UserControl.Resources>
         <BooleanToVisibilityConverter x:Key="BoolToVisibility" />
+        <local:TimeFormatConverter x:Key="TimeFormatConverter" />
     </UserControl.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
@@ -63,7 +65,7 @@
 
             <StackPanel Grid.Column="1">
                 <Label Content="Total logged hours:" Margin="5 10 10 0" FontSize="14"/>
-                <TextBox IsReadOnly="True" Width="120" HorizontalAlignment="Left" Margin="10 0" FontSize="16" Text="{Binding LoggedTime, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" Background="LightGray"/>
+                <TextBox IsReadOnly="True" Width="120" HorizontalAlignment="Left" Margin="10 0" FontSize="16" Text="{Binding LoggedTime, Mode=OneWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource TimeFormatConverter}}" Background="LightGray"/>
             </StackPanel>
         </Grid>
 

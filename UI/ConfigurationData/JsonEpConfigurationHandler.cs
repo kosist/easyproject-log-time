@@ -27,7 +27,7 @@ namespace UI.ConfigurationData
 
         public Task SaveRememberCredentialsFlag(bool rememberCredentials)
         {
-            Configuration.GetSection(nameof(EpConfigData)).Bind();
+            throw new System.NotImplementedException();
         }
     }
 }

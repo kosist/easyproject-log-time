@@ -33,18 +33,15 @@ namespace UI.ViewModel
         #region Constructor
         public LoginViewModel(ICredentialsProvider credentialsProvider,
                               IEventAggregator eventAggregator,
-                              IEPProvider provider,
-                              IEpConfigurationParameters config)
+                              IEPProvider provider)
         {
             _credentialsProvider = credentialsProvider;
             _eventAggregator = eventAggregator;
             _provider = provider;
-            _config = config;
 
             LoginCommand = new DelegateCommand(OnLoginExecute, OnLoginCanExecute);
             Status = new StatusMessageViewModel();
-
-            RememberCredentials = _config.GetRememberCredentialsFlag().Result;
+            
 
             GetCredentials();
         }
