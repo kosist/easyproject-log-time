@@ -32,6 +32,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\ApplicationDataHandler\ApplicationDataHandler.csproj" />
     <ProjectReference Include="..\BaseLayer\BaseLayer.csproj" />
     <ProjectReference Include="..\EPProvider\EPProvider.csproj" />
     <ProjectReference Include="..\MockProvider\MockProvider.csproj" />
