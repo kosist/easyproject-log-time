@@ -9,5 +9,10 @@ namespace ApplicationDataHandler
         public List<UserMetaData> UsersList { get; set; }
         public bool StoreCredentials { get; set; }
         public AppCredentials AppCredentials { get; set; }
+
+        public ApplicationDataFileStructure()
+        {
+            UsersList = new List<UserMetaData>();
+        }
     }
 }
