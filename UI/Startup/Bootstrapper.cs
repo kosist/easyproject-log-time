@@ -4,8 +4,8 @@ using EPProvider;
 using EPProvider.Mapping;
 using MockProvider;
 using Prism.Events;
-using UI.ConfigurationData;
 using UI.ViewModel;
+using ApplicationDataHandler;
 
 namespace UI.Startup
 {
@@ -24,7 +24,7 @@ namespace UI.Startup
             builder.RegisterType<EventAggregator>().As<IEventAggregator>().SingleInstance();
             builder.RegisterType<EnvironnmentCredentialsProvider>().As<ICredentialsProvider>().SingleInstance();
             builder.RegisterType<RestEPProvider>().As<IEPProvider>();
-            //builder.RegisterType<JsonEpConfigurationHandler>().As<IEpConfigurationParameters>();
+            builder.RegisterType<JsonApplicationDataHandler>().As<IApplicationDataHandler>();
             //builder.RegisterType<MockEpProvider>().As<IEPProvider>().SingleInstance();
 
             builder.RegisterType<MainWindow>().AsSelf();

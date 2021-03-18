@@ -5,10 +5,10 @@ using Prism.Commands;
 using Prism.Events;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using UI.ConfigurationData;
 using UI.DataModel;
 using UI.Event;
 using UI.Wrapper;
+using ApplicationDataHandler;
 
 namespace UI.ViewModel
 {
@@ -19,7 +19,7 @@ namespace UI.ViewModel
         private ICredentialsProvider _credentialsProvider;
         private IEventAggregator _eventAggregator;
         private IEPProvider _provider;
-        private IEpConfigurationParameters _config;
+        private IApplicationDataHandler _config;
 
         #endregion
 
@@ -33,15 +33,18 @@ namespace UI.ViewModel
         #region Constructor
         public LoginViewModel(ICredentialsProvider credentialsProvider,
                               IEventAggregator eventAggregator,
-                              IEPProvider provider)
+                              IEPProvider provider,
+                              IApplicationDataHandler config)
         {
             _credentialsProvider = credentialsProvider;
             _eventAggregator = eventAggregator;
             _provider = provider;
+            _config = config;
 
             LoginCommand = new DelegateCommand(OnLoginExecute, OnLoginCanExecute);
             Status = new StatusMessageViewModel();
-            
+
+            Task.Run(async () => _rememberCredentials = await _config.GetStoreCredentialsFlag());
 
             GetCredentials();
         }
@@ -163,9 +166,8 @@ namespace UI.ViewModel
             set
             {
                 _rememberCredentials = value;
-                _config.SaveRememberCredentialsFlag(_rememberCredentials);
+                _config.SetStoreCredentialsFlag(_rememberCredentials);
                 OnPropertyChanged();
-
             }
         }
 
