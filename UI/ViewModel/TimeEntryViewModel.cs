@@ -13,6 +13,7 @@ using Prism.Commands;
 using Prism.Events;
 using UI.Event;
 using UI.Wrapper;
+using System.Diagnostics;
 
 namespace UI.ViewModel
 {
@@ -39,6 +40,8 @@ namespace UI.ViewModel
         public DateTime SpentOnDate { get; set; }
         public ICommand SaveCommand { get; }
         public ICommand CancelCommand { get; }
+        public ICommand OpenProjectCommand { get; }
+        public ICommand AddTaskCommand { get; }
         public int CurrentUserId { get; private set; }
         private TimeEntry _timeEntryToUpdate { get; set; }
         public DataUpdatedEvent DataUpdatedEvent { get; }
@@ -71,12 +74,70 @@ namespace UI.ViewModel
 
             SaveCommand = new DelegateCommand(OnSaveExecute, OnSaveCanExecute);
             CancelCommand = new DelegateCommand(OnCancelExecute, OnCancelCanExecute);
+            OpenProjectCommand = new DelegateCommand(OnOpenProjectExecute, OnOpenProjectCanExecute);
+            AddTaskCommand = new DelegateCommand(OnAddTaskExecute, OnAddTaskCanExecute);
 
             SaveOption = true;
             UpdateOption = false;
 
             LoggedTime = 0;
             SpentOnDate = DateTime.Today;
+        }
+
+        private bool OnAddTaskCanExecute()
+        {
+            if (TimeEntry != null)
+                return TimeEntry.SelectedProject != null;
+            else
+                return false;
+        }
+
+        private void OnAddTaskExecute()
+        {
+            try
+            {
+                if (TimeEntry.SelectedProject != null)
+                {
+                    var link = $"https://anv.easyproject.cz/projects/{TimeEntry.SelectedProject.Id}/issues/new?utm_campaign=menu&utm_content=easy_new_entity&utm_term=issues_new";
+                    Process.Start(new ProcessStartInfo
+                    {
+                        FileName = link,
+                        UseShellExecute = true
+                    });
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        private void OnOpenProjectExecute()
+        {
+            try
+            {
+                if (TimeEntry.SelectedProject != null)
+                {
+                    var link = $"https://anv.easyproject.cz/projects/{TimeEntry.SelectedProject.Id}";
+                    Process.Start(new ProcessStartInfo
+                    {
+                        FileName = link,
+                        UseShellExecute = true
+                    });
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        private bool OnOpenProjectCanExecute()
+        {
+            if (TimeEntry != null)
+                return TimeEntry.SelectedProject != null;
+            else
+                return false;
         }
 
         #endregion
@@ -178,6 +239,8 @@ namespace UI.ViewModel
                         await DisplayIssuesList(TimeEntry.SelectedProject.Id, _timeEntryToUpdate?.IssueId);
                         await DisplayUsersListAsync(TimeEntry.SelectedProject.Id, _timeEntryToUpdate?.UserId);
                     }
+                    ((DelegateCommand)OpenProjectCommand).RaiseCanExecuteChanged();
+                    ((DelegateCommand)AddTaskCommand).RaiseCanExecuteChanged();
                 }
 
                 if (e.PropertyName == "SelectedIssue")

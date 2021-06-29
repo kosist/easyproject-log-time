@@ -31,11 +31,21 @@
             <RowDefinition/>
         </Grid.RowDefinitions>
 
-        <StackPanel Grid.ColumnSpan="3">
-            <Label Content="Project name:" Margin="5 10 10 0" FontSize="14"/>
-            <!--<ComboBox x:Name="SelectedProject" Margin="10 0" ItemsSource="{Binding Projects}" DisplayMemberPath="Name" SelectedItem="{Binding TimeEntry.SelectedProject, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" IsEditable="True" IsTextSearchEnabled="True"  TextSearch.TextPath="Name" StaysOpenOnEdit="True"/>-->
-            <ComboBox x:Name="SelectedProject" Margin="10 0" ItemsSource="{Binding Projects}" DisplayMemberPath="Name" SelectedItem="{Binding TimeEntry.SelectedProject, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-        </StackPanel>
+        <Grid Grid.ColumnSpan="3">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition Width="120"/>
+                <ColumnDefinition Width="120"/>
+            </Grid.ColumnDefinitions>
+            <StackPanel>
+                <Label Content="Project name:" Margin="5 10 10 0" FontSize="14"/>
+                <!--<ComboBox x:Name="SelectedProject" Margin="10 0" ItemsSource="{Binding Projects}" DisplayMemberPath="Name" SelectedItem="{Binding TimeEntry.SelectedProject, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" IsEditable="True" IsTextSearchEnabled="True"  TextSearch.TextPath="Name" StaysOpenOnEdit="True"/>-->
+                <ComboBox x:Name="SelectedProject" Margin="10 0" ItemsSource="{Binding Projects}" DisplayMemberPath="Name" SelectedItem="{Binding TimeEntry.SelectedProject, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+            </StackPanel>
+            <Button Style="{StaticResource btn-info}" Grid.Column="1" Margin="5" Content="Open Project" Command="{Binding OpenProjectCommand}" Height="35"/>
+            <Button Style="{StaticResource btn-info}" Grid.Column="2" Margin="5" Content="Add Task" Command="{Binding AddTaskCommand}" Height="35"/>
+        </Grid>
+
 
         <Grid Grid.Row="1" Grid.ColumnSpan="3">
             <Grid.ColumnDefinitions>
