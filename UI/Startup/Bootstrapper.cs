@@ -6,6 +6,7 @@ using MockProvider;
 using Prism.Events;
 using UI.ViewModel;
 using ApplicationDataHandler;
+using System.Globalization;
 
 namespace UI.Startup
 {
@@ -34,6 +35,10 @@ namespace UI.Startup
             builder.RegisterType<TabViewModel>().As<ITabViewModel>();
             builder.RegisterType<SpentTimeViewModel>().As<ISpentTimeViewModel>();
             builder.RegisterType<ViewsAggregatorViewModel>().As<IViewsAggregatorViewModel>();
+
+            CultureInfo culture = (CultureInfo)CultureInfo.CurrentCulture.Clone();
+            culture.NumberFormat.NumberDecimalSeparator = "."; //Force use . insted of ,
+            System.Threading.Thread.CurrentThread.CurrentCulture = culture;
 
             return builder.Build();
         }

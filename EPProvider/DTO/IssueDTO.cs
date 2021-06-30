@@ -18,5 +18,8 @@ namespace EPProvider.DTO
 
         [DeserializeAs(Name = "done_ratio")]
         public int DoneRatio { get; set; }
+
+        [DeserializeAs(Name = "estimated_hours")]
+        public double EstimatedHours { get; set; }
     }
 }

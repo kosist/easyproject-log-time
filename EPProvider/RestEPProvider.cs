@@ -48,6 +48,7 @@ namespace EPProvider
                 request.AddHeader("content-type", "application/xml");
                 request.AddParameter("limit", 100);
                 request.AddParameter("project_id", projectId);
+                request.AddParameter("include", "spent_time");
                 request.AddParameter("status_id", "*");
                 var offset = 0;
                 var issuesReceieved = new List<IssueDTO>();

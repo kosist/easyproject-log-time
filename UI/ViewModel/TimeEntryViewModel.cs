@@ -42,6 +42,7 @@ namespace UI.ViewModel
         public ICommand CancelCommand { get; }
         public ICommand OpenProjectCommand { get; }
         public ICommand AddTaskCommand { get; }
+        public ICommand OpenTaskCommand { get; }
         public int CurrentUserId { get; private set; }
         private TimeEntry _timeEntryToUpdate { get; set; }
         public DataUpdatedEvent DataUpdatedEvent { get; }
@@ -76,12 +77,41 @@ namespace UI.ViewModel
             CancelCommand = new DelegateCommand(OnCancelExecute, OnCancelCanExecute);
             OpenProjectCommand = new DelegateCommand(OnOpenProjectExecute, OnOpenProjectCanExecute);
             AddTaskCommand = new DelegateCommand(OnAddTaskExecute, OnAddTaskCanExecute);
+            OpenTaskCommand = new DelegateCommand(OnOpenTaskExecute, OnOpenTaskCanExecute);
 
             SaveOption = true;
             UpdateOption = false;
 
             LoggedTime = 0;
             SpentOnDate = DateTime.Today;
+        }
+
+        private bool OnOpenTaskCanExecute()
+        {
+            if (TimeEntry != null)
+                return TimeEntry.SelectedIssue != null;
+            else
+                return false;
+        }
+
+        private void OnOpenTaskExecute()
+        {
+            try
+            {
+                if (TimeEntry.SelectedIssue != null)
+                {
+                    var link = $"https://anv.easyproject.cz/issues/{TimeEntry.SelectedIssue.Id}";
+                    Process.Start(new ProcessStartInfo
+                    {
+                        FileName = link,
+                        UseShellExecute = true
+                    });
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
 
         private bool OnAddTaskCanExecute()
@@ -247,10 +277,15 @@ namespace UI.ViewModel
                 {
                     TimeEntry.SpentTime = "";
                     TimeEntry.Description = "";
+                    
                     UpdateTask = false;
                     if (TimeEntry.SelectedIssue != null)
+                    {
                         TaskStatuses.TaskStatus =
                             TaskStatuses.Statuses.First(task => task.Id == TimeEntry.SelectedIssue.Status.Id);
+                        EstimatedTime = TimeEntry.SelectedIssue.EstimatedHours;
+                    }
+
                     else
                         TaskStatuses.TaskStatus = null;
                     if (_timeEntryToUpdate != null)
@@ -279,6 +314,7 @@ namespace UI.ViewModel
                         
                         TimeEntry.Id = _timeEntryToUpdate.Id;
                     }
+                    ((DelegateCommand)OpenTaskCommand).RaiseCanExecuteChanged();
                 }
 
                 if ((e.PropertyName == "SpentOnDate") || (e.PropertyName == "SelectedUser"))
@@ -486,6 +522,19 @@ namespace UI.ViewModel
                 OnPropertyChanged();
             }
         }
+
+        private double _estimatedTime;
+
+        public double EstimatedTime
+        {
+            get { return _estimatedTime; }
+            set 
+            { 
+                _estimatedTime = value;
+                OnPropertyChanged();
+            }
+        }
+
 
         private bool _activeTasks;
 
