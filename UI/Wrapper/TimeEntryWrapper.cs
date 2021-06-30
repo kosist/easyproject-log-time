@@ -75,6 +75,12 @@ namespace UI.Wrapper
                         yield return "Task is not selected";
                     }
                     break;
+                case nameof(Description):
+                    if (String.IsNullOrEmpty(Description) | String.IsNullOrWhiteSpace(Description))
+                    {
+                        yield return "Log description is empty";
+                    }
+                    break;
                 case nameof(SpentTime):
                     if (String.IsNullOrEmpty(SpentTime) || String.IsNullOrWhiteSpace(SpentTime))
                     {
