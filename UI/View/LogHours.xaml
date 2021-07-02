@@ -78,12 +78,12 @@
 
             <StackPanel Grid.Column="1">
                 <Label Content="Total logged hours:" Margin="5 10 10 0" FontSize="14"/>
-                <TextBox IsReadOnly="True" Width="120" HorizontalAlignment="Left" Margin="10 0" FontSize="16" Text="{Binding LoggedTime, Mode=OneWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource TimeFormatConverter}}" Background="LightGray"/>
+                <TextBox IsReadOnly="True" Width="120" HorizontalAlignment="Left" Margin="10 0" FontSize="16" Text="{Binding LoggedTime, Mode=OneWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource TimeFormatConverter}}" Background="LightBlue"/>
             </StackPanel>
 
             <StackPanel Grid.Column="2">
                 <Label Content="Estimated Time:" Margin="5 10 10 0" FontSize="14"/>
-                <TextBox IsReadOnly="True" Width="120" HorizontalAlignment="Left" Margin="10 0" FontSize="16" Text="{Binding EstimatedTime, Mode=OneWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource TimeFormatConverter}}" Background="LightGray"/>
+                <TextBox IsReadOnly="True" Width="120" HorizontalAlignment="Left" Margin="10 0" FontSize="16" Text="{Binding EstimatedTime, Mode=OneWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource TimeFormatConverter}}" Background="LightBlue"/>
             </StackPanel>
 
         </Grid>

@@ -14,6 +14,7 @@ namespace UI.Wrapper
             SelectedProject = null;
             SelectedIssue = null;
             SelectedUser = null;
+            Description = "";
             SpentTime = "";
         }
 
@@ -76,7 +77,7 @@ namespace UI.Wrapper
                     }
                     break;
                 case nameof(Description):
-                    if (String.IsNullOrEmpty(Description) | String.IsNullOrWhiteSpace(Description))
+                    if (String.IsNullOrEmpty(Description) || String.IsNullOrWhiteSpace(Description))
                     {
                         yield return "Log description is empty";
                     }

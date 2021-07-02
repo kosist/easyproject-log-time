@@ -297,7 +297,6 @@ namespace UI.ViewModel
                             TaskStatuses.Statuses.First(task => task.Id == TimeEntry.SelectedIssue.Status.Id);
                         EstimatedTime = TimeEntry.SelectedIssue.EstimatedHours;
                     }
-
                     else
                         TaskStatuses.TaskStatus = null;
                     if (_timeEntryToUpdate != null)
@@ -464,6 +463,7 @@ namespace UI.ViewModel
         {
             return await _provider.GetIssuesListForProjectAsync(projectId);
         }
+
         /// <summary>
         /// Helper function which initializes TimeEntry with listening to PropertyChanged events
         /// </summary>
