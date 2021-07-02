@@ -1,10 +1,9 @@
 ﻿using RestSharp.Deserializers;
-using System.Collections.Generic;
 
 namespace EPProvider.DTO
 {
-    [DeserializeAs(Name = "project")]
-    public class ProjectDTO
+    [DeserializeAs(Name = "custom_field")]
+    public class CustomFieldDTO
     {
         [DeserializeAs(Name = "id")]
         public int Id { get; set; }
@@ -12,7 +11,7 @@ namespace EPProvider.DTO
         [DeserializeAs(Name = "name")]
         public string Name { get; set; }
 
-        [DeserializeAs(Name = "custom_fields")]
-        public List<CustomFieldDTO> CustomFields { get; set; }
+        [DeserializeAs(Name = "value")]
+        public string Value { get; set; }
     }
 }

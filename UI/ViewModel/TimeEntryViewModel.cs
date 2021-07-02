@@ -14,6 +14,7 @@ using Prism.Events;
 using UI.Event;
 using UI.Wrapper;
 using System.Diagnostics;
+using UI.Support;
 
 namespace UI.ViewModel
 {
@@ -206,6 +207,17 @@ namespace UI.ViewModel
 
 
         #region Private helper methods
+
+        private async Task<List<Project>> FilterProjects()
+        {
+            var projects = await LoadProjects();
+            var filteredProjects = await ProcessProjects.FilterProjects(projects, new List<string>
+            {
+                "Realization",
+                "Presale"
+            });
+            return filteredProjects;
+        }
 
         /// <summary>
         /// Waits for LoginSuccessEvent. If status is true, then project's list is loaded
@@ -435,8 +447,8 @@ namespace UI.ViewModel
         private async Task DisplayProjectsAsync()
         {
             Projects.Clear();
-            var projects = await LoadProjects();
-            foreach (var project in projects)
+            List<Project> filteredProjects = await FilterProjects();
+            foreach (var project in filteredProjects)
             {
                 Projects.Add(project);
             }
